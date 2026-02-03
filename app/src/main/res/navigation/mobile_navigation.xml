@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_transform">
+
+    <fragment
+        android:id="@+id/nav_transform"
+        android:name="com.example.qpiqueapp.ui.productos.ProductosFragment"
+        android:label="@string/menu_transform"
+        tools:layout="@layout/fragment_productos" >
+        <action
+            android:id="@+id/action_nav_transform_to_crearProductoFragment"
+            app:destination="@id/crearProductoFragment" />
+        <action
+            android:id="@+id/action_nav_transform_to_editarProductoFragment"
+            app:destination="@id/editarProductoFragment" />
+        <action
+            android:id="@+id/action_nav_transform_to_borrarFragment"
+            app:destination="@id/borrarFragment" />
+        <action
+            android:id="@+id/action_nav_transform_to_carritoFragment"
+            app:destination="@id/carritoFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_reflow"
+        android:name="com.example.qpiqueapp.ui.ventas.VentasFragment"
+        android:label="@string/menu_reflow"
+        tools:layout="@layout/fragment_ventas" >
+        <action
+            android:id="@+id/action_nav_reflow_to_editarVentaFragment"
+            app:destination="@id/editarVentaFragment" />
+        <action
+            android:id="@+id/action_nav_reflow_to_borrarVentaFragment"
+            app:destination="@id/borrarVentaFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.example.qpiqueapp.ui.clientes.ClientesFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_clientes" >
+        <action
+            android:id="@+id/action_nav_slideshow_to_crearClienteFragment"
+            app:destination="@id/crearClienteFragment" />
+        <action
+            android:id="@+id/action_nav_slideshow_to_editarClienteFragment"
+            app:destination="@id/editarClienteFragment" />
+        <action
+            android:id="@+id/action_nav_slideshow_to_borrarClienteFragment"
+            app:destination="@id/borrarClienteFragment" />
+        <action
+            android:id="@+id/action_nav_slideshow_to_carritoFragment"
+            app:destination="@id/carritoFragment" />
+        <argument
+            android:name="modoSeleccion"
+            app:argType="boolean"
+            android:defaultValue="false" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_settings"
+        android:name="com.example.qpiqueapp.ui.categoria.CategoriasFragment"
+        android:label="@string/menu_settings"
+        tools:layout="@layout/fragment_categorias" >
+        <action
+            android:id="@+id/action_nav_settings_to_crearCategoriaFragment"
+            app:destination="@id/crearCategoriaFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_eliminarCategoriaFragment"
+            app:destination="@id/eliminarCategoriaFragment" />
+        <action
+            android:id="@+id/action_nav_settings_to_editarCategoriaFragment"
+            app:destination="@id/editarCategoriaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/crearProductoFragment"
+        android:name="com.example.qpiqueapp.ui.productos.CrearProductoFragment"
+        android:label="CrearProductoFragment" >
+        <action
+            android:id="@+id/action_crearProductoFragment_to_nav_transform"
+            app:destination="@id/nav_transform" />
+    </fragment>
+    <fragment
+        android:id="@+id/perfilFragment"
+        android:name="com.example.qpiqueapp.ui.perfil.PerfilFragment"
+        android:label="Perfil"
+        tools:layout="@layout/fragment_perfil" >
+        <action
+            android:id="@+id/action_perfilFragment_to_logoutFragment"
+            app:destination="@id/logoutFragment" />
+        <action
+            android:id="@+id/action_perfilFragment_to_editarFragment"
+            app:destination="@id/editarFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/logoutFragment"
+        android:name="com.example.qpiqueapp.ui.perfil.LogoutFragment"
+        android:label="fragment_logout"
+        tools:layout="@layout/fragment_logout" />
+    <fragment
+        android:id="@+id/editarProductoFragment"
+        android:name="com.example.qpiqueapp.ui.productos.EditarProductoFragment"
+        android:label="EditarProductoFragment" >
+        <action
+            android:id="@+id/action_editarProductoFragment_to_nav_transform"
+            app:destination="@id/nav_transform" />
+        <argument
+            android:name="producto"
+            app:argType="com.example.qpiqueapp.modelo.Productos" />
+    </fragment>
+    <fragment
+        android:id="@+id/borrarFragment"
+        android:name="com.example.qpiqueapp.ui.productos.BorrarProductoFragment"
+        android:label="BorrarFragment" >
+        <action
+            android:id="@+id/action_borrarFragment_to_nav_transform"
+            app:destination="@id/nav_transform" />
+    </fragment>
+    <fragment
+        android:id="@+id/crearClienteFragment"
+        android:name="com.example.qpiqueapp.ui.clientes.CrearClienteFragment"
+        android:label="fragment_crear_cliente"
+        tools:layout="@layout/fragment_crear_cliente" >
+        <action
+            android:id="@+id/action_crearClienteFragment_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
+    </fragment>
+    <fragment
+        android:id="@+id/borrarClienteFragment"
+        android:name="com.example.qpiqueapp.ui.clientes.BorrarClienteFragment"
+        android:label="BorrarClienteFragment" >
+        <action
+            android:id="@+id/action_borrarClienteFragment_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarClienteFragment"
+        android:name="com.example.qpiqueapp.ui.clientes.EditarClienteFragment"
+        android:label="EditarClienteFragment" >
+        <action
+            android:id="@+id/action_editarClienteFragment_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
+    </fragment>
+    <fragment
+        android:id="@+id/carritoFragment"
+        android:name="com.example.qpiqueapp.ui.productos.CarritoFragment"
+        android:label="CarritoFragment" >
+        <action
+            android:id="@+id/action_carritoFragment_to_nav_transform"
+            app:destination="@id/nav_transform" />
+        <action
+            android:id="@+id/action_carritoFragment_to_crearVentaFragment"
+            app:destination="@id/crearVentaFragment" />
+        <action
+            android:id="@+id/action_carritoFragment_to_nav_slideshow"
+            app:destination="@id/nav_slideshow" />
+    </fragment>
+    <fragment
+        android:id="@+id/crearCategoriaFragment"
+        android:name="com.example.qpiqueapp.ui.categoria.CrearCategoriaFragment"
+        android:label="fragment_crear_categoria"
+        tools:layout="@layout/fragment_crear_categoria" >
+        <action
+            android:id="@+id/action_crearCategoriaFragment_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarCategoriaFragment"
+        android:name="com.example.qpiqueapp.ui.categoria.EditarCategoriaFragment"
+        android:label="fragment_editar_categoria"
+        tools:layout="@layout/fragment_editar_categoria" >
+        <action
+            android:id="@+id/action_editarCategoriaFragment_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/eliminarCategoriaFragment"
+        android:name="com.example.qpiqueapp.ui.categoria.EliminarCategoriaFragment"
+        android:label="fragment_eliminar_categoria"
+        tools:layout="@layout/fragment_eliminar_categoria" >
+        <action
+            android:id="@+id/action_eliminarCategoriaFragment_to_nav_settings"
+            app:destination="@id/nav_settings" />
+    </fragment>
+    <fragment
+        android:id="@+id/borrarVentaFragment"
+        android:name="com.example.qpiqueapp.ui.ventas.BorrarVentaFragment"
+        android:label="fragment_borrar_venta"
+        tools:layout="@layout/fragment_borrar_venta" >
+        <action
+            android:id="@+id/action_borrarVentaFragment_to_nav_reflow"
+            app:destination="@id/nav_reflow" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarVentaFragment"
+        android:name="com.example.qpiqueapp.ui.ventas.EditarVentaFragment"
+        android:label="fragment_editar_venta"
+        tools:layout="@layout/fragment_editar_venta" >
+        <action
+            android:id="@+id/action_editarVentaFragment_to_nav_reflow"
+            app:destination="@id/nav_reflow" />
+    </fragment>
+    <fragment
+        android:id="@+id/crearVentaFragment"
+        android:name="com.example.qpiqueapp.ui.ventas.CrearVentaFragment"
+        android:label="fragment_crear_venta"
+        tools:layout="@layout/fragment_crear_venta" >
+        <action
+            android:id="@+id/action_crearVentaFragment_to_nav_reflow"
+            app:destination="@id/nav_reflow" />
+    </fragment>
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.example.qpiqueapp.ui.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/editarFragment"
+        android:name="com.example.qpiqueapp.ui.perfil.EditarFragment"
+        android:label="fragment_editar"
+        tools:layout="@layout/fragment_editar" />
+    <fragment
+        android:id="@+id/usuariosFragment2"
+        android:name="com.example.qpiqueapp.ui.usuarios.UsuariosFragment"
+        android:label="Usuarios"
+        tools:layout="@layout/fragment_usuarios" >
+        <action
+            android:id="@+id/action_usuariosFragment2_to_eliminarUsuarioFragment"
+            app:destination="@id/eliminarUsuarioFragment" />
+        <action
+            android:id="@+id/action_usuariosFragment2_to_editarUsuarioFragment"
+            app:destination="@id/editarUsuarioFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editarUsuarioFragment"
+        android:name="com.example.qpiqueapp.ui.usuarios.EditarUsuarioFragment"
+        android:label="fragment_editar_usuario"
+        tools:layout="@layout/fragment_editar_usuario" >
+        <action
+            android:id="@+id/action_editarUsuarioFragment_to_usuariosFragment2"
+            app:destination="@id/usuariosFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/eliminarUsuarioFragment"
+        android:name="com.example.qpiqueapp.ui.usuarios.EliminarUsuarioFragment"
+        android:label="fragment_eliminar_usuario"
+        tools:layout="@layout/fragment_eliminar_usuario" >
+        <action
+            android:id="@+id/action_eliminarUsuarioFragment_to_usuariosFragment2"
+            app:destination="@id/usuariosFragment2" />
+    </fragment>
+</navigation>

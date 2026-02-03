@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/menu_usuario"
+        android:title="Usuario"
+        android:icon="@drawable/ic_perfil"
+    app:showAsAction="ifRoom" /> <!-- 'ifRoom' es flexible: muestra el ícono si hay espacio, si no, lo mueve al menú de tres puntos -->
+
+</menu>

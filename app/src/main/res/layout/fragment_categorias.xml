@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Contenedor para el botón, con padding para que no toque los bordes -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingTop="16dp"
+        android:paddingHorizontal="16dp">
+
+        <Button
+            android:id="@+id/btnNuevoCliente"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Categoria" />
+    </LinearLayout>
+
+    <!-- Lista de clientes -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listaCategorias"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

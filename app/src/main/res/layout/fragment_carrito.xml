@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.productos.CarritoFragment">
+
+    <!-- TÍTULO -->
+    <TextView
+        android:id="@+id/tvTituloCarrito"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Carrito de Venta"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- BOTÓN PARA SELECCIONAR CLIENTE -->
+    <Button
+        android:id="@+id/btnSeleccionarCliente"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
+        android:text="Seleccionar Cliente"
+        app:layout_constraintTop_toBottomOf="@id/tvTituloCarrito"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <!-- CLIENTE SELECCIONADO -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCliente"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/btnSeleccionarCliente"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cliente"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+            <TextView
+                android:id="@+id/tvClienteNombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="Juan Pérez"/>
+
+            <TextView
+                android:id="@+id/tvClienteEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="juan@email.com"/>
+            <!-- BOTÓN PARA QUITAR CLIENTE -->
+            <ImageButton
+                android:id="@+id/btnQuitarCliente"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="Quitar cliente"
+                android:src="@android:drawable/ic_menu_close_clear_cancel"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="?attr/colorError" />
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <!-- LISTA DE PRODUCTOS -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvCarrito"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintTop_toBottomOf="@id/cardCliente"
+        app:layout_constraintBottom_toTopOf="@id/cardTotal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:listitem="@layout/item_carrito"/>
+
+    <!-- CARRITO VACÍO -->
+    <LinearLayout
+        android:id="@+id/layoutVacio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/btnSeleccionarCliente"
+        app:layout_constraintBottom_toTopOf="@id/cardTotal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:src="@android:drawable/ic_menu_delete"
+            app:tint="?android:attr/textColorSecondary"
+            android:contentDescription="Icono de carrito vacío"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="El carrito está vacío"
+            android:textAppearance="@style/TextAppearance.Material3.BodyLarge"/>
+
+    </LinearLayout>
+
+    <!-- TOTAL + CONFIRMAR -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardTotal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/labelTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total:"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+            <TextView
+                android:id="@+id/tvTotal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                tools:text="$ 1.250,50"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/labelTotal"
+                app:layout_constraintTop_toTopOf="@id/labelTotal"
+                app:layout_constraintBottom_toBottomOf="@id/labelTotal"/>
+
+            <Button
+                android:id="@+id/btnConfirmarCompra"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:text="Confirmar Compra"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

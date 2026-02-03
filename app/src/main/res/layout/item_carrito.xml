@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="8dp"
+    app:cardCornerRadius="8dp"
+    app:cardElevation="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp">
+
+        <!-- Imagen del Producto -->
+        <ImageView
+            android:id="@+id/imgProducto"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <!-- Nombre del Producto -->
+        <TextView
+            android:id="@+id/tvNombreProducto"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+            app:layout_constraintStart_toEndOf="@id/imgProducto"
+            app:layout_constraintEnd_toStartOf="@+id/layoutCantidad"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Nombre del Producto" />
+
+        <!-- Precio Unitario -->
+        <TextView
+            android:id="@+id/tvPrecioUnitario"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintStart_toEndOf="@id/imgProducto"
+            app:layout_constraintTop_toBottomOf="@+id/tvNombreProducto"
+            tools:text="Precio: $150.00" />
+
+        <!-- Selector de Cantidad -->
+        <LinearLayout
+            android:id="@+id/layoutCantidad"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnEliminarItem">
+
+            <ImageButton
+                android:id="@+id/btnRestar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_previous"
+                android:contentDescription="Restar cantidad" />
+
+            <TextView
+                android:id="@+id/tvCantidad"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="1"
+                android:textStyle="bold"
+                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+            <ImageButton
+                android:id="@+id/btnSumar"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@android:drawable/ic_media_next"
+                android:contentDescription="Sumar cantidad" />
+        </LinearLayout>
+
+        <!-- Botón Eliminar -->
+        <ImageButton
+            android:id="@+id/btnEliminarItem"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_delete"
+            android:contentDescription="Eliminar del carrito"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

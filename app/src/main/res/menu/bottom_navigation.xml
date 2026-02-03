@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_transform"
+            android:icon="@drawable/ic_productos"
+            android:title="@string/menu_transform" />
+        <item
+            android:id="@+id/nav_reflow"
+            android:icon="@drawable/ic_ventas"
+            android:title="@string/menu_reflow" />
+        <item
+            android:id="@+id/nav_slideshow"
+            android:icon="@drawable/ic_client"
+            android:title="@string/menu_slideshow" />
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_categoria"
+            android:title="@string/menu_settings" />
+        <item
+            android:id="@+id/usuariosFragment2"
+            android:icon="@drawable/ic_clientes"
+            android:title="@string/menu_usuarios" />
+        <item
+            android:id="@+id/perfilFragment"
+            android:icon="@drawable/ic_perfil"
+            android:title="@string/menu_perfil" />
+    </group>
+</menu>
