@@ -10,31 +10,24 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.qpiqueapp.modelo.productos.Productos;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class CarritoViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<Productos>> carrito =
-            new MutableLiveData<>(new ArrayList<>());
-
-    private final MutableLiveData<Double> total =
-            new MutableLiveData<>(0.0);
+    private final MutableLiveData<List<Productos>> carrito = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<Double> total = new MutableLiveData<>(0.0);
 
     public CarritoViewModel(@NonNull Application application) {
         super(application);
     }
 
-    // Getter
+    // Getters
+    public LiveData<List<Productos>> getCarrito() { return carrito; }
+    public LiveData<Double> getTotal() { return total; }
 
-    public LiveData<List<Productos>> getCarrito() {
-        return carrito;
-    }
-
-    public LiveData<Double> getTotal() {
-        return total;
-    }
-
-    // Metodos
+    // Agregar producto
     public void agregarProducto(Productos producto) {
         List<Productos> lista = new ArrayList<>(carrito.getValue());
 
@@ -42,35 +35,28 @@ public class CarritoViewModel extends AndroidViewModel {
             if (p.getId() == producto.getId()) {
                 if (p.getCantidad() < p.getStock()) {
                     p.setCantidad(p.getCantidad() + 1);
-                    carrito.setValue(lista);
-                    calcularTotal();
+                    ordenarYActualizar(lista);
+                    return;
                 }
-                return;
             }
         }
 
         producto.setCantidad(1);
         lista.add(producto);
-
-        carrito.setValue(lista);
-        calcularTotal();
+        ordenarYActualizar(lista);
     }
+
+    // Quitar producto
     public void quitarProducto(Productos producto) {
-        List<Productos> lista =
-                carrito.getValue() != null
-                        ? new ArrayList<>(carrito.getValue())
-                        : new ArrayList<>();
-
-        lista.remove(producto);
-
-        carrito.setValue(lista);
-        calcularTotal();
+        List<Productos> lista = carrito.getValue() != null ? new ArrayList<>(carrito.getValue()) : new ArrayList<>();
+        lista.removeIf(p -> p.getId() == producto.getId());
+        ordenarYActualizar(lista);
     }
 
+    // Calcula total
     public void calcularTotal() {
         List<Productos> listaActual = carrito.getValue();
         double sumaTotal = 0.0;
-
         if (listaActual != null) {
             for (Productos p : listaActual) {
                 sumaTotal += p.getPrecio() * p.getCantidad();
@@ -79,6 +65,7 @@ public class CarritoViewModel extends AndroidViewModel {
         total.setValue(sumaTotal);
     }
 
+    // Limpiar carrito
     public void limpiarCarrito() {
         carrito.setValue(new ArrayList<>());
         total.setValue(0.0);
@@ -86,5 +73,12 @@ public class CarritoViewModel extends AndroidViewModel {
 
     public int getCantidadItems() {
         return carrito.getValue() != null ? carrito.getValue().size() : 0;
+    }
+
+    // Ordena alfabéticamente y actualiza LiveData
+    private void ordenarYActualizar(List<Productos> lista) {
+        Collections.sort(lista, Comparator.comparing(Productos::getNombre, String.CASE_INSENSITIVE_ORDER));
+        carrito.setValue(lista);
+        calcularTotal();
     }
 }

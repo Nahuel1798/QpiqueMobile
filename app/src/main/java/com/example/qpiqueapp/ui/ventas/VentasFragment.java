@@ -1,37 +1,40 @@
 package com.example.qpiqueapp.ui.ventas;
 
+import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
+import com.example.qpiqueapp.databinding.FragmentVentasBinding;
 import com.example.qpiqueapp.modelo.venta.Ventas;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class VentasFragment extends Fragment {
 
+    private FragmentVentasBinding binding;
     private VentasViewModel viewModel;
     private VentasAdapter adapter;
     private LinearLayoutManager layoutManager;
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        binding = FragmentVentasBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
-        View view = inflater.inflate(R.layout.fragment_ventas, container, false);
-
-        RecyclerView rvVentas = view.findViewById(R.id.rvVentas);
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         adapter = new VentasAdapter(
                 new ArrayList<>(),
@@ -40,7 +43,7 @@ public class VentasFragment extends Fragment {
                     @Override
                     public void onEditar(Ventas ventas) {
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("ventas", ventas); // nombre coincide con nav_graph
+                        bundle.putSerializable("ventas", ventas);
                         NavHostFragment.findNavController(VentasFragment.this)
                                 .navigate(R.id.action_nav_reflow_to_editarVentaFragment, bundle);
                     }
@@ -48,7 +51,7 @@ public class VentasFragment extends Fragment {
                     @Override
                     public void onEliminar(Ventas ventas) {
                         Bundle bundle = new Bundle();
-                        bundle.putSerializable("ventas", ventas); // nombre coincide con nav_graph
+                        bundle.putSerializable("ventas", ventas);
                         NavHostFragment.findNavController(VentasFragment.this)
                                 .navigate(R.id.action_nav_reflow_to_borrarVentaFragment, bundle);
                     }
@@ -56,21 +59,18 @@ public class VentasFragment extends Fragment {
         );
 
         layoutManager = new LinearLayoutManager(getContext());
-
-        rvVentas.setLayoutManager(layoutManager);
-        rvVentas.setAdapter(adapter);
+        binding.rvVentas.setLayoutManager(layoutManager);
+        binding.rvVentas.setAdapter(adapter);
 
         viewModel = new ViewModelProvider(this).get(VentasViewModel.class);
 
-        // OBSERVER
-        viewModel.getVentas().observe(getViewLifecycleOwner(), ventas -> {
-            adapter.addVentas(ventas);
-        });
+        // Observa ventas
+        viewModel.getVentas().observe(getViewLifecycleOwner(), ventas -> adapter.setVentas(ventas));
 
-        // SCROLL INFINITO
-        rvVentas.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        // Scroll infinito
+        binding.rvVentas.addOnScrollListener(new androidx.recyclerview.widget.RecyclerView.OnScrollListener() {
             @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            public void onScrolled(@NonNull androidx.recyclerview.widget.RecyclerView recyclerView, int dx, int dy) {
                 super.onScrolled(recyclerView, dx, dy);
 
                 if (dy <= 0) return;
@@ -82,15 +82,53 @@ public class VentasFragment extends Fragment {
                 if (!viewModel.isLoading()
                         && !viewModel.isLastPage()
                         && (visibleItemCount + firstVisibleItemPosition) >= totalItemCount - 2) {
-
                     viewModel.cargarVentas();
                 }
             }
         });
 
-        // PRIMERA CARGA
-        viewModel.cargarVentas();
+        // Buscar por producto solo al apretar Enter
+        binding.searchViewVentas.setOnQueryTextListener(new androidx.appcompat.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                viewModel.buscar(query.trim());
+                binding.searchViewVentas.clearFocus();
+                binding.rvVentas.scrollToPosition(0);
+                return true;
+            }
 
-        return view;
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                if (newText.isEmpty()) {
+                    viewModel.buscar("");
+                    binding.rvVentas.scrollToPosition(0);
+                }
+                return true;
+            }
+        });
+
+        // Filtrar por fecha
+        binding.btnFiltrarFecha.setOnClickListener(v -> {
+            Calendar c = Calendar.getInstance();
+            int year = c.get(Calendar.YEAR);
+            int month = c.get(Calendar.MONTH);
+            int day = c.get(Calendar.DAY_OF_MONTH);
+
+            DatePickerDialog dpd = new DatePickerDialog(requireContext(), (DatePicker view1, int y, int m, int d) -> {
+                String fechaSeleccionada = String.format("%04d-%02d-%02d", y, m + 1, d);
+                viewModel.setFechaFiltro(fechaSeleccionada);
+            }, year, month, day);
+
+            dpd.show();
+        });
+
+        // Primera carga
+        viewModel.cargarVentas();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

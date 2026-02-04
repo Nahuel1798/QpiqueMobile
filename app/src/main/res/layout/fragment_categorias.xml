@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
     <LinearLayout
         android:layout_width="match_parent"
@@ -9,11 +12,13 @@
         android:paddingTop="16dp"
         android:paddingHorizontal="16dp">
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnNuevoCliente"
+            style="?attr/materialButtonOutlinedStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nuevo Categoria" />
+            android:text="Nuevo Categoria"
+            app:icon="@drawable/ic_categoria" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -21,6 +26,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="8dp" />
+        android:layout_marginTop="8dp"
+        tools:listitem="@layout/item_categorias" />
 
 </LinearLayout>

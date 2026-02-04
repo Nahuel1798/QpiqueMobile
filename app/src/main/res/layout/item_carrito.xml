@@ -48,6 +48,17 @@
             app:layout_constraintTop_toBottomOf="@+id/tvNombreProducto"
             tools:text="Precio: $150.00" />
 
+        <TextView
+            android:id="@+id/tvStock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="4dp"
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+            app:layout_constraintStart_toEndOf="@id/imgProducto"
+            app:layout_constraintTop_toBottomOf="@+id/tvPrecioUnitario"
+            tools:text="Stock: " />
+
         <LinearLayout
             android:id="@+id/layoutCantidad"
             android:layout_width="wrap_content"

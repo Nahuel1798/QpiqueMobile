@@ -55,18 +55,27 @@ public class CategoriasFragment extends Fragment {
 
         // Boton Editar (manda Bundle)
         vm.getCategoriaSeleccionadaEditar().observe(getViewLifecycleOwner(), categoria -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("categoria", categoria);
-            NavHostFragment.findNavController(this).navigate(R.id.action_nav_settings_to_editarCategoriaFragment, bundle);
-            vm.navegarCompletado();
+            // Solo navega si el objeto categoría no es null
+            if (categoria != null) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("categoria", categoria);
+                NavHostFragment.findNavController(this).navigate(R.id.action_nav_settings_to_editarCategoriaFragment, bundle);
+                // Resetea el LiveData en el ViewModel para que no se dispare de nuevo
+                vm.navegarCompletado();
+            }
         });
 
         // Boton Eliminar (manda Bundle)
         vm.getCategoriaSeleccionadaEliminar().observe(getViewLifecycleOwner(), categoria -> {
-            Bundle bundle = new Bundle();
-            bundle.putSerializable("categoria", categoria);
-            NavHostFragment.findNavController(this).navigate(R.id.action_nav_settings_to_eliminarCategoriaFragment, bundle);
-            vm.navegarCompletado();
+            // Solo navega si el objeto categoría no es null
+            if (categoria != null) {
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("categoria", categoria);
+                // El cursor estaba aquí, esta es la línea que falla
+                NavHostFragment.findNavController(this).navigate(R.id.action_nav_settings_to_eliminarCategoriaFragment, bundle);
+                // Resetea el LiveData en el ViewModel para que no se dispare de nuevo
+                vm.navegarCompletado();
+            }
         });
 
         // Boton Crear

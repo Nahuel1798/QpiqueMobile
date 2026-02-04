@@ -51,7 +51,6 @@ public class CarritoFragment extends Fragment {
                     public void onEliminar(Productos producto) {
                         carritoViewModel.quitarProducto(producto);
                     }
-
                     @Override
                     public void onCantidadCambiada() {
                         carritoViewModel.calcularTotal();

@@ -10,6 +10,10 @@ public class Categorias implements Serializable {
     private boolean estado;
     private String imagenUrl;
 
+    public Categorias() {
+
+    }
+
 
     public Categorias(int id, String nombre, boolean estado, String imagenUrl) {
         this.id = id;

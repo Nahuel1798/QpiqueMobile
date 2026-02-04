@@ -78,7 +78,7 @@
     <fragment
         android:id="@+id/crearProductoFragment"
         android:name="com.example.qpiqueapp.ui.productos.CrearProductoFragment"
-        android:label="CrearProductoFragment" >
+        android:label="Crear Producto" >
         <action
             android:id="@+id/action_crearProductoFragment_to_nav_transform"
             app:destination="@id/nav_transform" />
@@ -98,12 +98,12 @@
     <fragment
         android:id="@+id/logoutFragment"
         android:name="com.example.qpiqueapp.ui.perfil.LogoutFragment"
-        android:label="fragment_logout"
+        android:label="Logout"
         tools:layout="@layout/fragment_logout" />
     <fragment
         android:id="@+id/editarProductoFragment"
         android:name="com.example.qpiqueapp.ui.productos.EditarProductoFragment"
-        android:label="EditarProductoFragment" >
+        android:label="Editar Producto" >
         <action
             android:id="@+id/action_editarProductoFragment_to_nav_transform"
             app:destination="@id/nav_transform" />
@@ -114,7 +114,7 @@
     <fragment
         android:id="@+id/borrarFragment"
         android:name="com.example.qpiqueapp.ui.productos.BorrarProductoFragment"
-        android:label="BorrarFragment" >
+        android:label="Borrar" >
         <action
             android:id="@+id/action_borrarFragment_to_nav_transform"
             app:destination="@id/nav_transform" />
@@ -122,7 +122,7 @@
     <fragment
         android:id="@+id/crearClienteFragment"
         android:name="com.example.qpiqueapp.ui.clientes.CrearClienteFragment"
-        android:label="fragment_crear_cliente"
+        android:label="Crear Cliente"
         tools:layout="@layout/fragment_crear_cliente" >
         <action
             android:id="@+id/action_crearClienteFragment_to_nav_slideshow"
@@ -131,7 +131,7 @@
     <fragment
         android:id="@+id/borrarClienteFragment"
         android:name="com.example.qpiqueapp.ui.clientes.BorrarClienteFragment"
-        android:label="BorrarClienteFragment" >
+        android:label="Borrar Cliente" >
         <action
             android:id="@+id/action_borrarClienteFragment_to_nav_slideshow"
             app:destination="@id/nav_slideshow" />
@@ -139,7 +139,7 @@
     <fragment
         android:id="@+id/editarClienteFragment"
         android:name="com.example.qpiqueapp.ui.clientes.EditarClienteFragment"
-        android:label="EditarClienteFragment" >
+        android:label="Editar Cliente" >
         <action
             android:id="@+id/action_editarClienteFragment_to_nav_slideshow"
             app:destination="@id/nav_slideshow" />
@@ -147,7 +147,7 @@
     <fragment
         android:id="@+id/carritoFragment"
         android:name="com.example.qpiqueapp.ui.productos.CarritoFragment"
-        android:label="CarritoFragment" >
+        android:label="Carrito" >
         <action
             android:id="@+id/action_carritoFragment_to_nav_transform"
             app:destination="@id/nav_transform" />
@@ -161,7 +161,7 @@
     <fragment
         android:id="@+id/crearCategoriaFragment"
         android:name="com.example.qpiqueapp.ui.categoria.CrearCategoriaFragment"
-        android:label="fragment_crear_categoria"
+        android:label="Crear Categoria"
         tools:layout="@layout/fragment_crear_categoria" >
         <action
             android:id="@+id/action_crearCategoriaFragment_to_nav_settings"
@@ -170,7 +170,7 @@
     <fragment
         android:id="@+id/editarCategoriaFragment"
         android:name="com.example.qpiqueapp.ui.categoria.EditarCategoriaFragment"
-        android:label="fragment_editar_categoria"
+        android:label="Editar Categoria"
         tools:layout="@layout/fragment_editar_categoria" >
         <action
             android:id="@+id/action_editarCategoriaFragment_to_nav_settings"
@@ -179,7 +179,7 @@
     <fragment
         android:id="@+id/eliminarCategoriaFragment"
         android:name="com.example.qpiqueapp.ui.categoria.EliminarCategoriaFragment"
-        android:label="fragment_eliminar_categoria"
+        android:label="Eliminar Categoria"
         tools:layout="@layout/fragment_eliminar_categoria" >
         <action
             android:id="@+id/action_eliminarCategoriaFragment_to_nav_settings"
@@ -188,7 +188,7 @@
     <fragment
         android:id="@+id/borrarVentaFragment"
         android:name="com.example.qpiqueapp.ui.ventas.BorrarVentaFragment"
-        android:label="fragment_borrar_venta"
+        android:label="Borrar Venta"
         tools:layout="@layout/fragment_borrar_venta" >
         <action
             android:id="@+id/action_borrarVentaFragment_to_nav_reflow"
@@ -197,7 +197,7 @@
     <fragment
         android:id="@+id/editarVentaFragment"
         android:name="com.example.qpiqueapp.ui.ventas.EditarVentaFragment"
-        android:label="fragment_editar_venta"
+        android:label="Editar Venta"
         tools:layout="@layout/fragment_editar_venta" >
         <action
             android:id="@+id/action_editarVentaFragment_to_nav_reflow"
@@ -206,7 +206,7 @@
     <fragment
         android:id="@+id/crearVentaFragment"
         android:name="com.example.qpiqueapp.ui.ventas.CrearVentaFragment"
-        android:label="fragment_crear_venta"
+        android:label="Crear Venta"
         tools:layout="@layout/fragment_crear_venta" >
         <action
             android:id="@+id/action_crearVentaFragment_to_nav_reflow"
@@ -215,12 +215,12 @@
     <activity
         android:id="@+id/loginActivity"
         android:name="com.example.qpiqueapp.ui.login.LoginActivity"
-        android:label="activity_login"
+        android:label="Login"
         tools:layout="@layout/activity_login" />
     <fragment
         android:id="@+id/editarFragment"
         android:name="com.example.qpiqueapp.ui.perfil.EditarFragment"
-        android:label="fragment_editar"
+        android:label="Editar"
         tools:layout="@layout/fragment_editar" />
     <fragment
         android:id="@+id/usuariosFragment2"
@@ -237,7 +237,7 @@
     <fragment
         android:id="@+id/editarUsuarioFragment"
         android:name="com.example.qpiqueapp.ui.usuarios.EditarUsuarioFragment"
-        android:label="fragment_editar_usuario"
+        android:label="Editar Usuario"
         tools:layout="@layout/fragment_editar_usuario" >
         <action
             android:id="@+id/action_editarUsuarioFragment_to_usuariosFragment2"
@@ -246,7 +246,7 @@
     <fragment
         android:id="@+id/eliminarUsuarioFragment"
         android:name="com.example.qpiqueapp.ui.usuarios.EliminarUsuarioFragment"
-        android:label="fragment_eliminar_usuario"
+        android:label="Eliminar Usuario"
         tools:layout="@layout/fragment_eliminar_usuario" >
         <action
             android:id="@+id/action_eliminarUsuarioFragment_to_usuariosFragment2"

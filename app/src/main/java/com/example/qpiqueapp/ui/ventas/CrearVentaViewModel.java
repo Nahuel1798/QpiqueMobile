@@ -32,10 +32,6 @@ public class CrearVentaViewModel extends AndroidViewModel {
     }
 
     // Getter
-    public LiveData<Boolean> getCargando() {
-        return cargando;
-    }
-
     public LiveData<Boolean> getVentaCreada() {
         return ventaCreada;
     }

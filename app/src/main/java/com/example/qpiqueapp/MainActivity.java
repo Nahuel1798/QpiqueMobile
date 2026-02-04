@@ -38,22 +38,6 @@ public class MainActivity extends AppCompatActivity {
         assert navHostFragment != null;
         NavController navController = navHostFragment.getNavController();
 
-        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            if (destination.getId() == R.id.crearProductoFragment || destination.getId() == R.id.editarProductoFragment || destination.getId() == R.id.borrarFragment || destination.getId() == R.id.carritoFragment ||
-                    destination.getId() == R.id.crearClienteFragment || destination.getId() == R.id.editarClienteFragment || destination.getId() == R.id.borrarClienteFragment ||
-                    destination.getId() == R.id.crearCategoriaFragment || destination.getId() == R.id.editarCategoriaFragment || destination.getId() == R.id.eliminarCategoriaFragment ) {
-                // Si el destino es el Carrito o el Login, oculta el ActionBar
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().hide();
-                }
-            } else {
-                // Para todos los demás fragmentos, muéstralo
-                if (getSupportActionBar() != null) {
-                    getSupportActionBar().show();
-                }
-            }
-        });
-
         NavigationView navigationView = binding.navView;
         if (navigationView != null) {
             mAppBarConfiguration = new AppBarConfiguration.Builder(
