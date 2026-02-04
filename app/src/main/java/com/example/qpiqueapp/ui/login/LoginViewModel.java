@@ -7,8 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.LoginRequest;
-import com.example.qpiqueapp.modelo.LoginResponse;
+import com.example.qpiqueapp.modelo.login.LoginRequest;
+import com.example.qpiqueapp.modelo.login.LoginResponse;
 import com.example.qpiqueapp.request.ApiClient;
 
 import retrofit2.Call;

@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
-import com.example.qpiqueapp.modelo.Clientes;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
 
 import java.util.List;
 

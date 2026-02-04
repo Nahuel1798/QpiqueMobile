@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qpiqueapp.databinding.FragmentEliminarUsuarioBinding;
-import com.example.qpiqueapp.modelo.PerfilDto;
+import com.example.qpiqueapp.modelo.perfil.PerfilDto;
 
 
 public class EliminarUsuarioFragment extends Fragment {

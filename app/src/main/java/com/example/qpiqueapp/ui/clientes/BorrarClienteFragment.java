@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.qpiqueapp.databinding.FragmentBorrarClienteBinding;
-import com.example.qpiqueapp.modelo.Clientes;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
 
 public class BorrarClienteFragment extends Fragment {
     private FragmentBorrarClienteBinding binding;

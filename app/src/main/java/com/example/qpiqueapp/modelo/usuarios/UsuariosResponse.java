@@ -1,5 +1,6 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.usuarios;
 
+import com.example.qpiqueapp.modelo.perfil.PerfilDto;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;

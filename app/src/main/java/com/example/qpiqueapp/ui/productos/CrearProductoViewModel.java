@@ -1,21 +1,14 @@
 package com.example.qpiqueapp.ui.productos;
 
-import static android.app.Activity.RESULT_OK;
-
 import android.app.Application;
-import android.content.Intent;
-import android.net.Uri;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.Categorias;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
+import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.List;
@@ -26,7 +19,6 @@ import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.http.Multipart;
 
 public class CrearProductoViewModel extends AndroidViewModel {
 

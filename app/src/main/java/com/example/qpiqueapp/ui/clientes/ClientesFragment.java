@@ -17,7 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentClientesBinding;
-import com.example.qpiqueapp.modelo.Clientes;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
 import com.example.qpiqueapp.ui.ventas.VentasViewModel;
 
 import java.util.ArrayList;

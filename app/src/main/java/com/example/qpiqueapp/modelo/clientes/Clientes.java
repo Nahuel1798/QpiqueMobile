@@ -1,16 +1,29 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.clientes;
 
-public class ClientesCrearRequest {
+import java.io.Serializable;
+
+public class Clientes implements Serializable {
+    private int id;
     private String nombre;
     private String apellido;
     private String telefono;
     private String email;
 
-    public ClientesCrearRequest(String nombre, String apellido, String telefono, String email) {
+    // Constructores, getters y setters
+    public Clientes(int id, String nombre, String apellido, String telefono, String email) {
+        this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.telefono = telefono;
         this.email = email;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getNombre() {

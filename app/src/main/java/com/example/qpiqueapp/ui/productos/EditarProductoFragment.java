@@ -20,8 +20,8 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentEditarProductoBinding;
-import com.example.qpiqueapp.modelo.Categorias;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
+import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.ArrayList;

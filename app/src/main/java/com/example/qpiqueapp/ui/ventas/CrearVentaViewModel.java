@@ -7,10 +7,10 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.Clientes;
-import com.example.qpiqueapp.modelo.Productos;
-import com.example.qpiqueapp.modelo.VentaCrearRequest;
-import com.example.qpiqueapp.modelo.DetalleVentaRequest;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
+import com.example.qpiqueapp.modelo.productos.Productos;
+import com.example.qpiqueapp.modelo.venta.VentaCrearRequest;
+import com.example.qpiqueapp.modelo.venta.DetalleVentaRequest;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.ArrayList;

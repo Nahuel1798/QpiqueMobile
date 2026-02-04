@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.login;
 
 public class LoginRequest {
     private String email;
@@ -9,7 +9,7 @@ public class LoginRequest {
         this.password = password;
     }
 
-    // Getters y Setters (opcionales para el envío, pero es buena práctica tenerlos)
+    // Getters y Setters
     public String getEmail() {
         return email;
     }

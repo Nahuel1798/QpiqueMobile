@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qpiqueapp.databinding.FragmentEditarClienteBinding;
-import com.example.qpiqueapp.modelo.Clientes;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
 
 public class EditarClienteFragment extends Fragment {
 

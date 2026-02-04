@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.productos;
 
 import java.io.Serializable;
 

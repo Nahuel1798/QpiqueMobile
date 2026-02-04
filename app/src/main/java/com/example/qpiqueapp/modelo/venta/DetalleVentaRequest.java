@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.venta;
 
 public class DetalleVentaRequest {
     public int productoId;

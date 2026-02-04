@@ -4,8 +4,8 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
-import com.example.qpiqueapp.modelo.Clientes;
-import com.example.qpiqueapp.modelo.ClientesCrearRequest;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
+import com.example.qpiqueapp.modelo.clientes.ClientesCrearRequest;
 import com.example.qpiqueapp.request.ApiClient;
 
 import retrofit2.Call;

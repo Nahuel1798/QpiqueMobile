@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.PerfilDto;
+import com.example.qpiqueapp.modelo.perfil.PerfilDto;
 import com.example.qpiqueapp.request.ApiClient;
 
 import retrofit2.Call;

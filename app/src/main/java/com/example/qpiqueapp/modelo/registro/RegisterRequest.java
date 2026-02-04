@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.registro;
 
 public class RegisterRequest {
     private String email;

@@ -12,9 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentBorrarVentaBinding;
-import com.example.qpiqueapp.modelo.Ventas;
+import com.example.qpiqueapp.modelo.venta.Ventas;
 
 public class BorrarVentaFragment extends Fragment {
 

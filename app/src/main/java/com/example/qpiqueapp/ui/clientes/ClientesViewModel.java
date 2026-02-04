@@ -8,10 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.qpiqueapp.modelo.Clientes;
-import com.example.qpiqueapp.modelo.ClientesResponse;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
+import com.example.qpiqueapp.modelo.clientes.ClientesResponse;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.ArrayList;

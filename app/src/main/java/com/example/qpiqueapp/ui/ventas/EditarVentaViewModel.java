@@ -7,11 +7,9 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.DetalleVenta;
-import com.example.qpiqueapp.modelo.VentaCrearRequest;
-import com.example.qpiqueapp.modelo.Ventas;
-import com.example.qpiqueapp.request.ApiClient;
-import com.example.qpiqueapp.ui.productos.EditarProductoViewModel;
+import com.example.qpiqueapp.modelo.venta.DetalleVenta;
+import com.example.qpiqueapp.modelo.venta.VentaCrearRequest;
+import com.example.qpiqueapp.modelo.venta.Ventas;
 
 public class EditarVentaViewModel extends AndroidViewModel {
 

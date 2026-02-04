@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
-import com.example.qpiqueapp.modelo.Ventas;
+import com.example.qpiqueapp.modelo.venta.Ventas;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

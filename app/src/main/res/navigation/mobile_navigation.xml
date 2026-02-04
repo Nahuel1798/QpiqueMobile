@@ -109,7 +109,7 @@
             app:destination="@id/nav_transform" />
         <argument
             android:name="producto"
-            app:argType="com.example.qpiqueapp.modelo.Productos" />
+            app:argType="com.example.qpiqueapp.modelo.productos.Productos" />
     </fragment>
     <fragment
         android:id="@+id/borrarFragment"

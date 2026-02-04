@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.productos;
 
 public class ItemCarrito {
     private Productos producto;
@@ -10,6 +10,7 @@ public class ItemCarrito {
 
     // Getters y Setters para ambos campos
     public Productos getProducto() { return producto; }
+
     public void setProducto(Productos producto) { this.producto = producto; }
     public int getCantidad() { return cantidad; }
     public void setCantidad(int cantidad) { this.cantidad = cantidad; }

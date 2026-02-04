@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentCategoriasBinding;
-import com.example.qpiqueapp.modelo.Categorias;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
 
 import java.util.ArrayList;
 

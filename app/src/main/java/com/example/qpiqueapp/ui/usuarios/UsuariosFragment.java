@@ -17,7 +17,7 @@ import android.view.ViewGroup;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentUsuariosBinding;
-import com.example.qpiqueapp.modelo.PerfilDto;
+import com.example.qpiqueapp.modelo.perfil.PerfilDto;
 
 import java.util.ArrayList;
 

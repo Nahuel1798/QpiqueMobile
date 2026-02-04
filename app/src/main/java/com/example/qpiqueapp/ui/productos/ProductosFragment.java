@@ -20,8 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentProductosBinding;
-import com.example.qpiqueapp.modelo.Categorias;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
+import com.example.qpiqueapp.modelo.productos.Productos;
 
 import java.util.ArrayList;
 import java.util.HashSet;

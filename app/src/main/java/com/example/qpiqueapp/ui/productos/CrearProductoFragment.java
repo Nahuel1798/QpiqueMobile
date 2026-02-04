@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.qpiqueapp.databinding.FragmentCrearProductoBinding;
-import com.example.qpiqueapp.modelo.Categorias;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
 
 import java.io.File;
 import java.io.FileOutputStream;

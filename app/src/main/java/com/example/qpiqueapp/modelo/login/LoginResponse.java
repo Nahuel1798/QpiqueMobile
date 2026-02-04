@@ -1,4 +1,6 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.login;
+
+import com.example.qpiqueapp.modelo.usuarios.User;
 
 public class LoginResponse {
     private String token;

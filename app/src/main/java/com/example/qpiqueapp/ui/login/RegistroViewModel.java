@@ -8,7 +8,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.RegisterRequest;
+import com.example.qpiqueapp.modelo.registro.RegisterRequest;
 import com.example.qpiqueapp.request.ApiClient;
 
 import okhttp3.ResponseBody;

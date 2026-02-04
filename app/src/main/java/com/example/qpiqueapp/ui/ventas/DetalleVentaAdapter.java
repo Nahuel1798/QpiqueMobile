@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.qpiqueapp.R;
-import com.example.qpiqueapp.modelo.DetalleVenta;
+import com.example.qpiqueapp.modelo.venta.DetalleVenta;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.ArrayList;

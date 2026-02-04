@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.venta;
 
 import com.google.gson.annotations.SerializedName;
 

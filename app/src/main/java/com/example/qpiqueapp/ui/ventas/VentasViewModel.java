@@ -7,11 +7,10 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
-import com.example.qpiqueapp.modelo.Clientes;
-import com.example.qpiqueapp.modelo.Ventas;
-import com.example.qpiqueapp.modelo.VentasPaginadasResponse;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
+import com.example.qpiqueapp.modelo.venta.Ventas;
+import com.example.qpiqueapp.modelo.venta.VentasPaginadasResponse;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.ArrayList;

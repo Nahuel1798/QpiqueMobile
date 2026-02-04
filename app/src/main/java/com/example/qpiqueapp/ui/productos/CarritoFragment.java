@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentCarritoBinding;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.ui.ventas.VentasViewModel;
 
 import java.util.ArrayList;

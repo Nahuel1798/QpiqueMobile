@@ -1,23 +1,24 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.usuarios;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class PerfilDto implements Serializable {
-    public String id;
-    public String nombre;
-    public String apellido;
-    public String email;
-    public String userName;
-    public String avatar;
-    public List<String> roles;
+public class User {
+    private String id;
+    private String nombre;
+    private String apellido;
+    private String email;
+    private String avatar;
+    private List<String> roles;
 
-    public PerfilDto(String id, String nombre, String apellido, String email, String userName, String avatar, List<String> roles) {
+    public User(){
+
+    }
+
+    public User(String id, String nombre, String apellido, String email, String avatar, List<String> roles) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
         this.email = email;
-        this.userName = userName;
         this.avatar = avatar;
         this.roles = roles;
     }
@@ -54,14 +55,6 @@ public class PerfilDto implements Serializable {
         this.email = email;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     public String getAvatar() {
         return avatar;
     }
@@ -78,4 +71,3 @@ public class PerfilDto implements Serializable {
         this.roles = roles;
     }
 }
-

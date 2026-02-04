@@ -13,7 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.qpiqueapp.databinding.FragmentBorrarProductoBinding;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.productos.Productos;
 
 
 public class BorrarProductoFragment extends Fragment {

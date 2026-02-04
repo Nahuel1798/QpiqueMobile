@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.modelo;
+package com.example.qpiqueapp.modelo.productos;
 
 public class ProductoCrearRequest {
     private String nombre;
@@ -7,6 +7,13 @@ public class ProductoCrearRequest {
     private String descripcion;
     private String imagen;
 
+    public ProductoCrearRequest(String imagen, String descripcion, int categoriaId, Double precio, String nombre) {
+        this.imagen = imagen;
+        this.descripcion = descripcion;
+        this.categoriaId = categoriaId;
+        this.precio = precio;
+        this.nombre = nombre;
+    }
 
     public String getNombre() {
         return nombre;

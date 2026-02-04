@@ -21,7 +21,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import com.bumptech.glide.Glide;
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentEditarCategoriaBinding;
-import com.example.qpiqueapp.modelo.Categorias;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
 
 public class EditarCategoriaFragment extends Fragment {
 

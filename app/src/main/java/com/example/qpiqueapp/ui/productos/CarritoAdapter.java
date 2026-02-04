@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.qpiqueapp.R;
-import com.example.qpiqueapp.modelo.Productos;
+import com.example.qpiqueapp.modelo.productos.Productos;
 
 import java.util.List;
 

@@ -7,8 +7,8 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.PerfilDto;
-import com.example.qpiqueapp.modelo.UsuarioUpdateRequest;
+import com.example.qpiqueapp.modelo.perfil.PerfilDto;
+import com.example.qpiqueapp.modelo.usuarios.UsuarioUpdateRequest;
 import com.example.qpiqueapp.request.ApiClient;
 
 import java.util.List;

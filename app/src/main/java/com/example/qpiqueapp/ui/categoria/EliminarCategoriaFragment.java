@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
 import com.example.qpiqueapp.databinding.FragmentEliminarCategoriaBinding;
-import com.example.qpiqueapp.modelo.Categorias;
+import com.example.qpiqueapp.modelo.categoria.Categorias;
 
 
 public class EliminarCategoriaFragment extends Fragment {

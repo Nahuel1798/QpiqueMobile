@@ -7,7 +7,7 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.modelo.Clientes;
+import com.example.qpiqueapp.modelo.clientes.Clientes;
 import com.example.qpiqueapp.request.ApiClient;
 
 import okhttp3.ResponseBody;
