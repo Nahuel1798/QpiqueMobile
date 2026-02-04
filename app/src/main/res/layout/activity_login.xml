@@ -13,7 +13,6 @@
         android:paddingTop="65dp"
         android:paddingHorizontal="20dp">
 
-        <!-- Logo -->
         <ImageView
             android:id="@+id/login_logo"
             android:layout_width="140dp"
@@ -23,7 +22,6 @@
             android:contentDescription="@string/logo_del_local_de_pesca"
             android:src="@mipmap/ic_qpique" />
 
-        <!-- Título -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +32,6 @@
             android:textAlignment="center"
             android:layout_marginBottom="24dp" />
 
-        <!-- Email -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/email_layout"
             android:layout_width="match_parent"
@@ -50,7 +47,6 @@
                 android:imeOptions="actionNext" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Password -->
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/password_layout"
             android:layout_width="match_parent"
@@ -68,7 +64,6 @@
                 android:imeOptions="actionDone" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <!-- Botón Login -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/login_button"
             android:layout_width="match_parent"
@@ -78,7 +73,6 @@
             android:textSize="16sp"
             app:cornerRadius="12dp" />
 
-        <!-- Botón Registro -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/register_button"
             android:layout_width="match_parent"
@@ -92,7 +86,6 @@
             android:backgroundTint="@android:color/secondary_text_dark"
             android:textColor="?attr/colorPrimary" />
 
-        <!-- Loading -->
         <ProgressBar
             android:id="@+id/loading"
             android:layout_width="wrap_content"

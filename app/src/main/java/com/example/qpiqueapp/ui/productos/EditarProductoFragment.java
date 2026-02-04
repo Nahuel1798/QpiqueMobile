@@ -31,29 +31,17 @@ public class EditarProductoFragment extends Fragment {
 
     private FragmentEditarProductoBinding binding;
     private EditarProductoViewModel vm;
-    private List<Categorias> listaCategorias;
-    private Productos producto;
-
-    /* ===================== SELECTOR DE IMAGEN ===================== */
+    private List<Categorias> listaCategorias = new ArrayList<>();
 
     private final ActivityResultLauncher<Intent> selectImageLauncher =
             registerForActivityResult(
                     new ActivityResultContracts.StartActivityForResult(),
                     result -> {
                         if (result.getResultCode() == Activity.RESULT_OK &&
-                                result.getData() != null &&
-                                result.getData().getData() != null) {
+                                result.getData() != null) {
 
-                            Uri imagenUri = result.getData().getData();
-
-                            // Guardar en ViewModel
-                            vm.setImagenSeleccionada(imagenUri);
-
-                            // Preview
-                            Glide.with(this)
-                                    .load(imagenUri)
-                                    .circleCrop()
-                                    .into(binding.ivImagen);
+                            Uri uri = result.getData().getData();
+                            vm.setImagen(uri);
                         }
                     }
             );
@@ -67,45 +55,30 @@ public class EditarProductoFragment extends Fragment {
         binding = FragmentEditarProductoBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(EditarProductoViewModel.class);
 
-        /* ===================== RECIBIR PRODUCTO ===================== */
-
-        // Obtener Categoria
-        vm.getCategoria().observe(getViewLifecycleOwner(), categorias -> {
-            if (categorias != null && !categorias.isEmpty()){
-                listaCategorias = categorias;
-
-                List<String> nombresCategorias = new ArrayList<>();
-                for (Categorias c : categorias) {
-                    nombresCategorias.add(c.getNombre());
-                }
-
-                ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                        getContext(),
-                        android.R.layout.simple_spinner_item,
-                        nombresCategorias
-                );
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                binding.spCategoria.setAdapter(adapter);
-            }
-        });
+        Productos producto =
+                (Productos) getArguments().getSerializable("producto");
+        vm.inicializar(producto);
 
         vm.cargarCategorias();
 
-        // Obtener producto
+        // Observer
 
-        if (getArguments() != null) {
-            producto = (Productos) getArguments().getSerializable("producto");
-        }
+        vm.getCategorias().observe(getViewLifecycleOwner(), cats -> {
+            listaCategorias = cats;
 
-        if (producto == null) {
-            Toast.makeText(getContext(), "Producto no encontrado", Toast.LENGTH_LONG).show();
-            NavHostFragment.findNavController(this).popBackStack();
-            return binding.getRoot();
-        }
+            List<String> nombres = new ArrayList<>();
+            for (Categorias c : cats) nombres.add(c.getNombre());
 
-        vm.setProducto(producto);
-
-        /* ===================== OBSERVERS ===================== */
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(
+                    requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    nombres
+            );
+            adapter.setDropDownViewResource(
+                    android.R.layout.simple_spinner_dropdown_item
+            );
+            binding.spCategoria.setAdapter(adapter);
+        });
 
         vm.getProducto().observe(getViewLifecycleOwner(), p -> {
             binding.etNombre.setText(p.getNombre());
@@ -113,70 +86,49 @@ public class EditarProductoFragment extends Fragment {
             binding.etPrecio.setText(String.valueOf(p.getPrecio()));
             binding.etStock.setText(String.valueOf(p.getStock()));
 
-            if (listaCategorias != null && !listaCategorias.isEmpty()) {
-                int posicionSpinner = -1;
-                // 2. Buscar la posición del ID de la categoría del producto
-                for (int i = 0; i < listaCategorias.size(); i++) {
-                    if (listaCategorias.get(i).getId() == p.getCategoriaId()) {
-                        posicionSpinner = i;
-                        break; // Salimos del bucle una vez encontrada
-                    }
-                }
+            seleccionarCategoria(p.getCategoriaId());
 
-                // 3. Seleccionar la posición en el Spinner
-                if (posicionSpinner != -1) {
-                    binding.spCategoria.setSelection(posicionSpinner);
-                }
-            }
-
-            // Cargar imagen solo si el usuario no eligió otra
             if (vm.getImagenSeleccionada().getValue() != null) return;
 
-            String imagenUrl = p.getImagenUrl();
-            if (imagenUrl != null && !imagenUrl.startsWith("http")) {
-                imagenUrl = ApiClient.BASE_URL + imagenUrl;
+            String url = p.getImagenUrl();
+            if (url != null && !url.startsWith("http")) {
+                url = ApiClient.BASE_URL + url;
             }
 
             Glide.with(this)
-                    .load(imagenUrl)
+                    .load(url)
                     .placeholder(R.drawable.ic_productos)
-                    .error(R.drawable.ic_productos)
                     .circleCrop()
                     .into(binding.ivImagen);
         });
 
-        vm.getEstado().observe(getViewLifecycleOwner(), state -> {
-            if (state == null) return;
-
-            binding.btnGuardar.setEnabled(!state.loading);
-
-            if (state.success) {
-                Toast.makeText(getContext(),
-                        "Producto actualizado correctamente",
-                        Toast.LENGTH_SHORT).show();
-
-                NavHostFragment.findNavController(this).popBackStack();
-            }
-
-            if (state.error != null) {
-                Toast.makeText(getContext(), state.error, Toast.LENGTH_SHORT).show();
+        vm.getImagenSeleccionada().observe(getViewLifecycleOwner(), uri -> {
+            if (uri != null) {
+                Glide.with(this)
+                        .load(uri)
+                        .circleCrop()
+                        .into(binding.ivImagen);
             }
         });
 
+        vm.getLoading().observe(getViewLifecycleOwner(),
+                l -> binding.btnGuardar.setEnabled(!Boolean.TRUE.equals(l)));
+
         vm.getMensaje().observe(getViewLifecycleOwner(), msg -> {
             if (msg != null) {
-                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                vm.mensajeConsumido();
             }
         });
 
         vm.getVolverAtras().observe(getViewLifecycleOwner(), volver -> {
             if (Boolean.TRUE.equals(volver)) {
                 NavHostFragment.findNavController(this).popBackStack();
+                vm.volverConsumido();
             }
         });
 
-
-        /* ===================== ACCIONES ===================== */
+        // Acciones de Botones
 
         binding.btnCambiarImagen.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
@@ -185,29 +137,28 @@ public class EditarProductoFragment extends Fragment {
         });
 
         binding.btnGuardar.setOnClickListener(v -> {
-            String nombre = binding.etNombre.getText().toString().trim();
-            String descripcion = binding.etDescripcion.getText().toString().trim();
-            String precioStr = binding.etPrecio.getText().toString().trim();
-            String stockStr = binding.etStock.getText().toString().trim();
-            // Obtener la posición seleccionada en el Spinner
-            int posicionSeleccionada = binding.spCategoria.getSelectedItemPosition();
-
-            // Validar que la posición y la lista sean válidas
-            if (posicionSeleccionada >= 0 && listaCategorias != null && posicionSeleccionada < listaCategorias.size()) {
-                // Obtener el ID de la categoría
-                int categoriaId = listaCategorias.get(posicionSeleccionada).getId();
-
+            int pos = binding.spCategoria.getSelectedItemPosition();
+            if (pos >= 0 && pos < listaCategorias.size()) {
                 vm.guardarCambios(
-                        nombre,
-                        descripcion,
-                        precioStr,
-                        stockStr,
-                        categoriaId
+                        binding.etNombre.getText().toString().trim(),
+                        binding.etDescripcion.getText().toString().trim(),
+                        binding.etPrecio.getText().toString().trim(),
+                        binding.etStock.getText().toString().trim(),
+                        listaCategorias.get(pos).getId()
                 );
             }
         });
 
         return binding.getRoot();
+    }
+
+    private void seleccionarCategoria(int categoriaId) {
+        for (int i = 0; i < listaCategorias.size(); i++) {
+            if (listaCategorias.get(i).getId() == categoriaId) {
+                binding.spCategoria.setSelection(i);
+                break;
+            }
+        }
     }
 
     @Override

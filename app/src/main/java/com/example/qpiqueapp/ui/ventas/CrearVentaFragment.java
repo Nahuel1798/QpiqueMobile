@@ -29,30 +29,21 @@ public class CrearVentaFragment extends Fragment {
     private CarritoAdapter adapter;
 
     @Override
-    public View onCreateView(
-            @NonNull LayoutInflater inflater,
-            ViewGroup container,
-            Bundle savedInstanceState
-    ) {
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCrearVentaBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(
-            @NonNull View view,
-            @Nullable Bundle savedInstanceState
-    ) {
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        // ViewModels compartidos
         carritoViewModel = new ViewModelProvider(requireActivity())
                 .get(CarritoViewModel.class);
 
         crearVentaViewModel = new ViewModelProvider(requireActivity())
                 .get(CrearVentaViewModel.class);
 
-        // Recycler productos (solo lectura)
+         // solo lectura
         adapter = new CarritoAdapter(
                 new ArrayList<>(),
                 null
@@ -100,7 +91,7 @@ public class CrearVentaFragment extends Fragment {
                 }
         );
 
-        // Botón confirmar venta
+        // Boton confirmar venta
         binding.btnCrearVenta.setOnClickListener(v -> {
             crearVentaViewModel.crearVenta(
                     carritoViewModel.getCarrito().getValue()
@@ -119,7 +110,6 @@ public class CrearVentaFragment extends Fragment {
                         ).show();
 
                         carritoViewModel.limpiarCarrito();
-                        // Navegar a la pantalla de detalles de la venta en lugar de volver atrás
                         NavHostFragment.findNavController(this)
                                 .navigate(R.id.action_crearVentaFragment_to_nav_reflow);
                     }

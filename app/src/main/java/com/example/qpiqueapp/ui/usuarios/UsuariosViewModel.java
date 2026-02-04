@@ -39,6 +39,8 @@ public class UsuariosViewModel extends AndroidViewModel {
     public LiveData<Boolean> getCargando() { return cargando; }
     public LiveData<String> getMensajeError() { return mensajeError; }
 
+    // Metodos
+
     public void cargarInicial() {
         resetear();
         cargarUsuarios();
@@ -78,12 +80,10 @@ public class UsuariosViewModel extends AndroidViewModel {
                     public void onResponse(Call<UsuariosResponse> call, Response<UsuariosResponse> response) {
                         cargando.setValue(false);
                         if (response.isSuccessful() && response.body() != null) {
-                            // ... tu lógica actual para una respuesta exitosa ...
                             List<PerfilDto> nuevos = response.body().getUsuarios();
                             total.setValue(response.body().getTotal());
                             if (nuevos == null || nuevos.isEmpty()) {
                                 ultimaPagina = true;
-                                // Si es la primera página y no hay resultados, asegúrate de que la lista esté vacía.
                                 if (page == 1) {
                                     acumulados.clear();
                                     listaUsuarios.setValue(new ArrayList<>(acumulados));
@@ -92,8 +92,7 @@ public class UsuariosViewModel extends AndroidViewModel {
                             }
                             acumulados.addAll(nuevos);
                             listaUsuarios.setValue(new ArrayList<>(acumulados));
-                        } else { // <-- AÑADIR ESTE BLOQUE ELSE
-                            // Manejar respuestas de error del servidor (ej. 401, 403, 500)
+                        } else {
                             String errorBody = "Error desconocido.";
                             try {
                                 if (response.errorBody() != null) {
@@ -107,7 +106,7 @@ public class UsuariosViewModel extends AndroidViewModel {
                     }
                     @Override
                     public void onFailure(Call<UsuariosResponse> call, Throwable t) {
-                        cargando.setValue(false); // <-- AÑADIR ESTA LÍNEA
+                        cargando.setValue(false);
                         mensajeError.setValue("Error al cargar usuarios: " + t.getMessage());
                     }
                 });

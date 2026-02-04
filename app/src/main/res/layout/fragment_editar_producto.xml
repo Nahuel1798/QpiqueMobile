@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- TÍTULO -->
         <TextView
             android:text="Editar producto"
             android:textSize="22sp"
@@ -22,7 +21,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
-        <!-- CARD CONTENEDORA -->
         <com.google.android.material.card.MaterialCardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +34,6 @@
                 android:orientation="vertical"
                 android:padding="16dp">
 
-                <!-- NOMBRE -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -50,7 +47,6 @@
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- DESCRIPCIÓN -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -65,7 +61,6 @@
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- PRECIO -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -80,7 +75,6 @@
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- STOCK -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
@@ -93,7 +87,6 @@
                         android:layout_height="wrap_content"/>
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- CATEGORÍA -->
                 <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,12 +99,9 @@
                         android:layout_height="wrap_content"
                         android:spinnerMode="dropdown" />
                 </com.google.android.material.textfield.TextInputLayout>
-
-
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <!-- IMAGEN -->
         <TextView
             android:text="Imagen del producto"
             android:textStyle="bold"
@@ -140,7 +130,6 @@
             android:text="Cambiar imagen"
             app:icon="@drawable/ic_productos"/>
 
-        <!-- GUARDAR -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnGuardar"
             android:layout_width="match_parent"

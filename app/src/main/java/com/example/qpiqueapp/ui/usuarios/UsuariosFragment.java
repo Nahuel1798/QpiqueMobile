@@ -58,12 +58,14 @@ public class UsuariosFragment extends Fragment {
                                 .navigate(R.id.action_usuariosFragment2_to_eliminarUsuarioFragment, bundle);
                     }
                 });
+
         binding.listaUsuarios.setAdapter(adapter);
         vm.getListaUsuarios().observe(getViewLifecycleOwner(), usuarios -> {
             adapter.setUsuarios(usuarios);
         });
         vm.cargarInicial();
 
+        // Metodo para buscar
         binding.searchViewUsuario.setOnQueryTextListener(
                 new SearchView.OnQueryTextListener() {
                     @Override
@@ -84,6 +86,7 @@ public class UsuariosFragment extends Fragment {
                 }
         );
 
+        // Scroll infinito
         binding.listaUsuarios.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {

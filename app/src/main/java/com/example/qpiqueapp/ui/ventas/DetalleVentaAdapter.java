@@ -21,7 +21,7 @@ public class DetalleVentaAdapter extends RecyclerView.Adapter<DetalleVentaAdapte
 
     private List<DetalleVenta> detalles = new ArrayList<>();
     public DetalleVentaAdapter() {
-        // lista vacía, nunca null
+
     }
 
     public void setDetalles(List<DetalleVenta> nuevosDetalles) {
@@ -53,8 +53,6 @@ public class DetalleVentaAdapter extends RecyclerView.Adapter<DetalleVentaAdapte
 
         double subtotal = d.getCantidad() * d.getPrecioUnitario();
         holder.tvSubtotal.setText("$" + subtotal);
-
-        String img = d.getImagenUrl();
 
         Glide.with(holder.itemView)
                 .load(ApiClient.BASE_URL + d.getImagenUrl())

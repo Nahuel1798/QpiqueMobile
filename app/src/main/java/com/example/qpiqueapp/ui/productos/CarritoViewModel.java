@@ -21,11 +21,11 @@ public class CarritoViewModel extends AndroidViewModel {
     private final MutableLiveData<Double> total =
             new MutableLiveData<>(0.0);
 
-    private final MutableLiveData<Clientes> clienteSeleccionado = new MutableLiveData<>();
-
     public CarritoViewModel(@NonNull Application application) {
         super(application);
     }
+
+    // Getter
 
     public LiveData<List<Productos>> getCarrito() {
         return carrito;
@@ -34,13 +34,8 @@ public class CarritoViewModel extends AndroidViewModel {
     public LiveData<Double> getTotal() {
         return total;
     }
-    public LiveData<Clientes> getClienteSeleccionado() {
-        return clienteSeleccionado;
-    }
 
-    public void setClienteSeleccionado(Clientes cliente) {
-        clienteSeleccionado.setValue(cliente);
-    }
+    // Metodos
     public void agregarProducto(Productos producto) {
         List<Productos> lista = new ArrayList<>(carrito.getValue());
 

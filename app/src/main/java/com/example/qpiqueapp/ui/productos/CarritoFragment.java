@@ -40,7 +40,7 @@ public class CarritoFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        // ViewModel compartido con la Activity
+        // ViewModel
         carritoViewModel = new ViewModelProvider(requireActivity()).get(CarritoViewModel.class);
 
         // Adapter
@@ -66,16 +66,13 @@ public class CarritoFragment extends Fragment {
                 getViewLifecycleOwner(),
                 cliente -> {
                     if (cliente != null) {
-                        // Hay un cliente seleccionado
                         binding.cardCliente.setVisibility(View.VISIBLE);
                         binding.tvClienteNombre.setText(
                                 cliente.getNombre() + " " + cliente.getApellido()
                         );
                         binding.tvClienteEmail.setText(cliente.getEmail());
-                        // Opcional: Cambiar el texto del botón principal
                         binding.btnSeleccionarCliente.setText("Cambiar Cliente");
                     } else {
-                        // No hay cliente seleccionado
                         binding.cardCliente.setVisibility(View.GONE);
                         binding.btnSeleccionarCliente.setText("Seleccionar Cliente");
                     }
@@ -111,7 +108,7 @@ public class CarritoFragment extends Fragment {
         binding.btnSeleccionarCliente.setOnClickListener(v -> {
             // Crea un Bundle para los argumentos
             Bundle args = new Bundle();
-            args.putBoolean("modoSeleccion", true); // Ponemos nuestro argumento en true
+            args.putBoolean("modoSeleccion", true);
 
             // Navega a la pantalla de selección de clientes pasando los argumentos
             NavHostFragment.findNavController(this)

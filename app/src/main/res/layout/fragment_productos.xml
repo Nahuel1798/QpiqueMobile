@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/colorSurfaceContainerLowest"> <!-- Fondo más sutil -->
+    android:background="?attr/colorSurfaceContainerLowest">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -13,7 +13,6 @@
         android:background="?attr/colorSurface"
         app:liftOnScroll="true">
 
-        <!-- Toolbar -->
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -25,7 +24,6 @@
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
-                <!-- Categorías -->
                 <com.google.android.material.textfield.TextInputLayout
                     style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                     android:layout_width="0dp"
@@ -42,7 +40,6 @@
                         tools:ignore="LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <!-- Nuevo producto -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNuevoProducto"
                     style="?attr/materialButtonOutlinedStyle"
@@ -55,7 +52,6 @@
 
         </com.google.android.material.appbar.MaterialToolbar>
 
-        <!-- 🔍 Buscador de productos -->
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchViewProductos"
             android:layout_width="match_parent"
@@ -67,7 +63,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Lista para mostrar los productos -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaProductos"
         android:layout_width="match_parent"
@@ -78,7 +73,6 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         tools:listitem="@layout/item_productos" />
 
-    <!-- Botón Flotante para el Carrito (sin cambios) -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabCarrito"
         android:layout_width="wrap_content"
@@ -89,7 +83,6 @@
         android:src="@drawable/ic_shopping_cart"
         app:fabSize="normal" />
 
-    <!-- Badge para el contador del carrito (sin cambios) -->
     <TextView
         android:id="@+id/tvContadorCarrito"
         android:layout_width="wrap_content"

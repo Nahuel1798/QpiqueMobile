@@ -14,7 +14,6 @@
         android:layout_height="wrap_content"
         android:padding="12dp">
 
-        <!-- Imagen del Producto -->
         <ImageView
             android:id="@+id/imgProducto"
             android:layout_width="70dp"
@@ -26,7 +25,6 @@
             app:layout_constraintBottom_toBottomOf="parent"
             tools:ignore="ContentDescription" />
 
-        <!-- Nombre del Producto -->
         <TextView
             android:id="@+id/tvNombreProducto"
             android:layout_width="0dp"
@@ -39,7 +37,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Nombre del Producto" />
 
-        <!-- Precio Unitario -->
         <TextView
             android:id="@+id/tvPrecioUnitario"
             android:layout_width="wrap_content"
@@ -51,7 +48,6 @@
             app:layout_constraintTop_toBottomOf="@+id/tvNombreProducto"
             tools:text="Precio: $150.00" />
 
-        <!-- Selector de Cantidad -->
         <LinearLayout
             android:id="@+id/layoutCantidad"
             android:layout_width="wrap_content"
@@ -88,7 +84,6 @@
                 android:contentDescription="Sumar cantidad" />
         </LinearLayout>
 
-        <!-- Botón Eliminar -->
         <ImageButton
             android:id="@+id/btnEliminarItem"
             style="@style/Widget.AppCompat.Button.Borderless"

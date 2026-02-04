@@ -2,8 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <!-- Contenedor para el botón, con padding para que no toque los bordes -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,7 +16,6 @@
             android:text="Nuevo Categoria" />
     </LinearLayout>
 
-    <!-- Lista de clientes -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaCategorias"
         android:layout_width="match_parent"

@@ -41,7 +41,7 @@ public class LogoutFragment extends Fragment {
             }
         });
 
-        // Botón para cerrar sesión
+        // Boton para cerrar sesion
         vm.cerrarSesion();
 
         return binding.getRoot();

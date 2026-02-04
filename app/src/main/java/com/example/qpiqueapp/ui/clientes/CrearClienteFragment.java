@@ -32,7 +32,7 @@ public class CrearClienteFragment extends Fragment {
         configurarUI();
         observarViewModel();
 
-        return binding.getRoot(); // 🔥 ESTO FALTABA
+        return binding.getRoot();
     }
 
     private void configurarUI() {

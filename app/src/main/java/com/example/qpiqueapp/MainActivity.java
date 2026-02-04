@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = navHostFragment.getNavController();
 
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
-            // El 'id' es el que definiste en tu archivo de navegación (nav_graph.xml)
             if (destination.getId() == R.id.crearProductoFragment || destination.getId() == R.id.editarProductoFragment || destination.getId() == R.id.borrarFragment || destination.getId() == R.id.carritoFragment ||
                     destination.getId() == R.id.crearClienteFragment || destination.getId() == R.id.editarClienteFragment || destination.getId() == R.id.borrarClienteFragment ||
                     destination.getId() == R.id.crearCategoriaFragment || destination.getId() == R.id.editarCategoriaFragment || destination.getId() == R.id.eliminarCategoriaFragment ) {
@@ -78,12 +77,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         boolean result = super.onCreateOptionsMenu(menu);
-        // Using findViewById because NavigationView exists in different layout files
-        // between w600dp and w1240dp
         NavigationView navView = findViewById(R.id.nav_view);
         if (navView == null) {
-            // The navigation drawer already has the items including the items in the overflow menu
-            // We only inflate the overflow menu if the navigation drawer isn't visible
             getMenuInflater().inflate(R.menu.overflow, menu);
         }
         return result;

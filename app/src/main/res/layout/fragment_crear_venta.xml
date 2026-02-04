@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:padding="12dp">
 
-    <!-- CARD CLIENTE -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardCliente"
         android:layout_width="0dp"
@@ -41,7 +40,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- CARD PRODUCTOS -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardProductos"
         android:layout_width="0dp"
@@ -77,7 +75,6 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- CARD TOTAL -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardTotal"
         android:layout_width="0dp"

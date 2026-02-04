@@ -1,14 +1,12 @@
 package com.example.qpiqueapp.ui.login;
 
 import android.app.Application;
-import android.content.Intent;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.qpiqueapp.MainActivity;
 import com.example.qpiqueapp.modelo.LoginRequest;
 import com.example.qpiqueapp.modelo.LoginResponse;
 import com.example.qpiqueapp.request.ApiClient;
@@ -58,7 +56,7 @@ public class LoginViewModel extends AndroidViewModel {
                             );
 
                             mensaje.setValue("Bienvenido");
-                            loginOk.setValue(true); // 🔥 EVENTO
+                            loginOk.setValue(true);
                         } else {
                             mensaje.setValue("Usuario o contraseña incorrectos");
                         }

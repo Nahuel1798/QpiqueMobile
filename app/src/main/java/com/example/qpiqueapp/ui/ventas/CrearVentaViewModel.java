@@ -31,7 +31,7 @@ public class CrearVentaViewModel extends AndroidViewModel {
         super(application);
     }
 
-    // -------- ESTADOS --------
+    // Getter
     public LiveData<Boolean> getCargando() {
         return cargando;
     }
@@ -44,7 +44,6 @@ public class CrearVentaViewModel extends AndroidViewModel {
         return error;
     }
 
-    // -------- CLIENTE --------
     public void setCliente(Clientes cliente) {
         this.cliente = cliente;
     }
@@ -54,7 +53,7 @@ public class CrearVentaViewModel extends AndroidViewModel {
     }
 
 
-    // CREAR VENTA
+    // Metodos
     public void crearVenta(List<Productos> carrito) {
 
         if (cliente == null || carrito == null || carrito.isEmpty()) {
@@ -96,7 +95,6 @@ public class CrearVentaViewModel extends AndroidViewModel {
                             } catch (java.io.IOException e) {
                                 e.printStackTrace();
                             }
-                            // Es útil loguear el código de error y el cuerpo para depurar
                             error.setValue("Error al crear la venta. Código: " + response.code() + " - " + errorBodyStr);
                         }
                     }
@@ -104,7 +102,6 @@ public class CrearVentaViewModel extends AndroidViewModel {
                     @Override
                     public void onFailure(@NonNull Call<ResponseBody> call, @NonNull Throwable t) {
                         cargando.setValue(false);
-                        // También es bueno incluir el mensaje de la excepción
                         error.setValue("Error de conexión: " + t.getMessage());
                     }
                 });

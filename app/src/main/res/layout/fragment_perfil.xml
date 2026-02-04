@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".ui.perfil.PerfilFragment"> <!-- Reemplaza con el contexto de tu fragmento -->
+    tools:context=".ui.perfil.PerfilFragment">
 
-    <!-- ImageView para el avatar del perfil -->
     <ImageView
         android:id="@+id/ivProfileAvatar"
         android:layout_width="96dp"
@@ -16,9 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:src="@tools:sample/avatars" /> <!-- Imagen de muestra para el diseñador -->
+        tools:src="@tools:sample/avatars" />
 
-    <!-- Nombre del usuario -->
     <TextView
         android:id="@+id/tvNombre"
         android:layout_width="wrap_content"
@@ -29,9 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivProfileAvatar"
-        tools:text="Nombre Apellido" /> <!-- Texto de muestra para el diseñador -->
+        tools:text="Nombre Apellido" />
 
-    <!-- Email del usuario -->
     <TextView
         android:id="@+id/tvEmail"
         android:layout_width="wrap_content"
@@ -44,7 +41,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvNombre"
         tools:text="usuario@email.com" />
 
-    <!-- Roles del usuario -->
     <TextView
         android:id="@+id/tvRoles"
         android:layout_width="wrap_content"
@@ -56,7 +52,6 @@
         app:layout_constraintTop_toBottomOf="@+id/tvEmail"
         tools:text="Administrador, Usuario" />
 
-    <!-- Contenedor para los botones de acción -->
     <LinearLayout
         android:id="@+id/button_container"
         android:layout_width="wrap_content"
@@ -67,7 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvRoles">
 
-        <!-- Botón para editar perfil -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnEditProfile"
             style="?attr/materialButtonOutlinedStyle"
@@ -75,7 +69,6 @@
             android:layout_height="wrap_content"
             android:text="@string/editar_perfil" />
 
-        <!-- Botón para cerrar sesión -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnLogout"
             style="?attr/materialButtonStyle"

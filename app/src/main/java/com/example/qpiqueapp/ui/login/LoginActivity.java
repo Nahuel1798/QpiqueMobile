@@ -24,14 +24,14 @@ public class LoginActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        // Mensajes (errores / info)
+        // Mensajes
         vm.getMensaje().observe(this, mensaje -> {
             if (mensaje != null) {
                 Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
             }
         });
 
-        // Login OK → navegar
+        // Login
         vm.getLoginOk().observe(this, ok -> {
             if (ok != null && ok) {
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -40,14 +40,14 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        // Botón Login
+        // Boton Login
         binding.loginButton.setOnClickListener(v -> {
             String usuario = binding.email.getText().toString().trim();
             String clave = binding.password.getText().toString().trim();
             vm.Logueo(usuario, clave);
         });
 
-        // Botón Registro
+        // Boton Registro
         binding.registerButton.setOnClickListener(v -> {
             Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);
             startActivity(intent);

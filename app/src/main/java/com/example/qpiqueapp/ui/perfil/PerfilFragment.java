@@ -69,7 +69,7 @@ public class PerfilFragment extends Fragment {
                 String baseUrl = BASE_URL;
                 String avatarUrl = perfil.avatar;
 
-                // Comprueba si la URL es relativa y ajústala si es necesario
+                // Construir la URL final del avatar
                 if (avatarUrl != null && !avatarUrl.startsWith("http")) {
                     avatarUrl = baseUrl + avatarUrl;
                 }
@@ -97,7 +97,7 @@ public class PerfilFragment extends Fragment {
 
         vm.getErrorLiveData().observe(getViewLifecycleOwner(), error -> {
             if (error != null) {
-                // Manejar el error
+                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show();
             }
         });
         return view;

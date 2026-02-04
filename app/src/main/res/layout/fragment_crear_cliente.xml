@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Título -->
     <TextView
         android:id="@+id/tvTitulo"
         android:layout_width="0dp"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Scroll para los campos de entrada -->
     <ScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -33,7 +31,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- Nombre -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilNombre"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -49,7 +46,6 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Apellido -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilApellido"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -66,7 +62,6 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Teléfono -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilTelefono"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -83,7 +78,6 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Email -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilEmail"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -103,7 +97,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <!-- Botón Guardar -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardarCliente"
         style="@style/Widget.Material3.Button"
@@ -116,7 +109,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <!-- Progress -->
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"

@@ -45,7 +45,7 @@ public class ProductosViewModel extends AndroidViewModel {
         super(application);
     }
 
-    /* ===================== GETTERS ===================== */
+    // Getter
 
     public LiveData<List<Productos>> getListaProductos() {
         return listaProductos;
@@ -63,7 +63,7 @@ public class ProductosViewModel extends AndroidViewModel {
         return total;
     }
 
-    /* ===================== ACCIONES ===================== */
+    // Acciones
 
     public void cargarInicial() {
         resetear();
@@ -88,7 +88,7 @@ public class ProductosViewModel extends AndroidViewModel {
         cargarProductos();
     }
 
-    /* ===================== LOGICA ===================== */
+    // Metodos
 
     private void resetear() {
         page = 1;

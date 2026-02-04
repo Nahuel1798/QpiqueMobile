@@ -67,23 +67,17 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         Glide.with(holder.itemView) // Usar el contexto guardado
                 .load(ApiClient.BASE_URL + producto.getImagenUrl())
                 .placeholder(R.drawable.ic_settings_black_24dp)
-                .error(R.drawable.ic_settings_black_24dp) // Usar un drawable para el error
+                .error(R.drawable.ic_settings_black_24dp)
                 .into(holder.imgPortada);
-        // --- LÓGICA PRINCIPAL PARA EL BOTÓN DE CARRITO ---
 
-        // 1. Configura el estado inicial del botón al mostrar el item
         actualizarBotonCarrito(holder.btnAgregarCarrito, producto);
-
-        // 2. Modifica el listener para que sea un toggle
         holder.btnAgregarCarrito.setOnClickListener(v -> {
             if (listener != null) {
                 if (productosAgregadosIds.contains(producto.getId())) {
-                    // Si ya está, lo quitamos
                     listener.onQuitarCarrito(producto);
-                    // Actualizamos nuestro set local para mantener consistencia inmediata
+                    // Actualizamos nuestro set local
                     productosAgregadosIds.remove(producto.getId());
                 } else {
-                    // Si no está, lo agregamos
                     listener.onAgregarCarrito(producto);
                     // Actualizamos nuestro set local
                     productosAgregadosIds.add(producto.getId());
@@ -92,9 +86,6 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
                 actualizarBotonCarrito(holder.btnAgregarCarrito, producto);
             }
         });
-
-
-        // --- Listeners de Editar y Eliminar (se mantienen igual) ---
         holder.btnEditar.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onEditar(producto);
@@ -114,7 +105,6 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
 
     private void actualizarBotonCarrito(Button boton, Productos producto) {
         if (productosAgregadosIds.contains(producto.getId())) {
-            // El producto está en el carrito: configurar para "Quitar"
             boton.setText("Quitar");
             // Opcional: Cambiar ícono. Asegúrate de tener ic_remove_shopping_cart en res/drawable
             boton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_shopping_cart, 0, 0, 0);

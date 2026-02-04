@@ -1,6 +1,10 @@
 package com.example.qpiqueapp.ui.clientes;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -8,16 +12,11 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
-import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentEditarClienteBinding;
 import com.example.qpiqueapp.modelo.Clientes;
 
 public class EditarClienteFragment extends Fragment {
+
     private FragmentEditarClienteBinding binding;
     private EditarClienteViewModel vm;
 
@@ -32,28 +31,48 @@ public class EditarClienteFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
 
         vm = new ViewModelProvider(this).get(EditarClienteViewModel.class);
 
-        Clientes cliente = (Clientes) getArguments().getSerializable("cliente");
-        if (cliente == null) {
-            Toast.makeText(getContext(), "Cliente no encontrado", Toast.LENGTH_LONG).show();
-            NavHostFragment.findNavController(this).popBackStack();
-            return;
-        }
-        vm.setCliente(cliente);
+        Clientes cliente =
+                (Clientes) getArguments().getSerializable("cliente");
+        vm.inicializar(cliente);
 
-        // Cargar Datos
+        // Observer
+
         vm.getCliente().observe(getViewLifecycleOwner(), c -> {
+            if (c == null) return;
             binding.etNombre.setText(c.getNombre());
             binding.etApellido.setText(c.getApellido());
             binding.etTelefono.setText(c.getTelefono());
             binding.etEmail.setText(c.getEmail());
         });
 
-        // Guardar
+        vm.getLoading().observe(getViewLifecycleOwner(), loading ->
+                binding.btnGuardar.setEnabled(!Boolean.TRUE.equals(loading))
+        );
+
+        vm.getMensaje().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                vm.mensajeConsumido();
+            }
+        });
+
+        vm.getVolverAtras().observe(getViewLifecycleOwner(), volver -> {
+            if (Boolean.TRUE.equals(volver)) {
+                NavHostFragment.findNavController(this).popBackStack();
+                vm.volverConsumido();
+            }
+        });
+
+        // Acciones de botnes
+
         binding.btnGuardar.setOnClickListener(v ->
                 vm.guardarCambios(
                         binding.etNombre.getText().toString(),
@@ -62,22 +81,11 @@ public class EditarClienteFragment extends Fragment {
                         binding.etEmail.getText().toString()
                 )
         );
-        // Estado
-        vm.getEstado().observe(getViewLifecycleOwner(), state -> {
-            if (state == null) return;
-            if (state.loading) {
-                binding.btnGuardar.setEnabled(false);
-            } else {
-                binding.btnGuardar.setEnabled(true);
-            }
-            if (state.success) {
-                Toast.makeText(getContext(), "Cliente actualizado", Toast.LENGTH_SHORT).show();
-                NavHostFragment.findNavController(this).popBackStack();
-            }
+    }
 
-            if (state.error != null) {
-                Toast.makeText(getContext(), state.error, Toast.LENGTH_SHORT).show();
-            }
-        });
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
     }
 }

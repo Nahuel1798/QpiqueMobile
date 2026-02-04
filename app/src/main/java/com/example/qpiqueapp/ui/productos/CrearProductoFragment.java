@@ -140,7 +140,7 @@ public class CrearProductoFragment extends Fragment {
             );
 
             imagenPart = MultipartBody.Part.createFormData(
-                    "Imagen",              // ⚠️ MISMO nombre que en ProductoDto
+                    "Imagen",
                     tempFile.getName(),
                     requestFile
             );

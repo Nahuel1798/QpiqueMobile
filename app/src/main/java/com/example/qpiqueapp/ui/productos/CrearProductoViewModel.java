@@ -34,18 +34,15 @@ public class CrearProductoViewModel extends AndroidViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<List<Categorias>> categoria = new MutableLiveData<>();
 
-
     public CrearProductoViewModel(@NonNull Application application) {
         super(application);
     }
-
     public LiveData<Boolean> getExito() { return exito; }
 
     public LiveData<String> getError() { return error; }
 
     public LiveData<List<Categorias>> getCategoria() {return categoria;}
     public void cargarCategorias() {
-
         ApiClient.getInmoServicio()
                 .getCategorias()
                 .enqueue(new Callback<List<Categorias>>() {

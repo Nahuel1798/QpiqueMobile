@@ -11,9 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
-import com.example.qpiqueapp.modelo.Productos;
 import com.example.qpiqueapp.modelo.Ventas;
-import com.example.qpiqueapp.ui.productos.ProductosAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -85,10 +83,6 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
     public int getItemCount() {
         return ventas.size();
     }
-
-    // ======================
-    // VIEW HOLDER
-    // ======================
     static class VentaViewHolder extends RecyclerView.ViewHolder {
 
         TextView tvVentaId, tvVentaTotal, tvVentaFecha;
@@ -119,9 +113,7 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
         }
     }
 
-    // ======================
-    // FECHA FORMAT
-    // ======================
+    // Formatear fecha y hora
     private String formatearFechaHora(String fechaIso) {
         if (fechaIso == null || fechaIso.isEmpty()) return "-";
 

@@ -7,7 +7,6 @@
     android:padding="16dp"
     tools:context=".ui.categoria.EditarCategoriaFragment">
 
-    <!-- Título de la pantalla -->
     <TextView
         android:id="@+id/tvTituloEditar"
         android:layout_width="wrap_content"
@@ -17,7 +16,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Campo de texto para el nombre de la categoría -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNombre"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -38,9 +36,6 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Previsualización de la imagen de la categoría -->
-
-    <!-- Botón para seleccionar una nueva imagen -->
     <ImageView
         android:id="@+id/ivImagenActual"
         android:layout_width="150dp"
@@ -67,8 +62,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ivImagenActual" />
 
-
-    <!-- Botón para guardar los cambios -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardar"
         android:layout_width="0dp"

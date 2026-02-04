@@ -12,7 +12,6 @@
         android:layout_height="wrap_content"
         app:liftOnScroll="true">
 
-        <!-- Buscador centrado -->
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchViewUsuario"
             android:layout_width="match_parent"
@@ -24,7 +23,6 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Lista de Usuarios -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listaUsuarios"
         android:layout_width="match_parent"

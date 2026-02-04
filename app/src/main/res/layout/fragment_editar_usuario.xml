@@ -8,7 +8,6 @@
     android:padding="16dp"
     tools:context=".ui.usuarios.EditarUsuarioFragment">
 
-    <!-- Título -->
     <TextView
         android:id="@+id/tvTituloUsuario"
         android:layout_width="wrap_content"
@@ -18,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
 
-    <!-- Nombre -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNombre"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -38,7 +36,6 @@
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Apellido -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilApellido"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -58,7 +55,6 @@
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Email -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilEmail"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -78,7 +74,6 @@
             android:maxLines="1"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Spinner Rol -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilRol"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -96,7 +91,6 @@
             android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <!-- Botón Guardar -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnGuardar"
         android:layout_width="0dp"

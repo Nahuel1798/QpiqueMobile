@@ -45,7 +45,7 @@ public class ProductosFragment extends Fragment {
         vm = new ViewModelProvider(this).get(ProductosViewModel.class);
         carritoViewModel = new ViewModelProvider(requireActivity()).get(CarritoViewModel.class);
 
-        // Inicializar el Adapter pasándole el contexto y el fragmento como listener
+        // Inicializar el Adapter
         GridLayoutManager glm = new GridLayoutManager(getContext(), 2);
         binding.listaProductos.setLayoutManager(glm);
 
@@ -97,17 +97,13 @@ public class ProductosFragment extends Fragment {
 
         vm.getCategorias().observe(getViewLifecycleOwner(), categorias -> {
             if (categorias == null || categorias.isEmpty()) return;
-
-            // El ArrayAdapter se encargará de mostrar el 'toString()' del objeto Categorias.
-            // Asegúrate de que tu clase Categorias tiene un método toString() que devuelve el nombre.
             ArrayAdapter<Categorias> categoriaAdapter = new ArrayAdapter<>(
                     requireContext(),
-                    android.R.layout.simple_dropdown_item_1line, // Layout para los items del menú
+                    android.R.layout.simple_dropdown_item_1line,
                     categorias
             );
             autoCompleteTextView.setAdapter(categoriaAdapter);
-
-            // Listener para cuando el usuario SELECCIONA un ítem del menú
+            // Listener para cuando el usuario selecciona un item
             autoCompleteTextView.setOnItemClickListener((parent, view, position, id) -> {
                 Categorias categoriaSeleccionada = (Categorias) parent.getItemAtPosition(position);
                 if (categoriaSeleccionada != null) {
@@ -123,16 +119,14 @@ public class ProductosFragment extends Fragment {
         });
 
         carritoViewModel.getCarrito().observe(getViewLifecycleOwner(), lista -> {
-            // Actualizar el contador de la UI (esto ya lo tenías)
             int cantidad = lista.size();
             binding.tvContadorCarrito.setText(String.valueOf(cantidad));
             binding.tvContadorCarrito.setVisibility(cantidad > 0 ? View.VISIBLE : View.GONE);
 
-            // Informar al adapter sobre qué productos están en el carrito.
-            // Esto es crucial para que los botones se dibujen en el estado correcto.
+            // Informar al adapter sobre que productos están en el carrito.
             if (lista != null) {
                 Set<Integer> idsEnCarrito = lista.stream()
-                        .map(producto -> producto.getId()) // Asumiendo que CarritoItem tiene getProducto()
+                        .map(producto -> producto.getId())
                         .collect(Collectors.toSet());
                 adapter.setProductosAgregados(idsEnCarrito);
             } else {
@@ -165,13 +159,13 @@ public class ProductosFragment extends Fragment {
                 }
         );
 
-        // Botón Nuevo Producto
+        // Boton Nuevo Producto
         binding.btnNuevoProducto.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_nav_transform_to_crearProductoFragment);
         });
 
-        // Botón Carrito
+        // Boton Carrito
         binding.fabCarrito.setOnClickListener(v -> {
             NavHostFragment.findNavController(this)
                     .navigate(R.id.action_nav_transform_to_carritoFragment);
@@ -220,7 +214,6 @@ public class ProductosFragment extends Fragment {
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        // Es una buena práctica limpiar el binding para evitar fugas de memoria.
         binding = null;
     }
 }

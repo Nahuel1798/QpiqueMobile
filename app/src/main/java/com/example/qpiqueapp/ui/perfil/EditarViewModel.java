@@ -41,7 +41,7 @@ public class EditarViewModel extends AndroidViewModel {
         return mensaje;
     }
 
-    // 🔹 Cargar perfil desde la API
+    // Cargar perfil desde la API
     public void cargarPerfil() {
         String token = ApiClient.leerToken(getApplication());
         String auth = "Bearer " + token;

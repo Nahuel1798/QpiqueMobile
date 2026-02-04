@@ -20,41 +20,39 @@ import retrofit2.Response;
 
 public class EditarUsuarioViewModel extends AndroidViewModel {
 
-    public static class UiState {
-        public final boolean loading;
-        public final boolean success;
-        public final String error;
+    private final MutableLiveData<PerfilDto> perfil = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> volverAtras = new MutableLiveData<>(false);
 
-        private UiState(boolean loading, boolean success, String error) {
-            this.loading = loading;
-            this.success = success;
-            this.error = error;
-        }
+    private UsuarioUpdateRequest usuario;
 
-        public static UiState loading() { return new UiState(true, false, null); }
-        public static UiState success() { return new UiState(false, true, null); }
-        public static UiState error(String msg) { return new UiState(false, false, msg); }
+    public EditarUsuarioViewModel(@NonNull Application app) {
+        super(app);
     }
 
-    private final MutableLiveData<UsuarioUpdateRequest> usuario = new MutableLiveData<>();
-    private final MutableLiveData<PerfilDto> perfilLiveData = new MutableLiveData<>();
-    private final MutableLiveData<UiState> estado = new MutableLiveData<>();
-    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
+    // Getter
 
-    public EditarUsuarioViewModel(@NonNull Application app) { super(app); }
+    public LiveData<PerfilDto> getPerfil() {
+        return perfil;
+    }
 
-    public LiveData<UsuarioUpdateRequest> getUsuario() { return usuario; }
-    public LiveData<PerfilDto> getPerfilLiveData() { return perfilLiveData; }
-    public LiveData<UiState> getEstado() { return estado; }
-    public LiveData<String> getMensaje() { return mensaje; }
+    public LiveData<Boolean> getLoading() {
+        return loading;
+    }
 
-    public void setUsuario(UsuarioUpdateRequest u) { usuario.setValue(u); }
+    public LiveData<String> getMensaje() {
+        return mensaje;
+    }
 
-    // ========================================
-    // Metodo público para cargar un usuario por ID
-    // ========================================
+    public LiveData<Boolean> getVolverAtras() {
+        return volverAtras;
+    }
+
+    // Metodos
+
     public void cargarUsuarioPorId(String idUsuario) {
-        estado.setValue(UiState.loading());
+        loading.setValue(true);
 
         String token = ApiClient.leerToken(getApplication());
         String auth = "Bearer " + token;
@@ -64,76 +62,87 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
                 .enqueue(new Callback<PerfilDto>() {
                     @Override
                     public void onResponse(Call<PerfilDto> call, Response<PerfilDto> response) {
+                        loading.setValue(false);
+
                         if (response.isSuccessful() && response.body() != null) {
-                            PerfilDto perfil = response.body();
-                            perfilLiveData.postValue(perfil);
+                            PerfilDto p = response.body();
+                            perfil.setValue(p);
 
-                            UsuarioUpdateRequest u = new UsuarioUpdateRequest(
-                                    perfil.getId(),
-                                    perfil.getNombre(),
-                                    perfil.getApellido(),
-                                    perfil.getEmail(),
-                                    perfil.getRoles(), // lo mantenemos solo para mostrar, no se editará
-                                    null // avatar no lo usamos
+                            usuario = new UsuarioUpdateRequest(
+                                    p.getId(),
+                                    p.getNombre(),
+                                    p.getApellido(),
+                                    p.getEmail(),
+                                    p.getRoles(),
+                                    null
                             );
-                            usuario.postValue(u);
-
-                            estado.postValue(UiState.success());
                         } else {
-                            estado.postValue(UiState.error("Error al cargar usuario: " + response.code()));
+                            mensaje.setValue("Error al cargar usuario");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<PerfilDto> call, Throwable t) {
-                        estado.postValue(UiState.error("Error de conexión: " + t.getMessage()));
+                        loading.setValue(false);
+                        mensaje.setValue("Error de conexión");
                     }
                 });
     }
 
-    // ========================================
-    // Guardar cambios
-    // ========================================
     public void guardarCambios(String nombre, String apellido, String email, List<String> rol) {
-        if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty() || rol.isEmpty()) {
-            estado.setValue(UiState.error("Completa todos los campos"));
+        if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty()) {
+            mensaje.setValue("Completa todos los campos");
             return;
         }
 
-        UsuarioUpdateRequest u = usuario.getValue();
-        if (u == null) {
-            estado.setValue(UiState.error("Usuario no disponible"));
+        if (usuario == null) {
+            mensaje.setValue("Usuario no disponible");
             return;
         }
 
-        u.setNombre(nombre);
-        u.setApellido(apellido);
-        u.setEmail(email);
-        u.setRoles(rol);  // actualizamos rol
-        u.setAvatar(null); // no tocamos avatar
+        usuario.setNombre(nombre);
+        usuario.setApellido(apellido);
+        usuario.setEmail(email);
+        usuario.setRoles(rol);
+        usuario.setAvatar(null);
 
-        estado.setValue(UiState.loading());
+        loading.setValue(true);
 
         String token = ApiClient.leerToken(getApplication());
         String auth = "Bearer " + token;
 
         ApiClient.getInmoServicio()
-                .editarUsuario(auth, u.getId(), u)
+                .editarUsuario(auth, usuario.getId(), usuario)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        loading.setValue(false);
+
                         if (response.isSuccessful()) {
-                            estado.postValue(UiState.success());
+                            mensaje.setValue("Usuario actualizado");
+                            volverAtras.setValue(true);
                         } else {
-                            estado.postValue(UiState.error("Error al actualizar usuario"));
+                            mensaje.setValue("Error al actualizar usuario");
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        estado.postValue(UiState.error("Error de conexión: " + t.getMessage()));
+                        loading.setValue(false);
+                        mensaje.setValue("Error de conexión");
                     }
                 });
     }
+
+    // Consumidores
+
+    public void mensajeConsumido() {
+        mensaje.setValue(null);
+    }
+
+    public void volverConsumido() {
+        volverAtras.setValue(false);
+    }
 }
+
 

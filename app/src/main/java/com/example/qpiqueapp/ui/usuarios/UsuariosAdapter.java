@@ -20,7 +20,6 @@ import java.util.List;
 
 public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.UsuariosViewHolder> {
     private List<PerfilDto> listaUsuarios;
-    private Context context;
     private LayoutInflater inflater;
     private OnItemClickListener listener;
 
@@ -31,7 +30,6 @@ public class UsuariosAdapter extends RecyclerView.Adapter<UsuariosAdapter.Usuari
 
     public UsuariosAdapter(List<PerfilDto> listaUsuarios, Context context, LayoutInflater inflater, OnItemClickListener listener) {
         this.listaUsuarios = listaUsuarios;
-        this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
     }
