@@ -49,8 +49,11 @@ public class CrearVentaViewModel extends AndroidViewModel {
     }
 
 
+
+
     // Metodos
     public void crearVenta(List<Productos> carrito) {
+        ventaCreada.setValue(false);
 
         if (cliente == null || carrito == null || carrito.isEmpty()) {
             error.setValue("Debe seleccionar un cliente y al menos un producto");
@@ -101,5 +104,9 @@ public class CrearVentaViewModel extends AndroidViewModel {
                         error.setValue("Error de conexión: " + t.getMessage());
                     }
                 });
+    }
+    // Resetear
+    public void resetVentaCreada() {
+        ventaCreada.setValue(false);
     }
 }

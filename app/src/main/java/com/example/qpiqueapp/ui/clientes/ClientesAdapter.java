@@ -56,10 +56,14 @@ public class ClientesAdapter extends RecyclerView.Adapter<ClientesAdapter.Client
     public void onBindViewHolder(@NonNull ClientesViewHolder holder, int position) {
         Clientes cliente = listaClientes.get(position);
 
+        // Formatear los datos
+        String telefonoFomateado = String.format("Telefono: " + cliente.getTelefono());
+        String emailFomateado = String.format("Email: " + cliente.getEmail());
+
         holder.tvNombre.setText(cliente.getNombre());
         holder.tvApellido.setText(cliente.getApellido());
-        holder.tvTelefono.setText(cliente.getTelefono());
-        holder.tvEmail.setText(cliente.getEmail());
+        holder.tvTelefono.setText(telefonoFomateado);
+        holder.tvEmail.setText(emailFomateado);
 
         boolean seleccionado = position == selectedPosition;
 

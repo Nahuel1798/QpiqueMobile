@@ -4,10 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -31,7 +33,11 @@ public class EditarProductoFragment extends Fragment {
 
     private FragmentEditarProductoBinding binding;
     private EditarProductoViewModel vm;
+
     private List<Categorias> listaCategorias = new ArrayList<>();
+
+    private Integer categoriaIdProducto = null;
+    private boolean categoriasCargadas = false;
 
     private final ActivityResultLauncher<Intent> selectImageLauncher =
             registerForActivityResult(
@@ -39,7 +45,6 @@ public class EditarProductoFragment extends Fragment {
                     result -> {
                         if (result.getResultCode() == Activity.RESULT_OK &&
                                 result.getData() != null) {
-
                             Uri uri = result.getData().getData();
                             vm.setImagen(uri);
                         }
@@ -55,51 +60,61 @@ public class EditarProductoFragment extends Fragment {
         binding = FragmentEditarProductoBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(EditarProductoViewModel.class);
 
+        configurarPermisos();
+
         Productos producto =
                 (Productos) getArguments().getSerializable("producto");
         vm.inicializar(producto);
 
         vm.cargarCategorias();
 
-        // Observer
-
+        // 🔹 Observer categorías → Spinner
         vm.getCategorias().observe(getViewLifecycleOwner(), cats -> {
             listaCategorias = cats;
+            categoriasCargadas = true;
 
             List<String> nombres = new ArrayList<>();
-            for (Categorias c : cats) nombres.add(c.getNombre());
+            for (Categorias c : cats) {
+                nombres.add(c.getNombre());
+            }
 
             ArrayAdapter<String> adapter = new ArrayAdapter<>(
                     requireContext(),
                     android.R.layout.simple_spinner_item,
                     nombres
             );
-            adapter.setDropDownViewResource(
-                    android.R.layout.simple_spinner_dropdown_item
-            );
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.spCategoria.setAdapter(adapter);
+
+            seleccionarCategoriaSiSePuede(); // 🔁 intentamos
         });
 
+        // 🔹 Observer producto
         vm.getProducto().observe(getViewLifecycleOwner(), p -> {
+            if (p == null) return;
+
             binding.etNombre.setText(p.getNombre());
             binding.etDescripcion.setText(p.getDescripcion());
             binding.etPrecio.setText(String.valueOf(p.getPrecio()));
             binding.etStock.setText(String.valueOf(p.getStock()));
+            categoriaIdProducto = p.getCategoriaId();
 
-            seleccionarCategoria(p.getCategoriaId());
+            // Spinner
+            seleccionarCategoriaSiSePuede();
 
-            if (vm.getImagenSeleccionada().getValue() != null) return;
+            // Imagen
+            if (vm.getImagenSeleccionada().getValue() == null) {
+                String url = p.getImagenUrl();
+                if (url != null && !url.startsWith("http")) {
+                    url = ApiClient.BASE_URL + url;
+                }
 
-            String url = p.getImagenUrl();
-            if (url != null && !url.startsWith("http")) {
-                url = ApiClient.BASE_URL + url;
+                Glide.with(this)
+                        .load(url)
+                        .placeholder(R.drawable.ic_productos)
+                        .circleCrop()
+                        .into(binding.ivImagen);
             }
-
-            Glide.with(this)
-                    .load(url)
-                    .placeholder(R.drawable.ic_productos)
-                    .circleCrop()
-                    .into(binding.ivImagen);
         });
 
         vm.getImagenSeleccionada().observe(getViewLifecycleOwner(), uri -> {
@@ -107,6 +122,7 @@ public class EditarProductoFragment extends Fragment {
                 Glide.with(this)
                         .load(uri)
                         .circleCrop()
+                        .placeholder(R.drawable.ic_productos)
                         .into(binding.ivImagen);
             }
         });
@@ -128,8 +144,7 @@ public class EditarProductoFragment extends Fragment {
             }
         });
 
-        // Acciones de Botones
-
+        // 🔘 Botones
         binding.btnCambiarImagen.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
@@ -137,27 +152,60 @@ public class EditarProductoFragment extends Fragment {
         });
 
         binding.btnGuardar.setOnClickListener(v -> {
-            int pos = binding.spCategoria.getSelectedItemPosition();
-            if (pos >= 0 && pos < listaCategorias.size()) {
-                vm.guardarCambios(
-                        binding.etNombre.getText().toString().trim(),
-                        binding.etDescripcion.getText().toString().trim(),
-                        binding.etPrecio.getText().toString().trim(),
-                        binding.etStock.getText().toString().trim(),
-                        listaCategorias.get(pos).getId()
-                );
+
+            if (listaCategorias.isEmpty()) {
+                Toast.makeText(
+                        getContext(),
+                        "No hay categorías disponibles",
+                        Toast.LENGTH_SHORT
+                ).show();
+                return;
             }
+
+            int posicion = binding.spCategoria.getSelectedItemPosition();
+            Categorias categoriaSeleccionada = listaCategorias.get(posicion);
+
+            vm.guardarCambios(
+                    binding.etNombre.getText().toString().trim(),
+                    binding.etDescripcion.getText().toString().trim(),
+                    binding.etPrecio.getText().toString().trim(),
+                    binding.etStock.getText().toString().trim(),
+                    categoriaSeleccionada.getId()
+            );
         });
 
         return binding.getRoot();
     }
 
-    private void seleccionarCategoria(int categoriaId) {
+    private void seleccionarCategoriaSiSePuede() {
+
+        if (!categoriasCargadas || categoriaIdProducto == null) return;
+
         for (int i = 0; i < listaCategorias.size(); i++) {
-            if (listaCategorias.get(i).getId() == categoriaId) {
+            if (listaCategorias.get(i).getId() == categoriaIdProducto) {
                 binding.spCategoria.setSelection(i);
                 break;
+
             }
+            Log.d("EDITAR",
+                    "Spinner ID=" + listaCategorias.get(i).getId() +
+                            " Producto ID=" + categoriaIdProducto);
+        }
+    }
+
+    private void configurarPermisos() {
+        String rol = ApiClient.leerRol(requireContext());
+
+        if (rol == null) return;
+
+        if (!"Administrador".equalsIgnoreCase(rol)) {
+            binding.etPrecio.setEnabled(false);
+            binding.etPrecio.setFocusable(false);
+            binding.etPrecio.setClickable(false);
+
+            binding.tilPrecio.setHelperText(
+                    "Solo administradores pueden modificar el precio"
+            );
         }
     }
 

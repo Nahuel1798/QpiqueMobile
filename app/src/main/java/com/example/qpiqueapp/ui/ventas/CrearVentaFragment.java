@@ -88,11 +88,23 @@ public class CrearVentaFragment extends Fragment {
 
         // Observa estado de venta
         crearVentaViewModel.getVentaCreada().observe(getViewLifecycleOwner(), creada -> {
-            if (creada) {
+            if (creada != null && creada) {
+
                 Toast.makeText(requireContext(), "Venta creada con éxito", Toast.LENGTH_SHORT).show();
+
                 carritoViewModel.limpiarCarrito();
+                ventasViewModel.deseleccionarCliente();
+
                 NavHostFragment.findNavController(this)
-                        .navigate(R.id.action_crearVentaFragment_to_nav_reflow);
+                        .navigate(
+                                R.id.nav_reflow,
+                                null,
+                                new androidx.navigation.NavOptions.Builder()
+                                        .setPopUpTo(R.id.mobile_navigation, true)
+                                        .build()
+                        );
+
+                crearVentaViewModel.resetVentaCreada();
             }
         });
 

@@ -18,6 +18,8 @@ public class CarritoViewModel extends AndroidViewModel {
 
     private final MutableLiveData<List<Productos>> carrito = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Double> total = new MutableLiveData<>(0.0);
+    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
+
 
     public CarritoViewModel(@NonNull Application application) {
         super(application);
@@ -26,6 +28,8 @@ public class CarritoViewModel extends AndroidViewModel {
     // Getters
     public LiveData<List<Productos>> getCarrito() { return carrito; }
     public LiveData<Double> getTotal() { return total; }
+    public LiveData<String> getMensaje() { return mensaje; }
+
 
     // Agregar producto
     public void agregarProducto(Productos producto) {
@@ -33,11 +37,14 @@ public class CarritoViewModel extends AndroidViewModel {
 
         for (Productos p : lista) {
             if (p.getId() == producto.getId()) {
+
                 if (p.getCantidad() < p.getStock()) {
                     p.setCantidad(p.getCantidad() + 1);
                     ordenarYActualizar(lista);
-                    return;
+                } else {
+                    mensaje.setValue("No hay más stock disponible");
                 }
+                return;
             }
         }
 
@@ -69,6 +76,9 @@ public class CarritoViewModel extends AndroidViewModel {
     public void limpiarCarrito() {
         carrito.setValue(new ArrayList<>());
         total.setValue(0.0);
+    }
+    public void limpiarMensaje() {
+        mensaje.setValue(null);
     }
 
     public int getCantidadItems() {

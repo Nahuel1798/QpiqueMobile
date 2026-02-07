@@ -41,7 +41,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etApellido"
                 android:hint="Apellido"
-                android:inputType="numberDecimal"
+                android:inputType="textCapWords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
@@ -69,7 +69,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/etEmail"
                 android:hint="Email"
-                android:inputType="number"
+                android:inputType="textCapWords"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>

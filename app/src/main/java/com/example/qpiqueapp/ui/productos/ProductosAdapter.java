@@ -27,6 +27,7 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
     private LayoutInflater inflater;
     private final Set<Integer> productosAgregadosIds = new HashSet<>();
     private OnItemClickListener listener;
+    private boolean esAdmin;
 
     public interface OnItemClickListener {
         void onEditar(Productos producto);
@@ -40,6 +41,9 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         this.context = context;
         this.inflater = LayoutInflater.from(context);
         this.listener = listener;
+
+        String rol = ApiClient.leerRol(context);
+        this.esAdmin = rol != null && rol.equals("Administrador");
     }
 
 
@@ -86,6 +90,11 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
                 actualizarBotonCarrito(holder.btnAgregarCarrito, producto);
             }
         });
+        if (esAdmin) {
+            holder.btnEliminar.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnEliminar.setVisibility(View.GONE);
+        }
         holder.btnEditar.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onEditar(producto);

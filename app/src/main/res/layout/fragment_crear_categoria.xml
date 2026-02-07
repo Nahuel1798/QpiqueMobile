@@ -7,15 +7,6 @@
     android:padding="16dp"
     tools:context=".ui.categoria.CrearCategoriaFragment">
 
-    <TextView
-        android:id="@+id/tvTitulo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Crear Nueva Categoría"
-        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/tilNombreCategoria"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -25,7 +16,7 @@
         android:hint="Nombre de la Categoría"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvTitulo">
+        tools:ignore="MissingConstraints">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/etNombreCategoria"

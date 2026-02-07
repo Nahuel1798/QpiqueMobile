@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_transform">
+    app:startDestination="@+id/startFragment">
 
     <fragment
         android:id="@+id/nav_transform"
@@ -35,6 +35,9 @@
         <action
             android:id="@+id/action_nav_reflow_to_borrarVentaFragment"
             app:destination="@id/borrarVentaFragment" />
+        <action
+            android:id="@+id/action_nav_reflow_to_nav_transform"
+            app:destination="@id/nav_transform" />
     </fragment>
 
     <fragment
@@ -252,4 +255,14 @@
             android:id="@+id/action_eliminarUsuarioFragment_to_usuariosFragment2"
             app:destination="@id/usuariosFragment2" />
     </fragment>
+    <fragment
+        android:id="@+id/startFragment"
+        android:name="com.example.qpiqueapp.ui.start.StartFragment"
+        android:label="Fragment inicion"
+        tools:layout="@layout/fragment_start" />
+    <fragment
+        android:id="@+id/sinRolFragment"
+        android:name="com.example.qpiqueapp.ui.roles.SinRolFragment"
+        android:label="Advertencia"
+        tools:layout="@layout/fragment_sin_rol" />
 </navigation>

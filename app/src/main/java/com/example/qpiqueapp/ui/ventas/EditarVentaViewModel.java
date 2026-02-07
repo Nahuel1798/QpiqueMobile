@@ -7,91 +7,94 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
+
+import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.modelo.venta.DetalleVenta;
-import com.example.qpiqueapp.modelo.venta.VentaCrearRequest;
-import com.example.qpiqueapp.modelo.venta.Ventas;
+import com.example.qpiqueapp.modelo.venta.VentaActualizada;
+import com.example.qpiqueapp.modelo.venta.VentaResponse;
+import com.example.qpiqueapp.request.ApiClient;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class EditarVentaViewModel extends AndroidViewModel {
 
-    public static class UiState {
-        public final boolean loading;
-        public final boolean success;
-        public final String error;
+    private final MutableLiveData<VentaResponse> ventaActualizada = new MutableLiveData<>();
+    private final MutableLiveData<String> error = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
+    private final MutableLiveData<List<DetalleVenta>> detalles = new MutableLiveData<>(new ArrayList<>());
 
-        private UiState(boolean loading, boolean success, String error) {
-            this.loading = loading;
-            this.success = success;
-            this.error = error;
-        }
 
-        public static EditarVentaViewModel.UiState loading() {
-            return new EditarVentaViewModel.UiState(true, false, null);
-        }
-
-        public static EditarVentaViewModel.UiState success() {
-            return new EditarVentaViewModel.UiState(false, true, null);
-        }
-
-        public static EditarVentaViewModel.UiState error(String msg) {
-            return new EditarVentaViewModel.UiState(false, false, msg);
-        }
-    }
-    private final MutableLiveData<Ventas> venta = new MutableLiveData<>();
-    private final MutableLiveData<VentaCrearRequest> ventaCrearRequest = new MutableLiveData<>();
-    private final MutableLiveData<DetalleVenta> detalleVenta = new MutableLiveData<>();
-    private final MutableLiveData<UiState> estado = new MutableLiveData<>(UiState.success());
-    private final MutableLiveData<Boolean> volverAtras = new MutableLiveData<>();
-    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
-
-    public EditarVentaViewModel(@NonNull Application app) {
-        super(app);
+    public EditarVentaViewModel(@NonNull Application application) {
+        super(application);
     }
 
-    public LiveData<Ventas> getVenta() {
-        return venta;
-    }
-    public LiveData<VentaCrearRequest> getVentaCrearRequest() {
-        return ventaCrearRequest;
-    }
-    public LiveData<DetalleVenta> getDetalleVenta() {
-        return detalleVenta;
+    // Observables
+    public LiveData<VentaResponse> getVentaActualizada() {
+        return ventaActualizada;
     }
 
-
-    public LiveData<UiState> getEstado() {
-        return estado;
+    public LiveData<String> getError() {
+        return error;
     }
 
-    public LiveData<Boolean> getVolverAtras() {
-        return volverAtras;
+    public LiveData<Boolean> getLoading() {
+        return loading;
     }
 
-    public LiveData<String> getMensaje() {
-        return mensaje;
-    }
+    // PUT editar venta
+    public void editarVenta(int ventaId, List<DetalleVenta> detalles) {
 
-    public void setVenta(Ventas v) {
-        venta.setValue(v);
-    }
-    public void setDetalleVenta(DetalleVenta dv) {
-        detalleVenta.setValue(dv);
-    }
-
-
-    public void editarVenta(String cliente, String producto, String dia, String fechaDesde, String fechaHasta) {
-        if (cliente.isEmpty() || producto.isEmpty() || dia.isEmpty() || fechaDesde.isEmpty() || fechaHasta.isEmpty()) {
-            estado.setValue(UiState.error("Completa todos los campos"));
+        if (detalles == null || detalles.isEmpty()) {
+            error.setValue("La venta debe tener al menos un producto");
             return;
         }
 
-        VentaCrearRequest v = ventaCrearRequest.getValue();
-        if (v == null) {
-            estado.setValue(UiState.error("Venta no disponible"));
-            return;
-        }
+        loading.setValue(true);
+
+        VentaActualizada dto = new VentaActualizada();
+        dto.setDetalles(detalles);
+
+        String token = ApiClient.leerToken(getApplication());
 
 
+        ApiClient.getInmoServicio()
+                .editarVenta("Bearer " + token, ventaId, dto)
+                .enqueue(new Callback<VentaResponse>() {
+
+                    @Override
+                    public void onResponse(Call<VentaResponse> call, Response<VentaResponse> response) {
+                        loading.postValue(false);
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            ventaActualizada.postValue(response.body());
+                        } else {
+                            error.postValue(leerError(response));
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<VentaResponse> call, Throwable t) {
+                        loading.postValue(false);
+                        error.postValue("Error de conexión: " + t.getMessage());
+                    }
+                });
     }
 
-
+    // Lee mensaje de error del backend
+    private String leerError(Response<?> response) {
+        try {
+            ResponseBody errorBody = response.errorBody();
+            if (errorBody != null)
+                return errorBody.string();
+        } catch (IOException ignored) {}
+        return "Error al actualizar la venta";
+    }
 }
+

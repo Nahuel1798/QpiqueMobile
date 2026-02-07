@@ -1,6 +1,7 @@
 package com.example.qpiqueapp.ui.clientes;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -95,7 +96,16 @@ public class EditarClienteViewModel extends AndroidViewModel {
                             mensaje.postValue("Cliente actualizado");
                             volverAtras.postValue(true);
                         } else {
-                            mensaje.postValue("Error al actualizar");
+                            try {
+                                String error = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "Error desconocido";
+
+                                mensaje.postValue("Error: " + response.code());
+                                Log.e("EDITAR_CLIENTE", "Código: " + response.code() + " - " + error);
+                            } catch (Exception e) {
+                                mensaje.postValue("Error al actualizar");
+                            }
                         }
                     }
 

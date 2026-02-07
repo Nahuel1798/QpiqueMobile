@@ -62,6 +62,8 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
         holder.tvVentaId.setText("Venta #" + venta.getId());
         holder.tvVentaTotal.setText("$ " + venta.getTotal());
         holder.tvVentaFecha.setText(formatearFechaHora(venta.getFecha()));
+        holder.tvNombreUsuario.setText("Usuario: " + venta.getUsuarioNombre());
+        holder.tvNombreCliente.setText("Cliente: " + venta.getClienteNombre());
 
         // Cargar detalles de la venta
         holder.detalleAdapter.setDetalles(venta.getDetalleVentas());
@@ -85,7 +87,7 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
     }
     static class VentaViewHolder extends RecyclerView.ViewHolder {
 
-        TextView tvVentaId, tvVentaTotal, tvVentaFecha;
+        TextView tvVentaId, tvVentaTotal, tvVentaFecha, tvNombreUsuario, tvNombreCliente;
         RecyclerView rvDetalle;
         DetalleVentaAdapter detalleAdapter;
         Button btnEditar, btnEliminar;
@@ -98,8 +100,11 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
             tvVentaTotal = itemView.findViewById(R.id.tvVentaTotal);
             tvVentaFecha = itemView.findViewById(R.id.tvVentaFecha);
             rvDetalle = itemView.findViewById(R.id.rvDetalleVenta);
-            btnEditar = itemView.findViewById(R.id.btnEditarVenta);
+            btnEditar = itemView.findViewById(R.id.btnVerDetalle);
             btnEliminar = itemView.findViewById(R.id.btnBorrarVenta);
+            tvNombreUsuario = itemView.findViewById(R.id.tvUsuarioNombre);
+            tvNombreCliente = itemView.findViewById(R.id.tvClienteNombre);
+
 
 
             // Recycler interno

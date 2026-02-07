@@ -117,6 +117,8 @@ public class ProductosViewModel extends AndroidViewModel {
 
                             lista.addAll(response.body());
                             categorias.setValue(lista);
+                        } else {
+                            categorias.setValue(new ArrayList<>());
                         }
                     }
 

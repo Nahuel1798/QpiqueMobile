@@ -179,35 +179,24 @@ public class EditarProductoViewModel extends AndroidViewModel {
 
     private MultipartBody.Part crearImagenPart() {
         Uri uri = imagenSeleccionada.getValue();
-        if (uri == null) return null;
+        if (uri == null) return null; // solo enviar si hay nueva imagen
 
-        try {
-            InputStream is =
-                    getApplication().getContentResolver().openInputStream(uri);
+        try (InputStream is = getApplication().getContentResolver().openInputStream(uri)) {
 
-            File file = new File(
-                    getApplication().getCacheDir(),
-                    "producto_" + System.currentTimeMillis()
-            );
+            File file = new File(getApplication().getCacheDir(),
+                    "producto_" + System.currentTimeMillis());
 
-            FileOutputStream os = new FileOutputStream(file);
-            byte[] buffer = new byte[4096];
-            int read;
-            while ((read = is.read(buffer)) != -1) {
-                os.write(buffer, 0, read);
+            try (FileOutputStream os = new FileOutputStream(file)) {
+                byte[] buffer = new byte[4096];
+                int read;
+                while ((read = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, read);
+                }
             }
 
-            os.close();
-            is.close();
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
 
-            RequestBody body =
-                    RequestBody.create(MediaType.parse("image/*"), file);
-
-            return MultipartBody.Part.createFormData(
-                    "nuevaImagen",
-                    file.getName(),
-                    body
-            );
+            return MultipartBody.Part.createFormData("nuevaImagen", file.getName(), body);
 
         } catch (Exception e) {
             mensaje.postValue("Error al procesar la imagen");

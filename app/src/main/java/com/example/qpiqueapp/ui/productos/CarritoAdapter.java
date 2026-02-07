@@ -14,6 +14,7 @@ import com.bumptech.glide.Glide;
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.request.ApiClient;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.List;
 
@@ -95,7 +96,6 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
         }
 
         holder.btnRestar.setEnabled(pro.getCantidad() > 1);
-        holder.btnSumar.setEnabled(pro.getCantidad() < pro.getStock());
 
         double subtotal = pro.getPrecio() * pro.getCantidad();
         holder.precio.setText("$ " + String.format("%.2f", subtotal));
@@ -108,7 +108,8 @@ public class CarritoAdapter extends RecyclerView.Adapter<CarritoAdapter.ViewHold
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView nombre, precio, cantidad, stock;
-        ImageButton btnEliminar, btnSumar, btnRestar;
+        ImageButton btnSumar, btnRestar;
+        MaterialButton btnEliminar;
         ImageView imagen;
 
         public ViewHolder(@NonNull View itemView) {

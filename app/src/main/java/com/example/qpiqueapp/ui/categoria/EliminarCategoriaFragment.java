@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -24,21 +25,42 @@ public class EliminarCategoriaFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+
         binding = FragmentEliminarCategoriaBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(EliminarCategoriaViewModel.class);
+
         categoria = (Categorias) getArguments().getSerializable("categoria");
+
         binding.tvMensaje.setText("¿Desea eliminar la categoría " + categoria.getNombre() + "?");
+
         binding.btnConfirmar.setOnClickListener(v -> {
             vm.eliminarCategoria(categoria.getId());
         });
+
         binding.btnCancelar.setOnClickListener(v -> {
             NavHostFragment.findNavController(this).popBackStack();
         });
-        vm.getEliminado().observe(getViewLifecycleOwner(), ok -> {
-            if (ok){
+
+        // Loading
+        vm.loading.observe(getViewLifecycleOwner(), loading -> {
+            binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+            binding.btnConfirmar.setEnabled(!loading);
+        });
+
+        // Mensajes
+        vm.mensaje.observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
+            }
+        });
+
+        // Navegación
+        vm.eliminado.observe(getViewLifecycleOwner(), ok -> {
+            if (ok) {
                 NavHostFragment.findNavController(this).popBackStack();
             }
         });
+
         return binding.getRoot();
     }
     @Override

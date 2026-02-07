@@ -71,7 +71,6 @@ public class CategoriasFragment extends Fragment {
             if (categoria != null) {
                 Bundle bundle = new Bundle();
                 bundle.putSerializable("categoria", categoria);
-                // El cursor estaba aquí, esta es la línea que falla
                 NavHostFragment.findNavController(this).navigate(R.id.action_nav_settings_to_eliminarCategoriaFragment, bundle);
                 // Resetea el LiveData en el ViewModel para que no se dispare de nuevo
                 vm.navegarCompletado();

@@ -9,14 +9,16 @@ public class Ventas implements Serializable {
     private int id;
     private String fecha;
     private String clienteNombre;
+    private String usuarioNombre;
     private double total;
     @SerializedName("detalles")
     private List<DetalleVenta> detalleVentas;
 
-    public Ventas(int id, String fecha, String clienteNombre, double total, List<DetalleVenta> detalleVentas) {
+    public Ventas(int id, String fecha, String clienteNombre, String usuarioNombre, double total, List<DetalleVenta> detalleVentas) {
         this.id = id;
         this.fecha = fecha;
         this.clienteNombre = clienteNombre;
+        this.usuarioNombre = usuarioNombre;
         this.total = total;
         this.detalleVentas = detalleVentas;
     }
@@ -44,6 +46,15 @@ public class Ventas implements Serializable {
     public void setClienteNombre(String clienteNombre) {
         this.clienteNombre = clienteNombre;
     }
+
+    public String getUsuarioNombre() {
+        return usuarioNombre;
+    }
+
+    public void setUsuarioNombre(String usuarioNombre) {
+        this.usuarioNombre = usuarioNombre;
+    }
+
 
     public double getTotal() {
         return total;

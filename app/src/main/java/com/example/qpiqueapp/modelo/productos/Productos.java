@@ -1,5 +1,7 @@
 package com.example.qpiqueapp.modelo.productos;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 public class Productos implements Serializable {
@@ -11,7 +13,10 @@ public class Productos implements Serializable {
     private int stock;
     private int cantidad;
     private String CategoriaNombre;
+
+    @SerializedName("categoriaId")
     private int CategoriaId;
+
     public Productos() {
 
     }
@@ -25,7 +30,7 @@ public class Productos implements Serializable {
         this.stock = stock;
         this.cantidad = cantidad;
         CategoriaNombre = categoriaNombre;
-        CategoriaId = categoriaId;
+        CategoriaId  = categoriaId;
     }
 
     public int getId() {

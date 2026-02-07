@@ -15,11 +15,14 @@ import com.example.qpiqueapp.modelo.productos.ProductosResponse;
 import com.example.qpiqueapp.modelo.registro.RegisterRequest;
 import com.example.qpiqueapp.modelo.usuarios.UsuarioUpdateRequest;
 import com.example.qpiqueapp.modelo.usuarios.UsuariosResponse;
+import com.example.qpiqueapp.modelo.venta.VentaActualizada;
 import com.example.qpiqueapp.modelo.venta.VentaCrearRequest;
+import com.example.qpiqueapp.modelo.venta.VentaResponse;
 import com.example.qpiqueapp.modelo.venta.VentasPaginadasResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.io.Console;
 import java.util.List;
 
 import okhttp3.MultipartBody;
@@ -143,7 +146,7 @@ public class ApiClient {
         );
 
         // Editar Cliente
-        @PUT("api/ClientesApi/EditarJson/{id}")
+        @PUT("api/ClientesApi/{id}")
         Call<ResponseBody> editarCliente(
                 @Header("Authorization") String token,
                 @Path("id") int id,
@@ -151,7 +154,7 @@ public class ApiClient {
         );
 
         // Eliminar Cliente
-        @DELETE("api/ClientesApi/Eliminar/{id}")
+        @DELETE("api/ClientesApi/{id}")
         Call<Void> eliminarCliente(
                 @Header("Authorization") String token,
                 @Path("id") int id
@@ -225,6 +228,7 @@ public class ApiClient {
         Call<VentasPaginadasResponse> getVentas(
                 @Header("Authorization") String token,
                 @Query("cliente") String cliente,
+                @Query("usuario") String usuario,
                 @Query("producto") String producto,
                 @Query("dia") String dia,
                 @Query("fechaDesde") String fechaDesde,
@@ -242,10 +246,10 @@ public class ApiClient {
 
         // Editar Venta
         @PUT("api/VentasApi/{id}")
-        Call<ResponseBody> editarVenta(
+        Call<VentaResponse> editarVenta(
                 @Header("Authorization") String token,
                 @Path("id") int id,
-                @Body VentaCrearRequest venta
+                @Body VentaActualizada venta
         );
 
         // Eliminar Ventas
@@ -258,12 +262,13 @@ public class ApiClient {
 
     }
 
-    public static void guardartoken(Context context, String token) {
+    public static void guardarSesion(Context context, String token, String rol) {
         SharedPreferences prefs =
                 context.getSharedPreferences("auth", Context.MODE_PRIVATE);
 
         prefs.edit()
                 .putString("jwt", token)
+                .putString("rol", rol)
                 .apply();
     }
 
@@ -272,5 +277,10 @@ public class ApiClient {
                 context.getSharedPreferences("auth", Context.MODE_PRIVATE);
 
         return prefs.getString("jwt", null);
+    }
+
+    public static String leerRol(Context context) {
+        SharedPreferences sp = context.getSharedPreferences("auth", Context.MODE_PRIVATE);
+        return sp.getString("rol", "");
     }
 }

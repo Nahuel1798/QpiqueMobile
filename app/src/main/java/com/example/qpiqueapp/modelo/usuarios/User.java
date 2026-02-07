@@ -8,13 +8,13 @@ public class User {
     private String apellido;
     private String email;
     private String avatar;
-    private List<String> roles;
+    private String roles;
 
     public User(){
 
     }
 
-    public User(String id, String nombre, String apellido, String email, String avatar, List<String> roles) {
+    public User(String id, String nombre, String apellido, String email, String avatar, String roles) {
         this.id = id;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -63,11 +63,11 @@ public class User {
         this.avatar = avatar;
     }
 
-    public List<String> getRoles() {
+    public String getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(String roles) {
         this.roles = roles;
     }
 }

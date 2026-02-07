@@ -1,16 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+    <!-- Base application theme con tonos azules eléctricos -->
     <style name="Theme.QpiqueApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_200</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <!-- Primary brand color -->
+        <item name="colorPrimary">@color/blue_electric</item>
+        <item name="colorPrimaryVariant">@color/blue_electric_dark</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_200</item>
+
+        <!-- Secondary brand color -->
+        <item name="colorSecondary">@color/cyan_bright</item>
+        <item name="colorSecondaryVariant">@color/cyan_dark</item>
         <item name="colorOnSecondary">@color/white</item>
-        <!-- Status bar color. -->
+
+        <!-- Status bar color -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+
     </style>
 </resources>

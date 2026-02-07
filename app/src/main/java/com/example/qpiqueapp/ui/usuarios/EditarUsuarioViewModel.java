@@ -1,6 +1,7 @@
 package com.example.qpiqueapp.ui.usuarios;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -10,8 +11,6 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.qpiqueapp.modelo.perfil.PerfilDto;
 import com.example.qpiqueapp.modelo.usuarios.UsuarioUpdateRequest;
 import com.example.qpiqueapp.request.ApiClient;
-
-import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -31,26 +30,13 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
         super(app);
     }
 
-    // Getter
+    // Getters
+    public LiveData<PerfilDto> getPerfil() { return perfil; }
+    public LiveData<Boolean> getLoading() { return loading; }
+    public LiveData<String> getMensaje() { return mensaje; }
+    public LiveData<Boolean> getVolverAtras() { return volverAtras; }
 
-    public LiveData<PerfilDto> getPerfil() {
-        return perfil;
-    }
-
-    public LiveData<Boolean> getLoading() {
-        return loading;
-    }
-
-    public LiveData<String> getMensaje() {
-        return mensaje;
-    }
-
-    public LiveData<Boolean> getVolverAtras() {
-        return volverAtras;
-    }
-
-    // Metodos
-
+    // Cargar usuario
     public void cargarUsuarioPorId(String idUsuario) {
         loading.setValue(true);
 
@@ -68,12 +54,16 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
                             PerfilDto p = response.body();
                             perfil.setValue(p);
 
+                            String rol = p.getRoles() != null && !p.getRoles().isEmpty()
+                                    ? p.getRoles().get(0)
+                                    : "Empleado";
+
                             usuario = new UsuarioUpdateRequest(
                                     p.getId(),
                                     p.getNombre(),
                                     p.getApellido(),
                                     p.getEmail(),
-                                    p.getRoles(),
+                                    rol,
                                     null
                             );
                         } else {
@@ -89,7 +79,8 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
                 });
     }
 
-    public void guardarCambios(String nombre, String apellido, String email, List<String> rol) {
+    // Guardar cambios
+    public void guardarCambios(String nombre, String apellido, String email, String rol) {
         if (nombre.isEmpty() || apellido.isEmpty() || email.isEmpty()) {
             mensaje.setValue("Completa todos los campos");
             return;
@@ -123,6 +114,7 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
                             volverAtras.setValue(true);
                         } else {
                             mensaje.setValue("Error al actualizar usuario");
+                            Log.e("EditarUsuarioVM", "Error al actualizar usuario: " + response.code());
                         }
                     }
 
@@ -135,7 +127,6 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
     }
 
     // Consumidores
-
     public void mensajeConsumido() {
         mensaje.setValue(null);
     }
@@ -144,5 +135,3 @@ public class EditarUsuarioViewModel extends AndroidViewModel {
         volverAtras.setValue(false);
     }
 }
-
-

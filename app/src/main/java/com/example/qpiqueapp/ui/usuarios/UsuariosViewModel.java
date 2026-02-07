@@ -28,6 +28,7 @@ public class UsuariosViewModel extends AndroidViewModel {
     private int pageSize = 6;
     private boolean ultimaPagina = false;
     private String search = "";
+    private boolean inicialCargado = false;
 
     public UsuariosViewModel(@NonNull Application application) {
         super(application);
@@ -42,6 +43,8 @@ public class UsuariosViewModel extends AndroidViewModel {
     // Metodos
 
     public void cargarInicial() {
+        if (inicialCargado) return;
+        inicialCargado = true;
         resetear();
         cargarUsuarios();
     }
@@ -96,10 +99,10 @@ public class UsuariosViewModel extends AndroidViewModel {
                             String errorBody = "Error desconocido.";
                             try {
                                 if (response.errorBody() != null) {
-                                    errorBody = response.errorBody().string(); // Obtiene el mensaje de error del servidor
+                                    errorBody = response.errorBody().string();
                                 }
                             } catch (Exception e) {
-                                // Ignorar excepción al leer el cuerpo del error
+                                e.printStackTrace();
                             }
                             mensajeError.setValue("Error " + response.code() + ": " + errorBody);
                         }

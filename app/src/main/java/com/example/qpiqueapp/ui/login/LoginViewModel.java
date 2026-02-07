@@ -1,6 +1,7 @@
 package com.example.qpiqueapp.ui.login;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -50,10 +51,17 @@ public class LoginViewModel extends AndroidViewModel {
 
                         if (response.isSuccessful() && response.body() != null) {
 
-                            ApiClient.guardartoken(
+                            LoginResponse login = response.body();
+
+                            ApiClient.guardarSesion(
                                     getApplication(),
-                                    response.body().getToken()
+                                    login.getToken(),
+                                    login.getUser().getRoles()
                             );
+
+                            Log.d("LoginViewModel", "Token: " + response.body().getToken());
+                            Log.d("LoginViewModel", "Rol: " + response.body().getUser().getRoles());
+
 
                             mensaje.setValue("Bienvenido");
                             loginOk.setValue(true);

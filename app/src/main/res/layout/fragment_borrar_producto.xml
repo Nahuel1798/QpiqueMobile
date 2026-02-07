@@ -8,11 +8,20 @@
 
     <TextView
         android:id="@+id/tvMensaje"
+        android:text="¿Desea eliminar este Producto?"
         android:textSize="18sp"
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginBottom="24dp"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <!-- Loading -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
     <Button
@@ -27,4 +36,5 @@
         android:layout_marginTop="12dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+
 </LinearLayout>
