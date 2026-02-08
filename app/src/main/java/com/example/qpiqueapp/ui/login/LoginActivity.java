@@ -25,33 +25,48 @@ public class LoginActivity extends AppCompatActivity {
 
         vm = new ViewModelProvider(this).get(LoginViewModel.class);
 
-        // Mensajes
-        vm.getMensaje().observe(this, mensaje -> {
-            if (mensaje != null) {
-                Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
-            }
-        });
+        observarViewModel();
+        configurarUI();
+    }
 
-        // Login
-        vm.getLoginOk().observe(this, ok -> {
-            if (ok != null && ok) {
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+    private void observarViewModel() {
+
+        vm.getMensaje().observe(this, msg ->
+                Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        );
+
+        vm.getNavegarMain().observe(this, ir -> {
+            if (Boolean.TRUE.equals(ir)) {
+                Intent intent =
+                        new Intent(LoginActivity.this, MainActivity.class);
+                intent.setFlags(
+                        Intent.FLAG_ACTIVITY_NEW_TASK |
+                                Intent.FLAG_ACTIVITY_CLEAR_TASK
+                );
                 startActivity(intent);
             }
         });
 
-        // Boton Login
-        binding.loginButton.setOnClickListener(v -> {
-            String usuario = binding.email.getText().toString().trim();
-            String clave = binding.password.getText().toString().trim();
-            vm.Logueo(usuario, clave);
-        });
-
-        // Boton Registro
-        binding.registerButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LoginActivity.this, RegistroActivity.class);
-            startActivity(intent);
+        vm.getLoading().observe(this, loading -> {
+            binding.loginButton.setEnabled(!loading);
+//            binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
         });
     }
+
+    private void configurarUI() {
+
+        binding.loginButton.setOnClickListener(v ->
+                vm.loguear(
+                        binding.email.getText().toString(),
+                        binding.password.getText().toString()
+                )
+        );
+
+        binding.registerButton.setOnClickListener(v ->
+                startActivity(
+                        new Intent(this, RegistroActivity.class)
+                )
+        );
+    }
 }
+

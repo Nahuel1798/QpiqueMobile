@@ -3,6 +3,7 @@ package com.example.qpiqueapp.ui.categoria;
 import android.app.Application;
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -51,7 +52,7 @@ public class CrearCategoriaViewModel extends AndroidViewModel {
         imagenSeleccionada.setValue(uri);
     }
 
-    public void crearCategoria(Context context, String nombre) {
+    public void crearCategoria(String nombre) {
 
         if (nombre == null || nombre.trim().isEmpty()) {
             mensajeError.setValue("Ingrese un nombre");
@@ -70,32 +71,8 @@ public class CrearCategoriaViewModel extends AndroidViewModel {
             return;
         }
 
-        MultipartBody.Part imagenPart;
-        try (InputStream inputStream = context.getContentResolver().openInputStream(imagenUri)) {
-
-            File tempFile = new File(context.getCacheDir(),
-                    "categoria_" + System.currentTimeMillis() + ".jpg");
-
-            try (OutputStream outputStream = new FileOutputStream(tempFile)) {
-                byte[] buffer = new byte[4096];
-                int read;
-                while ((read = inputStream.read(buffer)) != -1) {
-                    outputStream.write(buffer, 0, read);
-                }
-            }
-
-            RequestBody requestFile = RequestBody.create(
-                    MediaType.parse(context.getContentResolver().getType(imagenUri)),
-                    tempFile
-            );
-
-            imagenPart = MultipartBody.Part.createFormData(
-                    "Imagen",
-                    tempFile.getName(),
-                    requestFile
-            );
-
-        } catch (Exception e) {
+        MultipartBody.Part imagenPart = crearImagenPart(imagenSeleccionada.getValue(), "categoria");
+        if (imagenPart == null) {
             mensajeError.setValue("Error al procesar la imagen");
             return;
         }
@@ -120,6 +97,36 @@ public class CrearCategoriaViewModel extends AndroidViewModel {
                         mensajeError.setValue(t.getMessage());
                     }
                 });
+    }
+
+    private MultipartBody.Part crearImagenPart(Uri uri, String prefijo) {
+        if (uri == null) return null;
+
+        try (InputStream is = getApplication().getContentResolver().openInputStream(uri)) {
+
+            File file = new File(getApplication().getCacheDir(),
+                    prefijo + "_" + System.currentTimeMillis() + ".jpg");
+
+            try (FileOutputStream os = new FileOutputStream(file)) {
+                byte[] buffer = new byte[4096];
+                int read;
+                while ((read = is.read(buffer)) != -1) {
+                    os.write(buffer, 0, read);
+                }
+            }
+
+            RequestBody body = RequestBody.create(MediaType.parse("image/*"), file);
+
+            return MultipartBody.Part.createFormData(
+                    "Imagen",
+                    file.getName(),
+                    body
+            );
+
+        } catch (Exception e) {
+            Log.e("IMAGEN_PART", "Error al procesar imagen", e);
+            return null;
+        }
     }
 
     // Eventos

@@ -19,28 +19,37 @@ import retrofit2.Response;
 public class EditarClienteViewModel extends AndroidViewModel {
 
     private final MutableLiveData<Clientes> cliente = new MutableLiveData<>();
-
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+
     private final MutableLiveData<String> mensaje = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> volverAtras = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navegarAtras = new MutableLiveData<>();
 
     public EditarClienteViewModel(@NonNull Application app) {
         super(app);
     }
 
-    // Getter
+    // Getters
 
-    public LiveData<Clientes> getCliente() { return cliente; }
-    public LiveData<Boolean> getLoading() { return loading; }
-    public LiveData<String> getMensaje() { return mensaje; }
-    public LiveData<Boolean> getVolverAtras() { return volverAtras; }
+    public LiveData<Clientes> getCliente() {
+        return cliente;
+    }
 
-    // Inicializar
+    public LiveData<Boolean> getLoading() {
+        return loading;
+    }
+
+    public LiveData<String> getMensaje() {
+        return mensaje;
+    }
+
+    public LiveData<Boolean> getNavegarAtras() {
+        return navegarAtras;
+    }
 
     public void inicializar(Clientes c) {
         if (c == null) {
             mensaje.setValue("Cliente no encontrado");
-            volverAtras.setValue(true);
+            navegarAtras.setValue(true);
             return;
         }
         cliente.setValue(c);
@@ -55,16 +64,22 @@ public class EditarClienteViewModel extends AndroidViewModel {
             String email
     ) {
 
-        if (nombre.isEmpty() || apellido.isEmpty() ||
-                telefono.isEmpty() || email.isEmpty()) {
-            mensaje.setValue("Completa todos los campos");
+        if (nombre.isEmpty() || apellido.isEmpty()) {
+            mensaje.setValue("Completa nombre y apellido");
             return;
         }
 
         Clientes c = cliente.getValue();
         if (c == null) {
             mensaje.setValue("Cliente no disponible");
-            volverAtras.setValue(true);
+            navegarAtras.setValue(true);
+            return;
+        }
+
+        String token = ApiClient.leerToken(getApplication());
+        if (token == null || token.isEmpty()) {
+            mensaje.setValue("Sesión no válida");
+            navegarAtras.setValue(true);
             return;
         }
 
@@ -73,58 +88,35 @@ public class EditarClienteViewModel extends AndroidViewModel {
         c.setTelefono(telefono);
         c.setEmail(email);
 
-        String token = ApiClient.leerToken(getApplication());
-        if (token == null || token.isEmpty()) {
-            mensaje.setValue("Sesión no válida");
-            volverAtras.setValue(true);
-            return;
-        }
-
         loading.setValue(true);
 
         ApiClient.getInmoServicio()
                 .editarCliente("Bearer " + token, c.getId(), c)
                 .enqueue(new Callback<ResponseBody>() {
+
                     @Override
                     public void onResponse(
                             Call<ResponseBody> call,
                             Response<ResponseBody> response) {
 
-                        loading.postValue(false);
+                        loading.setValue(false);
 
                         if (response.isSuccessful()) {
-                            mensaje.postValue("Cliente actualizado");
-                            volverAtras.postValue(true);
+                            mensaje.setValue("Cliente actualizado");
+                            navegarAtras.setValue(true);
                         } else {
-                            try {
-                                String error = response.errorBody() != null
-                                        ? response.errorBody().string()
-                                        : "Error desconocido";
-
-                                mensaje.postValue("Error: " + response.code());
-                                Log.e("EDITAR_CLIENTE", "Código: " + response.code() + " - " + error);
-                            } catch (Exception e) {
-                                mensaje.postValue("Error al actualizar");
-                            }
+                            mensaje.setValue("Error al actualizar (" + response.code() + ")");
+                            Log.e("EDITAR_CLIENTE", "Código: " + response.code());
                         }
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        loading.postValue(false);
-                        mensaje.postValue("Error de conexión");
+                        loading.setValue(false);
+                        mensaje.setValue("Error de conexión");
                     }
                 });
     }
-
-    // Eventos
-
-    public void mensajeConsumido() {
-        mensaje.setValue(null);
-    }
-
-    public void volverConsumido() {
-        volverAtras.setValue(false);
-    }
 }
+
 

@@ -121,7 +121,6 @@ public class EditarCategoriaViewModel extends AndroidViewModel {
     }
 
     // Utilidad
-
     private MultipartBody.Part crearImagenPart(Context context) {
         Uri uri = imagenSeleccionada.getValue();
         if (uri == null) return null;

@@ -25,36 +25,42 @@ public class CarritoFragment extends Fragment {
 
     private FragmentCarritoBinding binding;
 
-    private CarritoViewModel carritoViewModel;
-    private VentasViewModel ventasViewModel;
-    private CrearVentaViewModel crearVentaViewModel;
+    private CarritoViewModel carritoVM;
+    private VentasViewModel ventasVM;
+    private CrearVentaViewModel crearVentaVM;
 
     private CarritoAdapter adapter;
 
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
+
         binding = FragmentCarritoBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(
+            @NonNull View view,
+            @Nullable Bundle savedInstanceState) {
 
-        carritoViewModel = new ViewModelProvider(requireActivity()).get(CarritoViewModel.class);
-        ventasViewModel = new ViewModelProvider(requireActivity()).get(VentasViewModel.class);
-        crearVentaViewModel = new ViewModelProvider(requireActivity()).get(CrearVentaViewModel.class);
+        carritoVM = new ViewModelProvider(requireActivity()).get(CarritoViewModel.class);
+        ventasVM = new ViewModelProvider(requireActivity()).get(VentasViewModel.class);
+        crearVentaVM = new ViewModelProvider(requireActivity()).get(CrearVentaViewModel.class);
 
         adapter = new CarritoAdapter(
                 new ArrayList<>(),
                 new CarritoAdapter.OnEliminarClick() {
                     @Override
                     public void onEliminar(Productos producto) {
-                        carritoViewModel.quitarProducto(producto);
+                        carritoVM.quitarProducto(producto);
                     }
 
                     @Override
                     public void onCantidadCambiada() {
-                        carritoViewModel.calcularTotal();
+                        carritoVM.actualizarCantidad();
                     }
                 }
         );
@@ -62,28 +68,35 @@ public class CarritoFragment extends Fragment {
         binding.rvCarrito.setLayoutManager(new LinearLayoutManager(requireContext()));
         binding.rvCarrito.setAdapter(adapter);
 
-        carritoViewModel.getCarrito().observe(getViewLifecycleOwner(), lista -> {
+        // Carrito
+        carritoVM.getCarrito().observe(getViewLifecycleOwner(), lista -> {
             adapter.setLista(lista);
-            binding.layoutVacio.setVisibility(lista.isEmpty() ? View.VISIBLE : View.GONE);
-            carritoViewModel.calcularTotal();
+            binding.layoutVacio.setVisibility(
+                    lista.isEmpty() ? View.VISIBLE : View.GONE
+            );
         });
 
-        carritoViewModel.getMensaje().observe(getViewLifecycleOwner(), msg -> {
-            if (msg != null && !msg.isEmpty()) {
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
-                carritoViewModel.limpiarMensaje();
-            }
-        });
-
-        carritoViewModel.getTotal().observe(
+        // Total
+        carritoVM.getTotal().observe(
                 getViewLifecycleOwner(),
                 total -> binding.tvTotal.setText("$ " + String.format("%.2f", total))
         );
 
-        ventasViewModel.getClienteSeleccionado().observe(getViewLifecycleOwner(), cliente -> {
+        // Mensajes
+        carritoVM.getMensaje().observe(getViewLifecycleOwner(), msg -> {
+            if (msg != null) {
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
+                carritoVM.mensajeConsumido();
+            }
+        });
+
+        // Cliente seleccionado
+        ventasVM.getClienteSeleccionado().observe(getViewLifecycleOwner(), cliente -> {
             if (cliente != null) {
                 binding.cardCliente.setVisibility(View.VISIBLE);
-                binding.tvClienteNombre.setText(cliente.getNombre() + " " + cliente.getApellido());
+                binding.tvClienteNombre.setText(
+                        cliente.getNombre() + " " + cliente.getApellido()
+                );
                 binding.tvClienteEmail.setText(cliente.getEmail());
                 binding.btnSeleccionarCliente.setText("Cambiar Cliente");
             } else {
@@ -92,14 +105,16 @@ public class CarritoFragment extends Fragment {
             }
         });
 
-        crearVentaViewModel.getVentaCreada().observe(getViewLifecycleOwner(), creada -> {
-            if (creada != null && creada) {
-                carritoViewModel.limpiarCarrito();
+        // Venta creada
+        crearVentaVM.getVentaCreada().observe(getViewLifecycleOwner(), creada -> {
+            if (Boolean.TRUE.equals(creada)) {
+                carritoVM.limpiarCarrito();
                 NavHostFragment.findNavController(this).popBackStack();
-                crearVentaViewModel.resetVentaCreada();
+                crearVentaVM.resetVentaCreada();
             }
         });
 
+        // Botones
         binding.btnSeleccionarCliente.setOnClickListener(v -> {
             Bundle args = new Bundle();
             args.putBoolean("modoSeleccion", true);
@@ -108,15 +123,23 @@ public class CarritoFragment extends Fragment {
         });
 
         binding.btnQuitarCliente.setOnClickListener(v -> {
-            ventasViewModel.deseleccionarCliente();
-            Toast.makeText(requireContext(), "Cliente deseleccionado", Toast.LENGTH_SHORT).show();
+            ventasVM.deseleccionarCliente();
+            Toast.makeText(
+                    requireContext(),
+                    "Cliente deseleccionado",
+                    Toast.LENGTH_SHORT
+            ).show();
         });
 
         binding.btnConfirmarCompra.setOnClickListener(v -> {
-            if (carritoViewModel.getCantidadItems() == 0) return;
+            if (carritoVM.getCantidadItems() == 0) return;
 
-            if (ventasViewModel.getClienteSeleccionado().getValue() == null) {
-                Toast.makeText(requireContext(), "Debe seleccionar un cliente", Toast.LENGTH_SHORT).show();
+            if (ventasVM.getClienteSeleccionado().getValue() == null) {
+                Toast.makeText(
+                        requireContext(),
+                        "Debe seleccionar un cliente",
+                        Toast.LENGTH_SHORT
+                ).show();
                 return;
             }
 

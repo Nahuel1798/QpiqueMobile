@@ -13,7 +13,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.databinding.FragmentEditarVentaBinding;
+import com.example.qpiqueapp.modelo.productos.Productos;
 import com.example.qpiqueapp.modelo.venta.DetalleVenta;
 import com.example.qpiqueapp.modelo.venta.Ventas;
 
@@ -25,8 +27,8 @@ public class EditarVentaFragment extends Fragment {
     private FragmentEditarVentaBinding binding;
     private EditarVentaViewModel viewModel;
 
-    private int ventaId;
-    private List<DetalleVenta> detalles = new ArrayList<>();
+    private int ventaId = 0;
+    private final List<DetalleVenta> detalles = new ArrayList<>();
     private EditarVentaAdapter adapter;
 
     @Override
@@ -40,59 +42,101 @@ public class EditarVentaFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull View view,
+                              @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        viewModel = new ViewModelProvider(this).get(EditarVentaViewModel.class);
+        // ViewModel compartido
+        viewModel = new ViewModelProvider(requireActivity())
+                .get(EditarVentaViewModel.class);
 
-        // RecyclerView
-        adapter = new EditarVentaAdapter(detalles, this::recalcularTotal);
-        binding.recyclerDetalles.setLayoutManager(new LinearLayoutManager(getContext()));
-        binding.recyclerDetalles.setAdapter(adapter);
+        // Recycler
+        adapter = new EditarVentaAdapter(
+                detalles,
+                new EditarVentaAdapter.OnDetalleChangeListener() {
+                    @Override
+                    public void onCantidadChange() {
+                        recalcularTotal();
+                    }
 
-        // Validar argumentos
-        if (getArguments() == null || !getArguments().containsKey("ventas")) {
-            Toast.makeText(getContext(), "Error al cargar la venta", Toast.LENGTH_LONG).show();
-            NavHostFragment.findNavController(this).popBackStack();
-            return;
-        }
-
-        // Recibir venta
-        Ventas venta = (Ventas) getArguments().getSerializable("ventas");
-        if (venta == null) {
-            Toast.makeText(getContext(), "Venta inválida", Toast.LENGTH_LONG).show();
-            NavHostFragment.findNavController(this).popBackStack();
-            return;
-        }
-
-        // Inicializar datos
-        ventaId = venta.getId();
-        detalles.clear();
-        detalles.addAll(venta.getDetalleVentas());
-        adapter.notifyDataSetChanged();
-        recalcularTotal();
-
-        // Botón Guardar
-        binding.btnGuardarVenta.setOnClickListener(v ->
-                viewModel.editarVenta(ventaId, detalles)
+                    @Override
+                    public void onEliminar(DetalleVenta detalle) {
+                        viewModel.eliminarDetalle(detalle);
+                    }
+                }
         );
 
-//        binding.btnAgregarProducto.setOnClickListener(v -> {
-//            mostrarDialogoAgregarProducto();
-//        });
+        binding.recyclerDetalles.setLayoutManager(
+                new LinearLayoutManager(getContext())
+        );
+        binding.recyclerDetalles.setAdapter(adapter);
 
         observarViewModel();
+
+        Bundle args = getArguments();
+        if (args == null) {
+            Toast.makeText(getContext(),
+                    "Error al cargar datos",
+                    Toast.LENGTH_LONG).show();
+            NavHostFragment.findNavController(this).popBackStack();
+            return;
+        }
+
+        // Cargar venta existente
+        if (args.containsKey("ventas")) {
+
+            Ventas venta = (Ventas) args.getSerializable("ventas");
+
+            if (venta != null) {
+                ventaId = venta.getId();
+
+                viewModel.setVentaId(ventaId);
+
+                for (DetalleVenta d : venta.getDetalleVentas()) {
+                    d.setCantidadOriginal(d.getCantidad());
+                }
+
+                viewModel.setDetalles(venta.getDetalleVentas());
+            }
+        }
+
+        // Volver del selector
+        if (args.containsKey("productos")) {
+
+            ArrayList<Productos> productos =
+                    (ArrayList<Productos>) args.getSerializable("productos");
+
+            if (productos != null) {
+                viewModel.agregarProductos(productos);
+            }
+        }
+
+        // Acciones
+        binding.btnAgregarProducto.setOnClickListener(v ->
+                NavHostFragment.findNavController(this)
+                        .navigate(
+                                R.id.action_editarVentaFragment_to_seleccionarVPFragment
+                        )
+        );
+
+        binding.btnGuardarVenta.setOnClickListener(v -> {
+            viewModel.editarVenta(viewModel.getVentaId());
+            viewModel.limpiar();
+            NavHostFragment.findNavController(this).popBackStack(R.id.nav_reflow, false);
+        });
     }
 
+    // Observers
     private void observarViewModel() {
+
+        viewModel.getDetalles().observe(getViewLifecycleOwner(), lista -> {
+            adapter.actualizarLista(lista);
+            recalcularTotal();
+        });
 
         viewModel.getVentaActualizada().observe(getViewLifecycleOwner(), venta -> {
             if (venta != null) {
-                Toast.makeText(getContext(),
-                        "Venta actualizada. Total: $" + venta.getTotal(),
-                        Toast.LENGTH_LONG).show();
-
-                NavHostFragment.findNavController(this).popBackStack();
+                NavHostFragment.findNavController(this).popBackStack(R.id.editarVentaFragment, false);
             }
         });
 
@@ -103,12 +147,13 @@ public class EditarVentaFragment extends Fragment {
         });
 
         viewModel.getLoading().observe(getViewLifecycleOwner(), loading -> {
-            binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
+            binding.progressBar.setVisibility(
+                    loading ? View.VISIBLE : View.GONE
+            );
             binding.btnGuardarVenta.setEnabled(!loading);
         });
     }
 
-    // Recalcula total en vivo
     private void recalcularTotal() {
         double total = 0;
         for (DetalleVenta d : detalles) {
@@ -117,10 +162,10 @@ public class EditarVentaFragment extends Fragment {
         binding.txtTotal.setText("$ " + total);
     }
 
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
     }
 }
+

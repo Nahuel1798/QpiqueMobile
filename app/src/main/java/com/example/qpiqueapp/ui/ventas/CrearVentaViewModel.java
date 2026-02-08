@@ -49,8 +49,6 @@ public class CrearVentaViewModel extends AndroidViewModel {
     }
 
 
-
-
     // Metodos
     public void crearVenta(List<Productos> carrito) {
         ventaCreada.setValue(false);

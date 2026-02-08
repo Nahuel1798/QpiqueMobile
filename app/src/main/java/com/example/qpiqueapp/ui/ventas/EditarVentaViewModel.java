@@ -1,6 +1,7 @@
 package com.example.qpiqueapp.ui.ventas;
 
 import android.app.Application;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
@@ -14,11 +15,9 @@ import com.example.qpiqueapp.modelo.venta.VentaActualizada;
 import com.example.qpiqueapp.modelo.venta.VentaResponse;
 import com.example.qpiqueapp.request.ApiClient;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -29,7 +28,7 @@ public class EditarVentaViewModel extends AndroidViewModel {
     private final MutableLiveData<String> error = new MutableLiveData<>();
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>();
     private final MutableLiveData<List<DetalleVenta>> detalles = new MutableLiveData<>(new ArrayList<>());
-
+    private int ventaId= 0;
 
     public EditarVentaViewModel(@NonNull Application application) {
         super(application);
@@ -47,11 +46,72 @@ public class EditarVentaViewModel extends AndroidViewModel {
     public LiveData<Boolean> getLoading() {
         return loading;
     }
+    public void setVentaId(int id) {
+        this.ventaId = id;
+    }
 
-    // PUT editar venta
-    public void editarVenta(int ventaId, List<DetalleVenta> detalles) {
+    public int getVentaId() {
+        return ventaId;
+    }
 
-        if (detalles == null || detalles.isEmpty()) {
+    public LiveData<List<DetalleVenta>> getDetalles() {
+        return detalles;
+    }
+
+    // Se llama UNA sola vez al abrir una venta existente
+    public void setDetalles(List<DetalleVenta> lista) {
+        detalles.setValue(new ArrayList<>(lista));
+    }
+
+    // Agrega productos seleccionados
+    public void agregarProductos(List<Productos> productos) {
+
+        List<DetalleVenta> actuales = new ArrayList<>(detalles.getValue());
+
+        for (Productos p : productos) {
+
+            DetalleVenta existente = null;
+            for (DetalleVenta d : actuales) {
+                if (d.getProductoId() == p.getId()) {
+                    existente = d;
+                    break;
+                }
+            }
+
+            if (existente != null) {
+                existente.setCantidad(existente.getCantidad() + 1);
+            } else {
+                DetalleVenta d = new DetalleVenta();
+                d.setProductoId(p.getId());
+                d.setCantidad(1);
+                d.setCantidadOriginal(0);
+                d.setPrecioUnitario(p.getPrecio());
+                d.setProductoNombre(p.getNombre());
+                d.setImagenUrl(p.getImagenUrl());
+                d.setStock(p.getStock());
+                actuales.add(d);
+            }
+        }
+
+        detalles.setValue(actuales);
+    }
+
+    public void eliminarDetalle(DetalleVenta detalle) {
+        List<DetalleVenta> lista = new ArrayList<>(detalles.getValue());
+
+        lista.removeIf(d ->
+                d.getProductoId() == detalle.getProductoId()
+        );
+
+        detalles.setValue(lista);
+    }
+
+    // Guardar venta
+    public void editarVenta(int ventaId) {
+
+        List<DetalleVenta> lista = detalles.getValue();
+
+        if (lista == null || lista.isEmpty()) {
             error.setValue("La venta debe tener al menos un producto");
             return;
         }
@@ -59,10 +119,9 @@ public class EditarVentaViewModel extends AndroidViewModel {
         loading.setValue(true);
 
         VentaActualizada dto = new VentaActualizada();
-        dto.setDetalles(detalles);
+        dto.setDetalles(lista);
 
         String token = ApiClient.leerToken(getApplication());
-
 
         ApiClient.getInmoServicio()
                 .editarVenta("Bearer " + token, ventaId, dto)
@@ -75,7 +134,21 @@ public class EditarVentaViewModel extends AndroidViewModel {
                         if (response.isSuccessful() && response.body() != null) {
                             ventaActualizada.postValue(response.body());
                         } else {
-                            error.postValue(leerError(response));
+
+                            try {
+                                String errorJson = response.errorBody() != null
+                                        ? response.errorBody().string()
+                                        : "ErrorBody null";
+
+                                Log.e("EDITAR_VENTA_ERROR", "Código: " + response.code());
+                                Log.e("EDITAR_VENTA_ERROR", "Error JSON: " + errorJson);
+
+                                error.postValue(errorJson);
+
+                            } catch (Exception e) {
+                                Log.e("EDITAR_VENTA_ERROR", "Error leyendo errorBody", e);
+                                error.postValue("Error al procesar la respuesta");
+                            }
                         }
                     }
 
@@ -87,14 +160,11 @@ public class EditarVentaViewModel extends AndroidViewModel {
                 });
     }
 
-    // Lee mensaje de error del backend
-    private String leerError(Response<?> response) {
-        try {
-            ResponseBody errorBody = response.errorBody();
-            if (errorBody != null)
-                return errorBody.string();
-        } catch (IOException ignored) {}
-        return "Error al actualizar la venta";
+    public void limpiar() {
+        detalles.setValue(new ArrayList<>());
+        ventaId = 0;
+        ventaActualizada.setValue(null);
+        error.setValue(null);
     }
 }
 

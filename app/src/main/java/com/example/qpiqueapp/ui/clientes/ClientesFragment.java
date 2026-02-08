@@ -118,7 +118,6 @@ public class ClientesFragment extends Fragment {
 
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        vm.buscar(query);
                         binding.searchViewClientes.clearFocus();
                         binding.listaClientes.scrollToPosition(0);
                         return true;
@@ -127,7 +126,6 @@ public class ClientesFragment extends Fragment {
                     @Override
                     public boolean onQueryTextChange(String newText) {
                         if (newText.isEmpty()) {
-                            vm.buscar("");
                             binding.listaClientes.scrollToPosition(0);
                         }
                         return true;

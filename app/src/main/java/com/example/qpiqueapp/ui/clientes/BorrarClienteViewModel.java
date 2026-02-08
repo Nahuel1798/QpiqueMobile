@@ -13,42 +13,69 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class BorrarClienteViewModel extends AndroidViewModel {
-    public MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
-    public MutableLiveData<Boolean> eliminado = new MutableLiveData<>(false);
-    public MutableLiveData<String> mensaje = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
+    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navegarAtras = new MutableLiveData<>();
 
     public BorrarClienteViewModel(@NonNull Application app) {
         super(app);
     }
 
-    public void eliminarCliente(int id) {
-        loading.setValue(true);
+    // Getters
+
+    public MutableLiveData<Boolean> getLoading() {
+        return loading;
+    }
+
+    public MutableLiveData<String> getMensaje() {
+        return mensaje;
+    }
+
+    public MutableLiveData<Boolean> getNavegarAtras() {
+        return navegarAtras;
+    }
+
+    // Acciones
+
+    public void eliminarCliente(Integer id) {
+
+        if (id == null || id <= 0) {
+            mensaje.setValue("Cliente inválido");
+            navegarAtras.setValue(true);
+            return;
+        }
 
         String token = ApiClient.leerToken(getApplication());
-        String auth = "Bearer " + token;
+        if (token == null || token.isEmpty()) {
+            mensaje.setValue("Sesión no válida");
+            navegarAtras.setValue(true);
+            return;
+        }
+
+        loading.setValue(true);
 
         ApiClient.getInmoServicio()
-                .eliminarCliente(auth, id)
+                .eliminarCliente("Bearer " + token, id)
                 .enqueue(new Callback<Void>() {
+
                     @Override
                     public void onResponse(Call<Void> call, Response<Void> response) {
                         loading.setValue(false);
 
                         if (response.isSuccessful()) {
-                            eliminado.setValue(true);
                             mensaje.setValue("Cliente eliminado correctamente");
-                            return;
+                            navegarAtras.setValue(true);
+                        } else {
+                            mensaje.setValue("Error al eliminar cliente (" + response.code() + ")");
                         }
-
-                        eliminado.setValue(false);
                     }
 
                     @Override
                     public void onFailure(Call<Void> call, Throwable t) {
                         loading.setValue(false);
-                        eliminado.setValue(false);
                         mensaje.setValue("Error de conexión con el servidor");
                     }
                 });
     }
 }
+

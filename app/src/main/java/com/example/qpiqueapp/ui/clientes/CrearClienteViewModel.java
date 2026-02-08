@@ -13,66 +13,78 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CrearClienteViewModel extends AndroidViewModel {
-    // Estados
-    private final MutableLiveData<Clientes> clienteCreado = new MutableLiveData<>();
-    private final MutableLiveData<String> error = new MutableLiveData<>();
+
+    // Eventos
+    private final MutableLiveData<String> mensaje = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navegarAtras = new MutableLiveData<>();
+
+    // Estado
     private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
 
     public CrearClienteViewModel(@NonNull Application app) {
         super(app);
     }
 
-    public MutableLiveData<Clientes> getClienteCreado() {
-        return clienteCreado;
+    // Getter
+
+    public MutableLiveData<String> getMensaje() {
+        return mensaje;
     }
 
-    public MutableLiveData<String> getError() {
-        return error;
+    public MutableLiveData<Boolean> getNavegarAtras() {
+        return navegarAtras;
     }
 
     public MutableLiveData<Boolean> getLoading() {
         return loading;
     }
-    public void cargarCliente(String nombre, String apellido, String telefono, String email){
+
+    // Acciones
+
+    public void guardarCliente(String nombre, String apellido, String telefono, String email) {
+
         if (nombre == null || nombre.trim().isEmpty()) {
-            error.setValue("Ingrese un nombre");
+            mensaje.setValue("Ingrese un nombre");
             return;
         }
         if (apellido == null || apellido.trim().isEmpty()) {
-            error.setValue("Ingrese un apellido");
+            mensaje.setValue("Ingrese un apellido");
             return;
         }
-        if (telefono == null || telefono.trim().isEmpty()) {
-            error.setValue("Ingrese un telefono");
-            return;
-        }
-        if (email == null || email.trim().isEmpty()) {
-            error.setValue("Ingrese un email");
-            return;
-        }
+
         String token = ApiClient.leerToken(getApplication());
         if (token == null || token.isEmpty()) {
-            error.setValue("No hay sesión activa");
+            mensaje.setValue("No hay sesión activa");
             return;
         }
-        ClientesCrearRequest request = new ClientesCrearRequest(nombre, apellido, telefono, email);
+
+        loading.setValue(true);
+
+        ClientesCrearRequest request =
+                new ClientesCrearRequest(nombre, apellido, telefono, email);
+
         ApiClient.getInmoServicio()
                 .crearCliente("Bearer " + token, request)
                 .enqueue(new Callback<Clientes>() {
+
                     @Override
                     public void onResponse(Call<Clientes> call, Response<Clientes> response) {
-                        if (response.isSuccessful()) {
-                            clienteCreado.setValue(response.body());
+                        loading.setValue(false);
+
+                        if (response.isSuccessful() && response.body() != null) {
+                            mensaje.setValue("Cliente creado: " + response.body().getNombre());
+                            navegarAtras.setValue(true);
                         } else {
-                            error.setValue("Error al crear cliente (" + response.code() + ")");
+                            mensaje.setValue("Error al crear cliente (" + response.code() + ")");
                         }
                     }
+
                     @Override
                     public void onFailure(Call<Clientes> call, Throwable t) {
-                        error.setValue(t.getMessage());
+                        loading.setValue(false);
+                        mensaje.setValue("Error de conexión");
                     }
                 });
-
-
     }
 }
+

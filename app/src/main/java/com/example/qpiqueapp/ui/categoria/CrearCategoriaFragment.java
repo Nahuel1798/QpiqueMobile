@@ -80,7 +80,6 @@ public class CrearCategoriaFragment extends Fragment {
 
         binding.btnGuardarCategoria.setOnClickListener(v ->
                 vm.crearCategoria(
-                        requireContext(),
                         binding.etNombreCategoria.getText().toString().trim()
                 )
         );

@@ -205,6 +205,9 @@
         <action
             android:id="@+id/action_editarVentaFragment_to_nav_reflow"
             app:destination="@id/nav_reflow" />
+        <action
+            android:id="@+id/action_editarVentaFragment_to_seleccionarVPFragment"
+            app:destination="@id/seleccionarVPFragment" />
     </fragment>
     <fragment
         android:id="@+id/crearVentaFragment"
@@ -265,4 +268,13 @@
         android:name="com.example.qpiqueapp.ui.roles.SinRolFragment"
         android:label="Advertencia"
         tools:layout="@layout/fragment_sin_rol" />
+    <fragment
+        android:id="@+id/seleccionarVPFragment"
+        android:name="com.example.qpiqueapp.ui.ventas.SeleccionarVPFragment"
+        android:label="Seleccionar Productos "
+        tools:layout="@layout/fragment_seleccionar_v_p" >
+        <action
+            android:id="@+id/action_seleccionarVPFragment_to_editarVentaFragment"
+            app:destination="@id/editarVentaFragment" />
+    </fragment>
 </navigation>

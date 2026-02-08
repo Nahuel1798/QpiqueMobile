@@ -46,7 +46,7 @@ public class CategoriasAdapter extends RecyclerView.Adapter<CategoriasAdapter.Ca
         // Configurar los datos en las vistas
         holder.tvNombre.setText(categoria.getNombre());
         // Cargar la imagen desde la URL con Glide
-        Glide.with(holder.itemView) // Usar el contexto guardado
+        Glide.with(holder.itemView)
                 .load(ApiClient.BASE_URL + categoria.getImagenUrl())
                 .placeholder(R.drawable.ic_settings_black_24dp)
                 .error(R.drawable.ic_settings_black_24dp)

@@ -17,51 +17,60 @@ import com.example.qpiqueapp.databinding.FragmentBorrarClienteBinding;
 import com.example.qpiqueapp.modelo.clientes.Clientes;
 
 public class BorrarClienteFragment extends Fragment {
+
     private FragmentBorrarClienteBinding binding;
     private BorrarClienteViewModel vm;
-    private Clientes cliente;
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(
+            @NonNull LayoutInflater inflater,
+            ViewGroup container,
+            Bundle savedInstanceState) {
 
         binding = FragmentBorrarClienteBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(BorrarClienteViewModel.class);
 
-        cliente = (Clientes) getArguments().getSerializable("cliente");
+        Clientes cliente =
+                (Clientes) getArguments().getSerializable("cliente");
 
-        binding.tvMensaje.setText("¿Desea eliminar el cliente " + cliente.getNombre() + "?");
+        binding.tvMensaje.setText(
+                "¿Desea eliminar el cliente " + cliente.getNombre() + "?"
+        );
 
-        binding.btnConfirmar.setOnClickListener(v -> {
-            vm.eliminarCliente(cliente.getId());
-        });
+        configurarUI(cliente);
+        observarViewModel();
 
-        binding.btnCancelar.setOnClickListener(v -> {
-            NavHostFragment.findNavController(this).popBackStack();
-        });
+        return binding.getRoot();
+    }
 
-        // Loading
-        vm.loading.observe(getViewLifecycleOwner(), loading -> {
+    private void configurarUI(Clientes cliente) {
+
+        binding.btnConfirmar.setOnClickListener(v ->
+                vm.eliminarCliente(cliente.getId())
+        );
+
+        binding.btnCancelar.setOnClickListener(v ->
+                NavHostFragment.findNavController(this).popBackStack()
+        );
+    }
+
+    private void observarViewModel() {
+
+        vm.getLoading().observe(getViewLifecycleOwner(), loading -> {
             binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
             binding.btnConfirmar.setEnabled(!loading);
         });
 
-        // Mensajes
-        vm.mensaje.observe(getViewLifecycleOwner(), msg -> {
-            if (msg != null) {
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show();
-            }
-        });
+        vm.getMensaje().observe(getViewLifecycleOwner(), msg ->
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
+        );
 
-        // Navegación
-        vm.eliminado.observe(getViewLifecycleOwner(), ok -> {
-            if (ok) {
+        vm.getNavegarAtras().observe(getViewLifecycleOwner(), volver -> {
+            if (Boolean.TRUE.equals(volver)) {
                 NavHostFragment.findNavController(this).popBackStack();
             }
         });
-
-        return binding.getRoot();
     }
 
     @Override

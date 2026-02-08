@@ -1,4 +1,4 @@
-package com.example.qpiqueapp.ui.productos;
+package com.example.qpiqueapp.ui.ventas;
 
 import android.app.Application;
 
@@ -19,36 +19,33 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductosViewModel extends AndroidViewModel {
-
-    private final MutableLiveData<List<Productos>> productosLiveData =
-            new MutableLiveData<>(new ArrayList<>());
-
-    private final MutableLiveData<List<Categorias>> categoriasLiveData =
-            new MutableLiveData<>(new ArrayList<>());
-
+public class SeleccionarVPVIewModel extends AndroidViewModel {
+    private final MutableLiveData<List<Productos>> productosSeleccionados = new MutableLiveData<>();
+    private final MutableLiveData<Productos> productoSeleccionado = new MutableLiveData<>();
+    private final MutableLiveData<List<Categorias>> categorias = new MutableLiveData<>();
     private final MutableLiveData<Boolean> cargando = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> total = new MutableLiveData<>(0);
-
-    private final List<Productos> acumulados = new ArrayList<>();
 
     private Integer categoriaId = null;
     private String nombre = null;
     private int page = 1;
-    private final int pageSize = 6;
+    private int pageSize = 6;
     private boolean ultimaPagina = false;
 
-    public ProductosViewModel(@NonNull Application application) {
+    public SeleccionarVPVIewModel(@NonNull Application application) {
         super(application);
     }
 
-    // Getters
-    public LiveData<List<Productos>> getListaProductos() {
-        return productosLiveData;
+    // Getter
+    public LiveData<List<Productos>> getProductosSeleccionados() {
+        return productosSeleccionados;
+    }
+    public LiveData<Productos> getProductoSeleccionado() {
+        return productoSeleccionado;
     }
 
     public LiveData<List<Categorias>> getCategorias() {
-        return categoriasLiveData;
+        return categorias;
     }
 
     public LiveData<Boolean> getCargando() {
@@ -60,19 +57,8 @@ public class ProductosViewModel extends AndroidViewModel {
     }
 
     // Acciones
-    public void cargarInicial() {
-        resetear();
-        cargarProductos();
-    }
-
     public void seleccionarCategoria(Integer nuevaCategoriaId) {
         categoriaId = nuevaCategoriaId;
-        resetear();
-        cargarProductos();
-    }
-
-    public void buscar(String texto) {
-        nombre = (texto == null || texto.isEmpty()) ? null : texto.trim();
         resetear();
         cargarProductos();
     }
@@ -83,12 +69,18 @@ public class ProductosViewModel extends AndroidViewModel {
         cargarProductos();
     }
 
-    // Privados
+    public void buscar(String texto) {
+        nombre = texto == null ? "" : texto.trim();
+        resetear();
+        cargarProductos();
+    }
+
+    // Metodos
+
     private void resetear() {
         page = 1;
         ultimaPagina = false;
-        acumulados.clear();
-        productosLiveData.setValue(new ArrayList<>());
+        productosSeleccionados.setValue(new ArrayList<>());
     }
 
     public void cargarCategorias() {
@@ -99,58 +91,44 @@ public class ProductosViewModel extends AndroidViewModel {
                     public void onResponse(
                             Call<List<Categorias>> call,
                             Response<List<Categorias>> response) {
-
-                        List<Categorias> lista = new ArrayList<>();
-
-                        Categorias todas = new Categorias();
-                        todas.setId(0);
-                        todas.setNombre("Todas");
-                        lista.add(todas);
-
                         if (response.isSuccessful() && response.body() != null) {
+                            List<Categorias> lista = new ArrayList<>();
+                            Categorias todas = new Categorias();
+                            todas.setId(0);
+                            todas.setNombre("Todas");
+                            lista.add(todas);
                             lista.addAll(response.body());
+                            categorias.setValue(lista);
+                        } else {
+                            categorias.setValue(new ArrayList<>());
                         }
-
-                        categoriasLiveData.setValue(lista);
                     }
-
                     @Override
                     public void onFailure(Call<List<Categorias>> call, Throwable t) {
-                        categoriasLiveData.setValue(new ArrayList<>());
+                        categorias.setValue(new ArrayList<>());
                     }
                 });
     }
 
-    private void cargarProductos() {
-        cargando.setValue(true);
-
+    public void cargarProductos() {
         ApiClient.getInmoServicio()
                 .getProductos(categoriaId, nombre, page, pageSize)
                 .enqueue(new Callback<ProductosResponse>() {
-
                     @Override
-                    public void onResponse(
-                            Call<ProductosResponse> call,
-                            Response<ProductosResponse> response) {
-
-                        cargando.setValue(false);
-
-                        if (!response.isSuccessful() || response.body() == null) return;
-
-                        List<Productos> nuevos = response.body().getProductos();
-                        total.setValue(response.body().getTotal());
-
-                        if (nuevos == null || nuevos.isEmpty()) {
-                            ultimaPagina = true;
-                            return;
+                    public void onResponse(Call<ProductosResponse> call, Response<ProductosResponse> response) {
+                        if (response.isSuccessful() && response.body() != null) {
+                            List<Productos> nuevos = response.body().getProductos();
+                            total.setValue(response.body().getTotal());
+                            if (nuevos == null || nuevos.isEmpty()) {
+                                ultimaPagina = true;
+                                return;
+                            }
+                            productosSeleccionados.setValue(nuevos);
                         }
-
-                        acumulados.addAll(nuevos);
-                        productosLiveData.setValue(new ArrayList<>(acumulados));
                     }
-
                     @Override
                     public void onFailure(Call<ProductosResponse> call, Throwable t) {
+                        productosSeleccionados.setValue(null);
                         cargando.setValue(false);
                     }
                 });

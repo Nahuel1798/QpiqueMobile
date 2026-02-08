@@ -6,9 +6,11 @@ import android.content.SharedPreferences;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
+import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 public class LogoutViewModel extends AndroidViewModel {
+
     private final MutableLiveData<Boolean> mostrarDialogo = new MutableLiveData<>();
     private final MutableLiveData<Boolean> redirigirLogin = new MutableLiveData<>();
 
@@ -16,18 +18,24 @@ public class LogoutViewModel extends AndroidViewModel {
         super(application);
     }
 
-    public MutableLiveData<Boolean> getMostrarDialogo() {
+    public LiveData<Boolean> getMostrarDialogo() {
         return mostrarDialogo;
     }
 
-    public MutableLiveData<Boolean> getRedirigirLogin() {
+    public LiveData<Boolean> getRedirigirLogin() {
         return redirigirLogin;
     }
 
+    public void solicitarLogout() {
+        mostrarDialogo.setValue(true);
+    }
+
     public void cerrarSesion() {
-        SharedPreferences sp = getApplication().getSharedPreferences("token_prefs", Context.MODE_PRIVATE);
+        SharedPreferences sp =
+                getApplication().getSharedPreferences("auth", Context.MODE_PRIVATE);
+
         sp.edit().clear().apply();
         redirigirLogin.setValue(true);
     }
-
 }
+

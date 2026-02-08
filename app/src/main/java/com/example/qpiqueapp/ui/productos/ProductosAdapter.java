@@ -68,7 +68,7 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         String stockFormateado = String.format("Stock: %d", producto.getStock());
         holder.tvStock.setText(stockFormateado);
         // Cargar la imagen desde la URL con Glide
-        Glide.with(holder.itemView) // Usar el contexto guardado
+        Glide.with(holder.itemView)
                 .load(ApiClient.BASE_URL + producto.getImagenUrl())
                 .placeholder(R.drawable.ic_settings_black_24dp)
                 .error(R.drawable.ic_settings_black_24dp)
@@ -115,12 +115,9 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
     private void actualizarBotonCarrito(Button boton, Productos producto) {
         if (productosAgregadosIds.contains(producto.getId())) {
             boton.setText("Quitar");
-            // Opcional: Cambiar ícono. Asegúrate de tener ic_remove_shopping_cart en res/drawable
             boton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_shopping_cart, 0, 0, 0);
         } else {
-            // El producto NO está en el carrito: configurar para "Añadir"
             boton.setText("Añadir");
-            // Opcional: Cambiar ícono. Asegúrate de tener ic_add_shopping_cart en res/drawable
             boton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_shopping_cart, 0, 0, 0);
         }
     }
@@ -160,7 +157,7 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         if (ids != null) {
             this.productosAgregadosIds.addAll(ids);
         }
-        notifyDataSetChanged(); // Para que el RecyclerView redibuje los items con el estado correcto del botón.
+        notifyDataSetChanged();
     }
 
 }

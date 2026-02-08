@@ -36,34 +36,27 @@ public class CrearClienteFragment extends Fragment {
     }
 
     private void configurarUI() {
-        binding.btnGuardarCliente.setOnClickListener(v -> guardarCliente());
-    }
-
-    private void guardarCliente() {
-        vm.cargarCliente(
-                binding.etNombre.getText().toString().trim(),
-                binding.etApellido.getText().toString().trim(),
-                binding.etTelefono.getText().toString().trim(),
-                binding.etEmail.getText().toString().trim()
+        binding.btnGuardarCliente.setOnClickListener(v ->
+                vm.guardarCliente(
+                        binding.etNombre.getText().toString(),
+                        binding.etApellido.getText().toString(),
+                        binding.etTelefono.getText().toString(),
+                        binding.etEmail.getText().toString()
+                )
         );
     }
 
     private void observarViewModel() {
 
-        vm.getClienteCreado().observe(getViewLifecycleOwner(), cliente -> {
-            Toast.makeText(
-                    getContext(),
-                    "Cliente creado: " + cliente.getNombre(),
-                    Toast.LENGTH_SHORT
-            ).show();
-
-            // Volver a la pantalla anterior
-            NavHostFragment.findNavController(this).popBackStack();
-        });
-
-        vm.getError().observe(getViewLifecycleOwner(), error ->
-                Toast.makeText(getContext(), error, Toast.LENGTH_SHORT).show()
+        vm.getMensaje().observe(getViewLifecycleOwner(), msg ->
+                Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show()
         );
+
+        vm.getNavegarAtras().observe(getViewLifecycleOwner(), navegar -> {
+            if (Boolean.TRUE.equals(navegar)) {
+                NavHostFragment.findNavController(this).popBackStack();
+            }
+        });
 
         vm.getLoading().observe(getViewLifecycleOwner(), loading -> {
             binding.progressBar.setVisibility(loading ? View.VISIBLE : View.GONE);
@@ -77,3 +70,4 @@ public class CrearClienteFragment extends Fragment {
         binding = null;
     }
 }
+

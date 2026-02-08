@@ -9,6 +9,11 @@ public class DetalleVenta {
     private double precioUnitario;
     private String imagenUrl;
     private int stock;
+    private int cantidadOriginal;
+
+    public DetalleVenta() {
+    }
+
 
     public DetalleVenta(int id, int ventaId, int productoId, String productoNombre, int cantidad, double precioUnitario, String imagenUrl) {
         this.id = id;
@@ -41,6 +46,15 @@ public class DetalleVenta {
     }
     public void setStock(int stock) {
         this.stock = stock;
+    }
+
+
+    public int getCantidadOriginal() {
+        return cantidadOriginal;
+    }
+
+    public void setCantidadOriginal(int cantidadOriginal) {
+        this.cantidadOriginal = cantidadOriginal;
     }
 
     public int getProductoId() {

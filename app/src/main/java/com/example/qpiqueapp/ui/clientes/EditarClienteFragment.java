@@ -41,9 +41,14 @@ public class EditarClienteFragment extends Fragment {
 
         Clientes cliente =
                 (Clientes) getArguments().getSerializable("cliente");
+
         vm.inicializar(cliente);
 
-        // Observer
+        observarViewModel();
+        configurarUI();
+    }
+
+    private void observarViewModel() {
 
         vm.getCliente().observe(getViewLifecycleOwner(), c -> {
             if (c == null) return;
@@ -53,26 +58,22 @@ public class EditarClienteFragment extends Fragment {
             binding.etEmail.setText(c.getEmail());
         });
 
-        vm.getLoading().observe(getViewLifecycleOwner(), loading ->
-                binding.btnGuardar.setEnabled(!Boolean.TRUE.equals(loading))
+        vm.getMensaje().observe(getViewLifecycleOwner(), msg ->
+                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
         );
 
-        vm.getMensaje().observe(getViewLifecycleOwner(), msg -> {
-            if (msg != null) {
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show();
-                vm.mensajeConsumido();
-            }
-        });
-
-        vm.getVolverAtras().observe(getViewLifecycleOwner(), volver -> {
+        vm.getNavegarAtras().observe(getViewLifecycleOwner(), volver -> {
             if (Boolean.TRUE.equals(volver)) {
                 NavHostFragment.findNavController(this).popBackStack();
-                vm.volverConsumido();
             }
         });
 
-        // Acciones de botnes
+        vm.getLoading().observe(getViewLifecycleOwner(), loading -> {
+            binding.btnGuardar.setEnabled(!loading);
+        });
+    }
 
+    private void configurarUI() {
         binding.btnGuardar.setOnClickListener(v ->
                 vm.guardarCambios(
                         binding.etNombre.getText().toString(),
@@ -89,3 +90,4 @@ public class EditarClienteFragment extends Fragment {
         binding = null;
     }
 }
+

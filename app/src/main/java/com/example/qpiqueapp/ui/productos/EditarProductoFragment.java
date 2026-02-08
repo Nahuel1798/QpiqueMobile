@@ -68,7 +68,7 @@ public class EditarProductoFragment extends Fragment {
 
         vm.cargarCategorias();
 
-        // 🔹 Observer categorías → Spinner
+        // Observer categorías → Spinner
         vm.getCategorias().observe(getViewLifecycleOwner(), cats -> {
             listaCategorias = cats;
             categoriasCargadas = true;
@@ -86,10 +86,10 @@ public class EditarProductoFragment extends Fragment {
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             binding.spCategoria.setAdapter(adapter);
 
-            seleccionarCategoriaSiSePuede(); // 🔁 intentamos
+            seleccionarCategoriaSiSePuede(); //
         });
 
-        // 🔹 Observer producto
+        // Observer producto
         vm.getProducto().observe(getViewLifecycleOwner(), p -> {
             if (p == null) return;
 

@@ -49,10 +49,6 @@ public class VentasViewModel extends AndroidViewModel {
         return clienteSeleccionado;
     }
 
-    public LiveData<User> getUsuarioSeleccionado() {
-        return usuarioSeleccionado;
-    }
-
 
     public boolean isLoading() {
         return isLoading;
@@ -62,10 +58,7 @@ public class VentasViewModel extends AndroidViewModel {
         return lastPage;
     }
 
-    // ==========================
     // Cliente
-    // ==========================
-
     public void setClienteSeleccionado(Clientes cliente) {
         clienteSeleccionado.setValue(cliente);
     }
@@ -74,10 +67,7 @@ public class VentasViewModel extends AndroidViewModel {
         clienteSeleccionado.setValue(null);
     }
 
-    // ==========================
     // Filtros
-    // ==========================
-
     public void setFechaFiltro(String fecha) {
         filtroFecha.setValue(fecha);
         reiniciarCarga();

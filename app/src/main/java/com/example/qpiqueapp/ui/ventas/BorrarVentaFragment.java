@@ -33,7 +33,6 @@ public class BorrarVentaFragment extends Fragment {
             venta = (Ventas) getArguments().getSerializable("ventas");
         }
 
-        // Validar
         if (venta == null) {
             NavHostFragment.findNavController(this).popBackStack();
             return binding.getRoot();
@@ -50,7 +49,6 @@ public class BorrarVentaFragment extends Fragment {
                 NavHostFragment.findNavController(this).popBackStack()
         );
 
-        // Observador LiveData
         vm.getEliminado().observe(getViewLifecycleOwner(), ok -> {
             if (ok) {
                 NavHostFragment.findNavController(this).popBackStack();

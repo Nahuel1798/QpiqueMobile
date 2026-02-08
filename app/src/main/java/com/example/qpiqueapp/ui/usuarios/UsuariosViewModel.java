@@ -19,13 +19,23 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class UsuariosViewModel extends AndroidViewModel {
-    private final MutableLiveData<List<PerfilDto>> listaUsuarios = new MutableLiveData<>();
-    private final MutableLiveData<Integer> total = new MutableLiveData<>(0);
-    private final MutableLiveData<Boolean> cargando = new MutableLiveData<>(false);
-    private final MutableLiveData<String> mensajeError = new MutableLiveData<>();
+
+    private final MutableLiveData<List<PerfilDto>> usuarios =
+            new MutableLiveData<>(new ArrayList<>());
+
+    private final MutableLiveData<Integer> total =
+            new MutableLiveData<>(0);
+
+    private final MutableLiveData<Boolean> cargando =
+            new MutableLiveData<>(false);
+
+    private final MutableLiveData<String> mensaje =
+            new MutableLiveData<>();
+
     private final List<PerfilDto> acumulados = new ArrayList<>();
+
     private int page = 1;
-    private int pageSize = 6;
+    private final int pageSize = 6;
     private boolean ultimaPagina = false;
     private String search = "";
     private boolean inicialCargado = false;
@@ -34,44 +44,53 @@ public class UsuariosViewModel extends AndroidViewModel {
         super(application);
     }
 
-    // LiveData publicos
-    public LiveData<List<PerfilDto>> getListaUsuarios() { return listaUsuarios; }
+    // Getters
+    public LiveData<List<PerfilDto>> getUsuarios() { return usuarios; }
     public LiveData<Integer> getTotal() { return total; }
     public LiveData<Boolean> getCargando() { return cargando; }
-    public LiveData<String> getMensajeError() { return mensajeError; }
+    public LiveData<String> getMensaje() { return mensaje; }
 
-    // Metodos
-
+    // Inicial
     public void cargarInicial() {
         if (inicialCargado) return;
         inicialCargado = true;
         resetear();
         cargarUsuarios();
     }
+
+    // Scroll infinito
     public void cargarMas() {
         if (Boolean.TRUE.equals(cargando.getValue()) || ultimaPagina) return;
         page++;
         cargarUsuarios();
     }
 
-    private void resetear() {
-        page = 1;
-        ultimaPagina = false;
-        acumulados.clear();
-        listaUsuarios.setValue(new ArrayList<>());
-    }
+    // Buscar
     public void buscar(String texto) {
         search = texto == null ? "" : texto.trim();
         resetear();
         cargarUsuarios();
     }
 
-    // Cargar usuarios
-    public void cargarUsuarios() {
+    // Helpers
+    private void resetear() {
+        page = 1;
+        ultimaPagina = false;
+        acumulados.clear();
+        usuarios.setValue(new ArrayList<>());
+    }
+
+    public void mensajeConsumido() {
+        mensaje.setValue(null);
+    }
+
+    // Llamada API
+    private void cargarUsuarios() {
         cargando.setValue(true);
+
         String token = ApiClient.leerToken(getApplication());
         if (token == null || token.isEmpty()) {
-            mensajeError.setValue("Error: token de autenticación no encontrado.");
+            mensaje.setValue("Sesión no válida");
             cargando.setValue(false);
             return;
         }
@@ -80,37 +99,37 @@ public class UsuariosViewModel extends AndroidViewModel {
                 .getUsuario("Bearer " + token, page, pageSize, search)
                 .enqueue(new Callback<UsuariosResponse>() {
                     @Override
-                    public void onResponse(Call<UsuariosResponse> call, Response<UsuariosResponse> response) {
+                    public void onResponse(
+                            Call<UsuariosResponse> call,
+                            Response<UsuariosResponse> response) {
+
                         cargando.setValue(false);
+
                         if (response.isSuccessful() && response.body() != null) {
-                            List<PerfilDto> nuevos = response.body().getUsuarios();
+
+                            List<PerfilDto> nuevos =
+                                    response.body().getUsuarios();
+
                             total.setValue(response.body().getTotal());
+
                             if (nuevos == null || nuevos.isEmpty()) {
                                 ultimaPagina = true;
-                                if (page == 1) {
-                                    acumulados.clear();
-                                    listaUsuarios.setValue(new ArrayList<>(acumulados));
-                                }
+                                usuarios.setValue(new ArrayList<>(acumulados));
                                 return;
                             }
+
                             acumulados.addAll(nuevos);
-                            listaUsuarios.setValue(new ArrayList<>(acumulados));
+                            usuarios.setValue(new ArrayList<>(acumulados));
+
                         } else {
-                            String errorBody = "Error desconocido.";
-                            try {
-                                if (response.errorBody() != null) {
-                                    errorBody = response.errorBody().string();
-                                }
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            mensajeError.setValue("Error " + response.code() + ": " + errorBody);
+                            mensaje.setValue("Error al cargar usuarios");
                         }
                     }
+
                     @Override
                     public void onFailure(Call<UsuariosResponse> call, Throwable t) {
                         cargando.setValue(false);
-                        mensajeError.setValue("Error al cargar usuarios: " + t.getMessage());
+                        mensaje.setValue("Error de conexión");
                     }
                 });
     }

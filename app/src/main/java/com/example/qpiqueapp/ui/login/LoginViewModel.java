@@ -17,37 +17,52 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LoginViewModel extends AndroidViewModel {
-
+    private final MutableLiveData<Boolean> loading = new MutableLiveData<>(false);
     private final MutableLiveData<String> mensaje = new MutableLiveData<>();
-    private final MutableLiveData<Boolean> loginOk = new MutableLiveData<>();
+    private final MutableLiveData<Boolean> navegarMain = new MutableLiveData<>();
 
     public LoginViewModel(@NonNull Application application) {
         super(application);
+    }
+
+    // Getters
+
+    public LiveData<Boolean> getLoading() {
+        return loading;
     }
 
     public LiveData<String> getMensaje() {
         return mensaje;
     }
 
-    public LiveData<Boolean> getLoginOk() {
-        return loginOk;
+    public LiveData<Boolean> getNavegarMain() {
+        return navegarMain;
     }
 
-    public void Logueo(String usuario, String clave) {
+    // Acciones
 
-        if (usuario.isEmpty() || clave.isEmpty()) {
+    public void loguear(String usuario, String clave) {
+
+        if (usuario == null || usuario.trim().isEmpty()
+                || clave == null || clave.trim().isEmpty()) {
             mensaje.setValue("Debe completar los campos");
             return;
         }
 
-        LoginRequest loginRequest = new LoginRequest(usuario, clave);
+        loading.setValue(true);
+
+        LoginRequest request = new LoginRequest(usuario, clave);
 
         ApiClient.getInmoServicio()
-                .login(loginRequest)
+                .login(request)
                 .enqueue(new Callback<LoginResponse>() {
 
                     @Override
-                    public void onResponse(Call<LoginResponse> call, Response<LoginResponse> response) {
+                    public void onResponse(
+                            Call<LoginResponse> call,
+                            Response<LoginResponse> response) {
+
+                        loading.setValue(false);
 
                         if (response.isSuccessful() && response.body() != null) {
 
@@ -59,12 +74,12 @@ public class LoginViewModel extends AndroidViewModel {
                                     login.getUser().getRoles()
                             );
 
-                            Log.d("LoginViewModel", "Token: " + response.body().getToken());
-                            Log.d("LoginViewModel", "Rol: " + response.body().getUser().getRoles());
-
+                            Log.d("LoginVM", "Token: " + login.getToken());
+                            Log.d("LoginVM", "Rol: " + login.getUser().getRoles());
 
                             mensaje.setValue("Bienvenido");
-                            loginOk.setValue(true);
+                            navegarMain.setValue(true);
+
                         } else {
                             mensaje.setValue("Usuario o contraseña incorrectos");
                         }
@@ -72,8 +87,10 @@ public class LoginViewModel extends AndroidViewModel {
 
                     @Override
                     public void onFailure(Call<LoginResponse> call, Throwable t) {
-                        mensaje.setValue(t.getMessage());
+                        loading.setValue(false);
+                        mensaje.setValue("Error de conexión");
                     }
                 });
     }
 }
+

@@ -59,11 +59,6 @@ public class ClientesViewModel extends AndroidViewModel {
         acumulados.clear();
         listaClientes.setValue(new ArrayList<>());
     }
-    public void buscar(String texto) {
-        search = texto == null ? "" : texto.trim();
-        resetear();
-        cargarClientes();
-    }
 
     public void cargarClientes(){
         if (Boolean.TRUE.equals(cargando.getValue())) return;
@@ -72,9 +67,8 @@ public class ClientesViewModel extends AndroidViewModel {
         String token = ApiClient.leerToken(getApplication());
         String authHeader = "Bearer " + token;
 
-
         ApiClient.getInmoServicio()
-                .getClientes(authHeader,page, pageSize, search)
+                .getClientes(authHeader, page, pageSize, search)
                 .enqueue(new Callback<ClientesResponse>() {
                     @Override
                     public void onResponse(Call<ClientesResponse> call, Response<ClientesResponse> response) {

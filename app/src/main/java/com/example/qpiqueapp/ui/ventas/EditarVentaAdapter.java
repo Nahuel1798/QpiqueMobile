@@ -1,9 +1,12 @@
 package com.example.qpiqueapp.ui.ventas;
 
+import static android.content.ContentValues.TAG;
 import static com.example.qpiqueapp.request.ApiClient.BASE_URL;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,7 +22,8 @@ public class EditarVentaAdapter
         extends RecyclerView.Adapter<EditarVentaAdapter.ViewHolder> {
 
     public interface OnDetalleChangeListener {
-        void onChange();
+        void onCantidadChange();
+        void onEliminar(DetalleVenta detalle);
     }
 
     private final List<DetalleVenta> detalles;
@@ -56,12 +60,10 @@ public class EditarVentaAdapter
 
         DetalleVenta detalle = detalles.get(position);
 
-        // Texto
         holder.binding.txtProducto.setText(detalle.getProductoNombre());
         holder.binding.txtPrecio.setText("$ " + detalle.getPrecioUnitario());
         holder.binding.tvCantidad.setText(String.valueOf(detalle.getCantidad()));
 
-        // Imagen
         String url = detalle.getImagenUrl() != null
                 ? BASE_URL + detalle.getImagenUrl()
                 : null;
@@ -72,37 +74,58 @@ public class EditarVentaAdapter
                 .error(R.drawable.ic_clientes)
                 .into(holder.binding.imgProducto);
 
-        // ➖ RESTAR
+        // Restar
         holder.binding.btnRestar.setOnClickListener(v -> {
             int cantidad = detalle.getCantidad();
+
             if (cantidad > 1) {
-                cantidad--;
-                detalle.setCantidad(cantidad);
-                holder.binding.tvCantidad.setText(String.valueOf(cantidad));
-                listener.onChange();
+                detalle.setCantidad(cantidad - 1);
+                holder.binding.tvCantidad.setText(
+                        String.valueOf(detalle.getCantidad())
+                );
+                listener.onCantidadChange();
             }
         });
 
-        // ➕ SUMAR (control de stock si existe)
+        // Sumar con control de stock
         holder.binding.btnSumar.setOnClickListener(v -> {
-            int cantidad = detalle.getCantidad();
-            int stock = detalle.getStock(); // ⚠️ importante
+            int cantidadActual = detalle.getCantidad();
+            int stock = detalle.getStock();
+            int original = detalle.getCantidadOriginal();
 
-            if (cantidad < stock) {
-                cantidad++;
-                detalle.setCantidad(cantidad);
-                holder.binding.tvCantidad.setText(String.valueOf(cantidad));
-                listener.onChange();
+            int stockEditable = stock + original;
+
+            // No me llegaba bien el stock(problema solucionado no mandaba el stock en la api)
+
+            Log.d(TAG,
+                    "SUMAR -> Producto: " + detalle.getProductoNombre()
+                            + " | StockBD=" + stock
+                            + " | Original=" + original
+                            + " | Actual=" + cantidadActual
+                            + " | Editable=" + stockEditable
+            );
+
+            if (cantidadActual < stockEditable) {
+                detalle.setCantidad(cantidadActual + 1);
+                holder.binding.tvCantidad.setText(
+                        String.valueOf(detalle.getCantidad())
+                );
+                listener.onCantidadChange();
+            } else {
+                Toast.makeText(
+                        holder.itemView.getContext(),
+                        "No hay más stock disponible",
+                        Toast.LENGTH_SHORT
+                ).show();
             }
         });
 
-        // 🗑️ ELIMINAR
+
+        // Eliminar
         holder.binding.btnEliminar.setOnClickListener(v -> {
             int pos = holder.getAdapterPosition();
             if (pos != RecyclerView.NO_POSITION) {
-                detalles.remove(pos);
-                notifyItemRemoved(pos);
-                listener.onChange();
+                listener.onEliminar(detalles.get(pos));
             }
         });
     }

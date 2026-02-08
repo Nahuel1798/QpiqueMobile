@@ -42,7 +42,6 @@ public class CategoriasViewModel extends AndroidViewModel {
             mensajeError.setValue("Error: token de autenticación no encontrado.");
             return;
         }
-
         ApiClient.getInmoServicio()
                 .getCategoria("Bearer " + token)
                 .enqueue(new Callback<List<Categorias>>() {
