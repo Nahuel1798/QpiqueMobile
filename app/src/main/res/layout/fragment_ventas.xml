@@ -26,7 +26,6 @@
                 android:orientation="horizontal"
                 android:gravity="center_vertical">
 
-                <!-- Search por nombre de producto -->
                 <androidx.appcompat.widget.SearchView
                     android:id="@+id/searchViewVentas"
                     android:layout_width="0dp"
@@ -36,17 +35,30 @@
                     app:queryHint="Buscar producto..."
                     app:searchHintIcon="@null" />
 
-                <!-- Botón para filtrar por fecha -->
                 <ImageButton
                     android:id="@+id/btnFiltrarFecha"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:layout_marginEnd="16dp"
                     android:background="?attr/selectableItemBackgroundBorderless"
                     android:contentDescription="Filtrar por fecha"
                     android:src="@drawable/ic_date_range" />
+
+                <ImageButton
+                    android:id="@+id/btnLimpiarFiltroFecha"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="16dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:contentDescription="Limpiar filtro de fecha"
+                    android:src="@android:drawable/ic_notification_clear_all"
+                    android:visibility="gone"
+                    tools:visibility="visible"
+                    app:tint="?attr/colorOnSurfaceVariant"/>
+
             </LinearLayout>
+
 
         </com.google.android.material.appbar.MaterialToolbar>
 

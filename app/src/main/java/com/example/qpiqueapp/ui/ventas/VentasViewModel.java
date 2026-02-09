@@ -41,6 +41,7 @@ public class VentasViewModel extends AndroidViewModel {
         super(application);
     }
 
+    // Getters
     public LiveData<List<Ventas>> getVentas() {
         return ventasLiveData;
     }
@@ -73,8 +74,17 @@ public class VentasViewModel extends AndroidViewModel {
         reiniciarCarga();
     }
 
+    public LiveData<String> getFiltroFecha() {
+        return filtroFecha;
+    }
+
     public void buscar(String texto) {
         filtroTexto.setValue(texto == null || texto.trim().isEmpty() ? null : texto.trim());
+        reiniciarCarga();
+    }
+
+    public void limpiarFechaFiltro() {
+        filtroFecha.setValue(null);
         reiniciarCarga();
     }
 
@@ -101,23 +111,26 @@ public class VentasViewModel extends AndroidViewModel {
 
         String token = "Bearer " + ApiClient.leerToken(getApplication());
 
-        String fecha = filtroFecha.getValue();
+        String dia = filtroFecha.getValue();
+        Log.d("VentasVM", "Enviando dia: " + dia);
         String texto = filtroTexto.getValue();
         Clientes clienteObj = clienteSeleccionado.getValue();
         String cliente = clienteObj != null ? String.valueOf(clienteObj.getId()) : null;
         User usuarioObj = usuarioSeleccionado.getValue();
         String usuario = usuarioObj != null ? String.valueOf(usuarioObj.getId()) : null;
 
+        Log.d("VentasVM", "Enviando dia: " + dia);
+
 
         ApiClient.getInmoServicio()
                 .getVentas(
                         token,
-                        fecha,
-                        texto,
-                        cliente,
-                        usuario,
-                        null,
-                        null,
+                        cliente,      // cliente
+                        usuario,      // usuario
+                        texto,        // producto
+                        dia,          // dia (fecha)
+                        null,         // fechaDesde
+                        null,         // fechaHasta
                         currentPage,
                         pageSize
                 )
@@ -133,6 +146,7 @@ public class VentasViewModel extends AndroidViewModel {
                         }
 
                         List<Ventas> nuevas = response.body().getVentas();
+                        Log.d("VentasVM", "Ventas recibidas: " + response.body().getVentas().size());
 
                         if (nuevas == null || nuevas.isEmpty()) {
                             lastPage = true;

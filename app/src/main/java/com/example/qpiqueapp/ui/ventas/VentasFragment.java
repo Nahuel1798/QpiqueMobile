@@ -37,8 +37,7 @@ public class VentasFragment extends Fragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
 
         // ViewModel del Fragment
-        viewModel = new ViewModelProvider(this)
-                .get(VentasViewModel.class);
+        viewModel = new ViewModelProvider(requireActivity()).get(VentasViewModel.class);
 
         setupRecycler();
         setupObservers();
@@ -130,14 +129,30 @@ public class VentasFragment extends Fragment {
 
             new DatePickerDialog(
                     requireContext(),
-                    (view1, y, m, d) ->
-                            viewModel.setFechaFiltro(
-                                    String.format("%04d-%02d-%02d", y, m + 1, d)
-                            ),
+                    (view1, y, m, d) -> {
+                        String fecha = String.format(
+                                "%04d-%02d-%02d",
+                                y,
+                                m + 1,
+                                d
+                        );
+                        viewModel.setFechaFiltro(fecha);
+                    },
                     c.get(Calendar.YEAR),
                     c.get(Calendar.MONTH),
                     c.get(Calendar.DAY_OF_MONTH)
             ).show();
+        });
+
+        viewModel.getFiltroFecha().observe(getViewLifecycleOwner(), fecha -> {
+            binding.btnLimpiarFiltroFecha.setVisibility(
+                    fecha == null ? View.GONE : View.VISIBLE
+            );
+        });
+
+        binding.btnLimpiarFiltroFecha.setOnClickListener(v -> {
+            viewModel.limpiarFechaFiltro();
+            binding.rvVentas.scrollToPosition(0);
         });
     }
 
@@ -145,15 +160,5 @@ public class VentasFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         binding = null;
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (!viewModel.isLoading()) {
-            viewModel.recargar();
-            binding.rvVentas.scrollToPosition(0);
-        }
     }
 }

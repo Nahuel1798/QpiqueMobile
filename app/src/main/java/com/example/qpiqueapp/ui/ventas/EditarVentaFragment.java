@@ -130,6 +130,8 @@ public class EditarVentaFragment extends Fragment {
     private void observarViewModel() {
 
         viewModel.getDetalles().observe(getViewLifecycleOwner(), lista -> {
+            detalles.clear();
+            detalles.addAll(lista);
             adapter.actualizarLista(lista);
             recalcularTotal();
         });

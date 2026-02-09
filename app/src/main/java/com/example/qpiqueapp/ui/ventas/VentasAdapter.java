@@ -62,7 +62,7 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
         holder.tvVentaId.setText("Venta #" + venta.getId());
         holder.tvVentaTotal.setText("$ " + venta.getTotal());
         holder.tvVentaFecha.setText(formatearFechaHora(venta.getFecha()));
-        holder.tvNombreUsuario.setText("Usuario: " + venta.getUsuarioNombre());
+        holder.tvNombreUsuario.setText("Vendido por: " + venta.getUsuarioNombre());
         holder.tvNombreCliente.setText("Cliente: " + venta.getClienteNombre());
 
         // Cargar detalles de la venta

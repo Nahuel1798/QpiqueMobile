@@ -4,7 +4,8 @@ import java.util.List;
 
 public class VentasPaginadasResponse {
     private List<Ventas> ventas;
-    private int totalPages;
+    private int total;
+    private int page;
     private int currentPage;
 
     public List<Ventas> getVentas() {
@@ -14,10 +15,10 @@ public class VentasPaginadasResponse {
         this.ventas = ventas;
     }
     public int getTotalPages() {
-        return totalPages;
+        return total;
     }
     public void setTotalPages(int totalPages) {
-        this.totalPages = totalPages;
+        this.total = totalPages;
     }
     public int getCurrentPage() {
         return currentPage;

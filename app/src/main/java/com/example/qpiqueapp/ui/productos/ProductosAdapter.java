@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -65,8 +66,26 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
         String precioFormateado = String.format("$ %.2f", producto.getPrecio());
         holder.tvPrecio.setText(precioFormateado);
         // Formatear el stock
-        String stockFormateado = String.format("Stock: %d", producto.getStock());
-        holder.tvStock.setText(stockFormateado);
+        int stock = producto.getStock();
+        if (stock <= 0) {
+            holder.tvStock.setText("Sin stock");
+            holder.tvStock.setTextColor(ContextCompat.getColor(context, R.color.red));
+            holder.btnAgregarCarrito.setEnabled(false);
+            holder.btnAgregarCarrito.setAlpha(0.5f);
+
+        } else if (stock <= 5) {
+            holder.tvStock.setText("Stock bajo: " + stock);
+            holder.tvStock.setTextColor(ContextCompat.getColor(context, R.color.orange));
+            holder.btnAgregarCarrito.setEnabled(true);
+            holder.btnAgregarCarrito.setAlpha(1f);
+
+        } else {
+            holder.tvStock.setText("Stock: " + stock);
+            holder.tvStock.setTextColor(ContextCompat.getColor(context, R.color.green));
+            holder.btnAgregarCarrito.setEnabled(true);
+            holder.btnAgregarCarrito.setAlpha(1f);
+        }
+
         // Cargar la imagen desde la URL con Glide
         Glide.with(holder.itemView)
                 .load(ApiClient.BASE_URL + producto.getImagenUrl())
