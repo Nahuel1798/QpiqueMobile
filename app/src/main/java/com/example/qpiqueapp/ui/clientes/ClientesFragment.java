@@ -48,9 +48,9 @@ public class ClientesFragment extends Fragment {
         }
 
         // Ocultar botones si estamos en modo selección
-        if (modoSeleccion) {
-            binding.btnNuevoCliente.setVisibility(View.GONE); // Ocultar botón "Nuevo Cliente"
-        }
+//        if (modoSeleccion) {
+//            binding.btnNuevoCliente.setVisibility(View.GONE);
+//        }
 
         adapter = new ClientesAdapter(
                 new ArrayList<>(),
@@ -58,7 +58,7 @@ public class ClientesFragment extends Fragment {
                 new ClientesAdapter.OnItemClickListener() {
                     @Override
                     public void onEditar(Clientes cliente) {
-                        // NUEVO: Bloquear la acción si estamos en modo selección
+                        // Bloquear la acción si estamos en modo selección
                         if (modoSeleccion) {
                             Toast.makeText(getContext(), "Primero debe seleccionar un cliente", Toast.LENGTH_SHORT).show();
                             return;
@@ -76,7 +76,7 @@ public class ClientesFragment extends Fragment {
 
                     @Override
                     public void onEliminar(Clientes cliente) {
-                        // NUEVO: Bloquear la acción si estamos en modo selección
+                        // Bloquear la acción si estamos en modo selección
                         if (modoSeleccion) {
                             Toast.makeText(getContext(), "Primero debe seleccionar un cliente", Toast.LENGTH_SHORT).show();
                             return;

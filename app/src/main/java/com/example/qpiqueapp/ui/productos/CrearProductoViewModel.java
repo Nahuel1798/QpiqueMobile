@@ -73,13 +73,7 @@ public class CrearProductoViewModel extends AndroidViewModel {
     }
 
     // Guardar
-    public void crearProducto(
-            String nombre,
-            String descripcion,
-            String precioStr,
-            String stockStr,
-            int categoriaId
-    ) {
+    public void crearProducto(String nombre, String descripcion, String precioStr, String stockStr, int categoriaId) {
 
         if (nombre.isEmpty() || descripcion.isEmpty()
                 || precioStr.isEmpty() || stockStr.isEmpty()) {

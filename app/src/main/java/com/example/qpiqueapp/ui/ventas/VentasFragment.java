@@ -54,6 +54,7 @@ public class VentasFragment extends Fragment {
 
         adapter = new VentasAdapter(
                 new ArrayList<>(),
+                requireContext(),
                 getLayoutInflater(),
                 new VentasAdapter.OnItemClickListener() {
                     @Override

@@ -55,7 +55,6 @@ public class CrearProductoFragment extends Fragment {
 
         vm.getCategorias().observe(getViewLifecycleOwner(), categorias -> {
             if (categorias != null && !categorias.isEmpty()) {
-
                 listaCategorias = categorias;
 
                 List<String> nombresCategorias = new ArrayList<>();

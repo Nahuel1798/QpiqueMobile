@@ -1,5 +1,6 @@
 package com.example.qpiqueapp.ui.ventas;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.qpiqueapp.R;
 import com.example.qpiqueapp.modelo.venta.Ventas;
+import com.example.qpiqueapp.request.ApiClient;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -21,18 +23,24 @@ import java.util.Locale;
 
 public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewHolder> {
     private final List<Ventas> ventas = new ArrayList<>();
+    private final Context context;
     private LayoutInflater inflater;
     private OnItemClickListener listener;
+    private boolean esAdmin;
 
     public interface OnItemClickListener {
         void onEditar(Ventas ventas);
         void onEliminar(Ventas ventas);
     }
 
-    public VentasAdapter(List<Ventas> ventas, LayoutInflater inflater, OnItemClickListener listener){
+    public VentasAdapter(List<Ventas> ventas, Context context, LayoutInflater inflater, OnItemClickListener listener){
         this.ventas.addAll(ventas);
         this.listener = listener;
         this.inflater = inflater;
+        this.context = context;
+
+        String rol = ApiClient.leerRol(context);
+        this.esAdmin = rol != null && rol.equals("Administrador");
     }
 
     public void setVentas(List<Ventas> nuevasVentas) {
@@ -68,6 +76,11 @@ public class VentasAdapter extends RecyclerView.Adapter<VentasAdapter.VentaViewH
         // Cargar detalles de la venta
         holder.detalleAdapter.setDetalles(venta.getDetalleVentas());
 
+        if (esAdmin) {
+            holder.btnEliminar.setVisibility(View.VISIBLE);
+        } else {
+            holder.btnEliminar.setVisibility(View.GONE);
+        }
         holder.btnEditar.setOnClickListener(v -> {
             if (listener != null) {
                 listener.onEditar(venta);
