@@ -26,6 +26,8 @@ public class SeleccionarVPVIewModel extends AndroidViewModel {
     private final MutableLiveData<Boolean> cargando = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> total = new MutableLiveData<>(0);
 
+    private final List<Productos> acumulados = new ArrayList<>();
+
     private Integer categoriaId = null;
     private String nombre = null;
     private int page = 1;
@@ -80,6 +82,7 @@ public class SeleccionarVPVIewModel extends AndroidViewModel {
     private void resetear() {
         page = 1;
         ultimaPagina = false;
+        acumulados.clear();
         productosSeleccionados.setValue(new ArrayList<>());
     }
 
@@ -119,11 +122,14 @@ public class SeleccionarVPVIewModel extends AndroidViewModel {
                         if (response.isSuccessful() && response.body() != null) {
                             List<Productos> nuevos = response.body().getProductos();
                             total.setValue(response.body().getTotal());
+
                             if (nuevos == null || nuevos.isEmpty()) {
                                 ultimaPagina = true;
                                 return;
                             }
-                            productosSeleccionados.setValue(nuevos);
+                            // Permite ver todos los productos por mas que pasemos de pagina
+                            acumulados.addAll(nuevos);
+                            productosSeleccionados.setValue(new ArrayList<>(acumulados));
                         }
                     }
                     @Override

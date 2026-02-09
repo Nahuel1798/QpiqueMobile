@@ -51,6 +51,15 @@ public class SeleccionarVPFragment extends Fragment {
 
         binding.listaVP.setAdapter(adapter);
 
+        binding.listaVP.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
+                if (!rv.canScrollVertically(1)) {
+                    vm.cargarMas();
+                }
+            }
+        });
+
         AutoCompleteTextView autoCompleteTextView = binding.spCategorias;
 
         vm.getCategorias().observe(getViewLifecycleOwner(), categorias -> {
@@ -100,16 +109,6 @@ public class SeleccionarVPFragment extends Fragment {
                     }
                 }
         );
-
-        //Scrol infinito
-        binding.listaVP.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrolled(@NonNull RecyclerView rv, int dx, int dy) {
-                if (!rv.canScrollVertically(1)) {
-                    vm.cargarMas();
-                }
-            }
-        });
 
         // Selección de categoría
         binding.spCategorias.setOnItemSelectedListener(

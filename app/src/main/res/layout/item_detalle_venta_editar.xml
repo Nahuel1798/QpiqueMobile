@@ -48,6 +48,19 @@
             app:layout_constraintEnd_toStartOf="@id/layoutCantidad"
             tools:text="$1.250"/>
 
+        <TextView
+            android:id="@+id/txtStock"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="2dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="@android:color/holo_green_dark"
+            app:layout_constraintTop_toBottomOf="@id/txtPrecio"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/layoutCantidad"
+            tools:text="Stock: 5"/>
+
         <LinearLayout
             android:id="@+id/layoutCantidad"
             android:layout_width="wrap_content"
@@ -92,9 +105,8 @@
             android:layout_margin="16dp"
             android:text="Eliminar"
             app:icon="@android:drawable/ic_delete"
-            app:layout_constraintTop_toBottomOf="@id/txtPrecio"
+            app:layout_constraintTop_toBottomOf="@id/txtStock"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </com.google.android.material.card.MaterialCardView>

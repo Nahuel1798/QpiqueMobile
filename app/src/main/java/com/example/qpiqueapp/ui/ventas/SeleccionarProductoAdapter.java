@@ -19,7 +19,9 @@ import com.example.qpiqueapp.request.ApiClient;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SeleccionarProductoAdapter
         extends RecyclerView.Adapter<SeleccionarProductoAdapter.ViewHolder> {
@@ -28,6 +30,8 @@ public class SeleccionarProductoAdapter
     private List<Productos> seleccionados = new ArrayList<>();
     private Context context;
     private LayoutInflater inflater;
+    private final Set<Integer> productosAgregadosIds = new HashSet<>();
+
 
     public SeleccionarProductoAdapter(List<Productos> listaProductos, Context context) {
         this.listaProductos = listaProductos;
@@ -40,7 +44,6 @@ public class SeleccionarProductoAdapter
         notifyDataSetChanged();
     }
 
-    // 👉 DEVUELVE LOS SELECCIONADOS
     public List<Productos> getSeleccionados() {
         return seleccionados;
     }
@@ -90,9 +93,7 @@ public class SeleccionarProductoAdapter
     }
 
     @Override
-    public int getItemCount() {
-        return listaProductos.size();
-    }
+    public int getItemCount() {return listaProductos == null ? 0 : listaProductos.size();}
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView tvNombre, tvPrecio, tvDescripcion, tvStock;

@@ -21,12 +21,8 @@ import retrofit2.Response;
 
 public class ProductosViewModel extends AndroidViewModel {
 
-    private final MutableLiveData<List<Productos>> productosLiveData =
-            new MutableLiveData<>(new ArrayList<>());
-
-    private final MutableLiveData<List<Categorias>> categoriasLiveData =
-            new MutableLiveData<>(new ArrayList<>());
-
+    private final MutableLiveData<List<Productos>> productosLiveData = new MutableLiveData<>(new ArrayList<>());
+    private final MutableLiveData<List<Categorias>> categoriasLiveData = new MutableLiveData<>(new ArrayList<>());
     private final MutableLiveData<Boolean> cargando = new MutableLiveData<>(false);
     private final MutableLiveData<Integer> total = new MutableLiveData<>(0);
 
@@ -145,6 +141,7 @@ public class ProductosViewModel extends AndroidViewModel {
                             return;
                         }
 
+                        // Permite ver todos los productos por mas que pasemos de pagina
                         acumulados.addAll(nuevos);
                         productosLiveData.setValue(new ArrayList<>(acumulados));
                     }

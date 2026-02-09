@@ -60,7 +60,7 @@ public class EditarProductoFragment extends Fragment {
         binding = FragmentEditarProductoBinding.inflate(inflater, container, false);
         vm = new ViewModelProvider(this).get(EditarProductoViewModel.class);
 
-        configurarPermisos();
+//        configurarPermisos();
 
         Productos producto =
                 (Productos) getArguments().getSerializable("producto");
@@ -68,7 +68,7 @@ public class EditarProductoFragment extends Fragment {
 
         vm.cargarCategorias();
 
-        // Observer categorías → Spinner
+        // Observer categorías
         vm.getCategorias().observe(getViewLifecycleOwner(), cats -> {
             listaCategorias = cats;
             categoriasCargadas = true;
@@ -144,7 +144,7 @@ public class EditarProductoFragment extends Fragment {
             }
         });
 
-        // 🔘 Botones
+        // Botones
         binding.btnCambiarImagen.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_PICK);
             intent.setType("image/*");
@@ -193,21 +193,34 @@ public class EditarProductoFragment extends Fragment {
         }
     }
 
-    private void configurarPermisos() {
-        String rol = ApiClient.leerRol(requireContext());
-
-        if (rol == null) return;
-
-        if (!"Administrador".equalsIgnoreCase(rol)) {
-            binding.etPrecio.setEnabled(false);
-            binding.etPrecio.setFocusable(false);
-            binding.etPrecio.setClickable(false);
-
-            binding.tilPrecio.setHelperText(
-                    "Solo administradores pueden modificar el precio"
-            );
-        }
-    }
+//    private void configurarPermisos() {
+//        String rol = ApiClient.leerRol(requireContext());
+//
+//        if (rol == null) return;
+//
+//        if (!"Administrador".equalsIgnoreCase(rol)) {
+//            binding.etNombre.setEnabled(false);
+//            binding.etNombre.setFocusable(false);
+//            binding.etNombre.setClickable(false);
+//            binding.tilNombre.setHelperText(
+//                    "Solo administradores pueden modificar el nombre"
+//            );
+//
+//            binding.etDescripcion.setEnabled(false);
+//            binding.etDescripcion.setFocusable(false);
+//            binding.etDescripcion.setClickable(false);
+//            binding.tilDescripcion.setHelperText(
+//                    "Solo administradores pueden modificar la descripción"
+//            );
+//
+//            binding.etPrecio.setEnabled(false);
+//            binding.etPrecio.setFocusable(false);
+//            binding.etPrecio.setClickable(false);
+//            binding.tilPrecio.setHelperText(
+//                    "Solo administradores pueden modificar el precio"
+//            );
+//        }
+//    }
 
     @Override
     public void onDestroyView() {

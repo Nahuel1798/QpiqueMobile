@@ -63,6 +63,7 @@ public class EditarVentaAdapter
         holder.binding.txtProducto.setText(detalle.getProductoNombre());
         holder.binding.txtPrecio.setText("$ " + detalle.getPrecioUnitario());
         holder.binding.tvCantidad.setText(String.valueOf(detalle.getCantidad()));
+        holder.binding.txtStock.setText("Stock: " + detalle.getStock());
 
         String url = detalle.getImagenUrl() != null
                 ? BASE_URL + detalle.getImagenUrl()

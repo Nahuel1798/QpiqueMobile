@@ -79,21 +79,20 @@ public class ProductosAdapter extends RecyclerView.Adapter<ProductosAdapter.Prod
             if (listener != null) {
                 if (productosAgregadosIds.contains(producto.getId())) {
                     listener.onQuitarCarrito(producto);
-                    // Actualizamos nuestro set local
                     productosAgregadosIds.remove(producto.getId());
                 } else {
                     listener.onAgregarCarrito(producto);
-                    // Actualizamos nuestro set local
                     productosAgregadosIds.add(producto.getId());
                 }
-                // Actualiza la apariencia del botón inmediatamente después del clic
                 actualizarBotonCarrito(holder.btnAgregarCarrito, producto);
             }
         });
         if (esAdmin) {
             holder.btnEliminar.setVisibility(View.VISIBLE);
+            holder.btnEditar.setVisibility(View.VISIBLE);
         } else {
             holder.btnEliminar.setVisibility(View.GONE);
+            holder.btnEditar.setVisibility(View.GONE);
         }
         holder.btnEditar.setOnClickListener(v -> {
             if (listener != null) {
